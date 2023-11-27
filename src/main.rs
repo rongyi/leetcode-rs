@@ -1,3 +1,12 @@
+mod lc30;
+mod lc29;
+mod lc28;
+mod lc27;
+mod lc26;
+mod lc25;
+mod lc24;
+mod lc23;
+mod lc22;
 mod lc21;
 mod lc20;
 mod lc19;
@@ -74,4 +83,7 @@ mod lc04 {
 fn main() {
     // Test cases
     //println!("{}", lc10::is_match("aaa".to_string(), ".*".to_string())); // Output: false
+    for i in (0..6 - 1).step_by(2) {
+        println!("{i}");
+    }
 }
