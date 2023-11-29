@@ -1,3 +1,7 @@
+mod lc34;
+mod lc33;
+mod lc32;
+mod lc31;
 mod lc30;
 mod lc29;
 mod lc28;
