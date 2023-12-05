@@ -1,3 +1,4 @@
+mod lc42;
 mod lc41;
 mod lc40;
 mod lc39;
