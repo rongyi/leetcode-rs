@@ -1,3 +1,5 @@
+mod lc50;
+mod lc49;
 mod lc48;
 mod lc47;
 mod lc46;
