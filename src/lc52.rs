@@ -1,25 +1,17 @@
 struct Solution;
 
 impl Solution {
-    pub fn solve_n_queens(n: i32) -> Vec<Vec<String>> {
-        let mut ret = vec![];
+    pub fn total_n_queens(n: i32) -> i32 {
+        let mut ret = 0;
         let mut placement = vec![0; n as usize];
         Self::backtrack(&mut placement, 0, &mut ret);
 
         ret
     }
 
-    fn backtrack(placement: &mut [i32], cur_row: usize, ret: &mut Vec<Vec<String>>) {
+    fn backtrack(placement: &mut [i32], cur_row: usize, ret: &mut i32) {
         if cur_row == placement.len() {
-            let mut one_solution = Vec::new();
-            for i in 0..placement.len() {
-                let mut dots = vec!['.'; placement.len()];
-                dots[placement[i] as usize] = 'Q';
-                let s: String = dots.iter().collect();
-                one_solution.push(s);
-            }
-
-            ret.push(one_solution);
+            *ret += 1;
             return;
         }
 
