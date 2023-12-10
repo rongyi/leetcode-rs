@@ -1,3 +1,4 @@
+mod lc56;
 mod lc55;
 mod lc54;
 mod lc53;
