@@ -1,3 +1,8 @@
+#![allow(dead_code)]
+
+mod lc74;
+mod lc73;
+mod lc72;
 mod lc05;
 mod lc06;
 mod lc07;
@@ -120,6 +125,8 @@ mod lc04 {
         }
     }
 }
+
+struct Solution;
 
 fn main() {
     // Test cases
