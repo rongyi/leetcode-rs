@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+mod lc76;
+mod lc75;
 mod lc74;
 mod lc73;
 mod lc72;
