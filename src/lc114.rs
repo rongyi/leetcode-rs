@@ -25,26 +25,24 @@ use std::rc::Rc;
 impl Solution {
     pub fn flatten(root: &mut Option<Rc<RefCell<TreeNode>>>) {
         if let Some(node) = root {
-            let mut node_borrow = node.borrow_mut();
+            let mut node = node.borrow_mut();
+            Self::flatten(&mut node.left);
+            Self::flatten(&mut node.right);
 
-            Self::flatten(&mut node_borrow.left);
-            Self::flatten(&mut node_borrow.right);
+            let left = node.left.take();
+            let right = node.right.take();
 
-            let left_subtree = node_borrow.left.take();
-            let right_subtree = node_borrow.right.take();
+            if left.is_some() {
+                node.right = left.clone();
 
-            if left_subtree.is_some() {
-                node_borrow.right = left_subtree.clone();
-
-                let mut rightmost = left_subtree;
+                let mut rightmost = left;
                 while rightmost.as_ref().unwrap().borrow().right.is_some() {
                     let tmp = rightmost.as_ref().unwrap().borrow().right.clone();
                     rightmost = tmp;
                 }
-
-                rightmost.as_ref().unwrap().borrow_mut().right = right_subtree;
+                rightmost.as_ref().unwrap().borrow_mut().right = right;
             } else {
-                node_borrow.right = right_subtree;
+                node.right = right;
             }
         }
     }
