@@ -19,10 +19,12 @@ impl Solution {
             // either do nothing or sell at day i, already minus the buy price
             // so here, we add sell price to get a profit
             sell[i] = sell[i - 1].max(buy[i - 1] + prices[i]);
+            // either nothing, or just cooldown, we get same as sell[i - 1]
             cooldown[i] = cooldown[i - 1].max(sell[i - 1]);
         }
 
         sell[sz - 1].max(cooldown[sz - 1])
     }
 }
+
 fn main() {}
