@@ -1,4 +1,5 @@
 struct Solution;
+
 use std::{
     cmp::Reverse,
     collections::{BinaryHeap, HashMap},
@@ -6,14 +7,15 @@ use std::{
 
 impl Solution {
     pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
-        let mut graph = HashMap::new();
-        for ticket in tickets {
+        let mut graph: HashMap<String, BinaryHeap<Reverse<String>>> = HashMap::new();
+        let mut ret: Vec<String> = Vec::new();
+        for t in &tickets {
             graph
-                .entry(ticket[0].clone())
+                .entry(t[0].clone())
                 .or_insert(BinaryHeap::new())
-                .push(Reverse(ticket[1].clone()));
+                .push(Reverse(t[1].clone()));
         }
-        let mut ret = Vec::new();
+        // using stack to expand the recursive call to eliminate the write exclusive problem
         let mut stack = vec!["JFK".to_string()];
 
         while let Some(top) = stack.last_mut() {
@@ -33,10 +35,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    // default to max heap
-    let mut a = BinaryHeap::new();
-    a.push(1);
-    a.push(2);
-    println!("{}", a.pop().unwrap());
-}
+fn main() {}
