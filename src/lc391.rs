@@ -1,8 +1,9 @@
 struct Solution;
 use std::collections::{HashMap, HashSet};
 
-
 impl Solution {
+    // 思路： 1. 小矩形加起来面积等于大的面积
+    //       2. 出现奇数次重合的只能是四个边角
     pub fn is_rectangle_cover(rectangles: Vec<Vec<i32>>) -> bool {
         let mut area = 0;
         let mut xmin = i32::MAX;
@@ -39,10 +40,9 @@ impl Solution {
 
         for (pair, &cnt) in m.iter() {
             if cnt % 2 == 1 {
-                if let Some(_p) = s.get(pair) {
+                if s.contains(pair) {
                     s.remove(pair);
                 } else {
-                    // odd cnt can only be four cornes
                     return false;
                 }
             }
