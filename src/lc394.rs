@@ -1,7 +1,7 @@
 struct Solution;
 
 impl Solution {
-    pub fn decode_string(s: String) -> String {
+    pub fn decode_string_rongyi_recursive(s: String) -> String {
         Self::decode(1, &s)
     }
 
@@ -42,6 +42,36 @@ impl Solution {
             }
         }
         (normal + &expand + &rest).repeat(repeat)
+    }
+}
+
+impl Solution {
+    pub fn decode_string(s: String) -> String {
+        let mut current = String::new();
+        let mut stack: Vec<(String, usize)> = Vec::new();
+        let mut acc = 0;
+
+        for c in s.chars() {
+            match c {
+                '[' => {
+                    stack.push((current.clone(), acc));
+                    acc = 0;
+                    current.clear();
+                }
+                ']' => {
+                    let (prev_str, repeat) = stack.pop().unwrap();
+                    current = prev_str + &current.repeat(repeat);
+                }
+                '0'..='9' => {
+                    acc = acc * 10 + c.to_digit(10).unwrap() as usize;
+                }
+                _ => {
+                    current.push(c);
+                }
+            }
+        }
+
+        current
     }
 }
 
