@@ -1,12 +1,5 @@
 #![allow(dead_code)]
 
-mod lc78;
-mod lc77;
-mod lc76;
-mod lc75;
-mod lc74;
-mod lc73;
-mod lc72;
 mod lc05;
 mod lc06;
 mod lc07;
@@ -74,6 +67,13 @@ mod lc68;
 mod lc69;
 mod lc70;
 mod lc71;
+mod lc72;
+mod lc73;
+mod lc74;
+mod lc75;
+mod lc76;
+mod lc77;
+mod lc78;
 mod lc04 {
 
     struct Solution;
