@@ -41,7 +41,7 @@ impl Solution {
                     visited.insert(k.clone());
                     let val = Self::get_weight(graph, k, down, visited);
                     if val.is_some() {
-                        return Some((*v) * val.unwrap());
+                        return Some(*v * val.unwrap());
                     }
                 }
             }
