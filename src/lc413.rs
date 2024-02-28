@@ -3,7 +3,7 @@ struct Solution;
 impl Solution {
     // brute force can pass
     pub fn number_of_arithmetic_slices(nums: Vec<i32>) -> i32 {
-        let mut sz = nums.len();
+        let sz = nums.len();
         if sz < 3 {
             return 0;
         }
