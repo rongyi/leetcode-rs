@@ -23,7 +23,7 @@ impl Solution {
 
     // 下手cuts刀之后把数组切割为 cuts + 1块
     // 每一块的和的上限是max
-    // 在尽可能在满足一块之和 <= max这种情况。
+    // 在尽可能在满足一块之和 <= max这种情况。yes, 贪心
     // 这样算下来的刀数就是最少了，看看这种情况是否满足？
     // 如果发现单独一个元素的都比max还大，那完了，切最多的刀留最小的块都不满足
     fn cansplit(nums: &[i64], mut cut: i32, max: i64) -> bool {
@@ -32,6 +32,7 @@ impl Solution {
             if num > max {
                 return false;
             }
+            // can put in one chunk
             if acc + num <= max {
                 acc += num;
             } else {
