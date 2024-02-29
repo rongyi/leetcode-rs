@@ -14,11 +14,11 @@ impl Solution {
         digits[0] = *cnt.get(&'z').unwrap_or(&0);
         // w only in two
         digits[2] = *cnt.get(&'w').unwrap_or(&0);
-        // four
+        // ... four
         digits[4] = *cnt.get(&'u').unwrap_or(&0);
-        // six
+        // ... six
         digits[6] = *cnt.get(&'x').unwrap_or(&0);
-        // eight
+        // ... eight
         digits[8] = *cnt.get(&'g').unwrap_or(&0);
 
         digits[1] = (*cnt.get(&'o').unwrap_or(&0) - digits[0] - digits[2] - digits[4]).max(0); // 'o' only in one, zero, two, four
