@@ -17,6 +17,8 @@ impl Solution {
                 j += 1;
                 if j == len2 {
                     j = 0;
+                    // we don't care the n2 now, we just count the single party repeat count
+                    // and divide the n2 in final answer
                     count2 += 1;
                 }
             }
