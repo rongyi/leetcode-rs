@@ -61,6 +61,7 @@ impl Solution {
         let mut min_heap = Heap::new(true);
         let mut max_heap = Heap::new(false);
         let k = k as usize;
+
         for (i, &num) in nums.iter().enumerate() {
             min_heap.add(num);
             // 通过 min_heap 弹出来的都是小值
@@ -70,16 +71,21 @@ impl Solution {
             if i >= k {
                 // min_heap.Top()是min里最小的，如果滑动窗口要移除的那个数字比
                 // 这个最小的还大，那么这个删除的target就在 min_heap里无疑
+                // 因为min_heap是高的里面挑矮的，比最矮的还高，那肯定算高个
+                // 肯定在min_heap里面
                 if min_heap.size > 0 && nums[i - k] >= min_heap.top() {
                     min_heap.remove(nums[i - k]);
                 } else {
                     max_heap.remove(nums[i - k]);
                 }
             }
+            // 互相倒腾一下
+            // 小矮个太多了，挑一些高的去min_heap里
             while max_heap.size > min_heap.size {
                 min_heap.add(max_heap.pop());
             }
             // 其实这保证了 max_heap 和  min_heap 要么相等，要么 max_heap 大 1
+            // 大高个这一组又太多了，挑一些矮的去max_heap里
             while min_heap.size > max_heap.size {
                 max_heap.add(min_heap.pop());
             }
