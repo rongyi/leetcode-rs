@@ -27,6 +27,12 @@ impl Solution {
         // random an angle
         let theta: f64 = 2.0 * PI * rng.gen::<f64>();
         // random an lenth
+        // 随机一个长度
+        // 我们不能把圆这样看成是很多半径的集合——或者说，这条半径上不同位置的点的密集程度是不一样的。显然距离圆心更远的一端被选择的概率应该更大。
+        // 如果不用平方根的话，那么表示圆的时候
+        // (len * cos(theta)) ^ 2 + (len * sin(theta) ^ 2，
+        // 这里就相当于对随机出的[0, 1]
+        // 中的小数平方了，那么其就不是等概率的了
         let len = rng.gen::<f64>().sqrt() * self.radius;
 
         vec![self.x + len * theta.cos(), self.y + len * theta.sin()]
