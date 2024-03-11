@@ -1,6 +1,7 @@
 struct Solution;
 
 impl Solution {
+    // shitty
     pub fn magical_string(n: i32) -> i32 {
         let mut s: Vec<char> = vec![' '];
         let mut x = 0;
