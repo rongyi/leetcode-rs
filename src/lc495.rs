@@ -1,23 +1,18 @@
 struct Solution;
 
 impl Solution {
-    pub fn find_target_sum_ways(nums: Vec<i32>, target: i32) -> i32 {
-        let mut cnt = 0;
-        Self::dfs(&nums, target as i64, 0, &mut cnt);
+    pub fn find_poisoned_duration(time_series: Vec<i32>, duration: i32) -> i32 {
+        // the longest range of attack
+        let mut prev = -1;
+        let mut ret = 0;
+        for t in time_series.into_iter() {
+            let cur_end = t + duration;
+            ret += cur_end - t.max(prev);
 
-        cnt
-    }
-
-    fn dfs(nums: &[i32], target: i64, idx: usize, cnt: &mut i32) {
-        if idx == nums.len() {
-            if target == 0 {
-                *cnt += 1;
-            }
-            return;
+            prev = prev.max(t + duration);
         }
 
-        Self::dfs(nums, target - nums[idx] as i64, idx + 1, cnt);
-        Self::dfs(nums, target + nums[idx] as i64, idx + 1, cnt);
+        ret
     }
 }
 
