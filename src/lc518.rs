@@ -2,6 +2,7 @@ struct Solution;
 
 impl Solution {
     pub fn change(amount: i32, coins: Vec<i32>) -> i32 {
+        let amount = amount as usize;
         if amount == 0 {
             return 1;
         }
@@ -9,7 +10,7 @@ impl Solution {
         if n == 0 {
             return 0;
         }
-        let mut dp = vec![vec![0; amount as usize + 1]; n + 1];
+        let mut dp = vec![vec![0; amount + 1]; n + 1];
         dp[0][0] = 1;
         for i in 1..=n {
             // 用前面i个硬币凑到和为j
@@ -23,8 +24,8 @@ impl Solution {
                 // don't take current
                 dp[i][j as usize] = dp[i - 1][j as usize];
                 // can and take current
-                if j >= coins[i - 1] {
-                    dp[i][j as usize] += dp[i][j as usize - coins[i - 1] as usize]
+                if j >= coins[i - 1] as usize {
+                    dp[i][j] += dp[i][j - coins[i - 1] as usize]
                 }
             }
         }
