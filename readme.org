@@ -1,0 +1,2 @@
+* rust solution for leetcode
+one way(hard way) to learn rust.
