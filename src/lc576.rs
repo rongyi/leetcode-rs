@@ -12,6 +12,7 @@ impl Solution {
         for step in 1..=max_move {
             for i in 0..m {
                 for j in 0..n {
+                    // 在边上，一脚踢出去，不在的话可以往四个方向踢
                     let val1 = if i == 0 { 1 } else { dp[step - 1][i - 1][j] };
                     let val2 = if i == m - 1 {
                         1
