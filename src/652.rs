@@ -32,10 +32,16 @@ impl Solution {
         cache
             .values()
             .into_iter()
-            .filter(|v| v.len() > 1)
-            .map(|v| v[0].clone())
+            .filter_map(|v| {
+                if v.len() > 1 {
+                    Some(v[0].clone())
+                } else {
+                    None
+                }
+            })
             .collect()
     }
+
     fn tolist(
         node: Option<&Rc<RefCell<TreeNode>>>,
         cache: &mut HashMap<String, Vec<Option<Rc<RefCell<TreeNode>>>>>,
