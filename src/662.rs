@@ -29,6 +29,7 @@ impl Solution {
         q.push_back((root.clone(), 0));
         while !q.is_empty() {
             let sz = q.len();
+            // l is the begnning of current level start
             let l = q.front().unwrap().1;
             let mut r = 0;
             for _ in 0..sz {
