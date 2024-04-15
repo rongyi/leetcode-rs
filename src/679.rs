@@ -16,6 +16,7 @@ impl Solution {
 
         for i in 0..nums.len() {
             for j in 0..nums.len() {
+                // can not use twice or more
                 if i == j {
                     continue;
                 }
@@ -27,6 +28,9 @@ impl Solution {
                 }
 
                 for &op in &['+', '-', '*', '/'] {
+                    // i * j == j * i
+                    // i + j == j + i
+                    // so define an order and make it execute only one branch
                     if (op == '+' || op == '*') && i > j {
                         continue;
                     }
