@@ -32,6 +32,7 @@ impl Solution {
         let indexed_target: Vec<char> = target.chars().collect();
         // try to use stickers of index i
         for i in 0..char_cnt.len() {
+            // don't have char in target, one char at a time to solve
             if char_cnt[i][(indexed_target[0] as u8 - 'a' as u8) as usize] == 0 {
                 continue;
             }
@@ -43,7 +44,6 @@ impl Solution {
                     s.push_str(&left_part);
                 }
             }
-            println!("{:?}", s);
             let tmp = Self::recur(dp, char_cnt, &s);
             if tmp != -1 {
                 ret = ret.min(1 + tmp);
