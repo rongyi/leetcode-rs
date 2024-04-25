@@ -1,27 +1,9 @@
 #![allow(dead_code)]
 
-struct MyCalendar {
-    data: Vec<(i32, i32)>,
-}
-
-impl MyCalendar {
-    pub fn new() -> Self {
-        Self { data: Vec::new() }
-    }
-    pub fn book(&mut self, start: i32, end: i32) -> bool {
-        for &(cur_start, cur_end) in self.data.iter() {
-            if cur_start.max(start) < cur_end.min(end) {
-                return false;
-            }
-        }
-        self.data.push((start, end));
-
-        true
-    }
-}
+use std::collections::BTreeMap;
 
 struct MyCalendarTwo {
-    data: Vec<(i32, i32)>,
+    data: BTreeMap<i32, i32>,
 }
 
 /**
@@ -30,20 +12,24 @@ struct MyCalendarTwo {
  */
 impl MyCalendarTwo {
     fn new() -> Self {
-        Self { data: Vec::new() }
+        Self {
+            data: BTreeMap::new(),
+        }
     }
 
     fn book(&mut self, start: i32, end: i32) -> bool {
-        let mut non_collsion = MyCalendar::new();
-        for &(cur_start, cur_end) in self.data.iter() {
-            let cur = (cur_start.max(start), cur_end.min(end));
+        *self.data.entry(start).or_insert(0) += 1;
+        *self.data.entry(end).or_insert(0) -= 1;
 
-            if !non_collsion.book(cur.0, cur.1) {
+        let mut booked = 0;
+        for (_, &v) in self.data.iter() {
+            booked += v;
+            if booked == 3 {
+                *self.data.entry(start).or_insert(0) -= 1;
+                *self.data.entry(end).or_insert(0) += 1;
                 return false;
             }
         }
-
-        self.data.push((start, end));
 
         true
     }
