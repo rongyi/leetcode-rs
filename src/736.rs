@@ -43,7 +43,7 @@ fn parse_atom(token: &str) -> RispExp {
     }
 }
 
-fn eval(exp: RispExp, env: &mut Vec<HashMap<String, i32>>) -> RispExp {
+fn eval(exp: &RispExp, env: &mut Vec<HashMap<String, i32>>) -> RispExp {
     match exp {
         RispExp::List(lst) => match &lst[0] {
             RispExp::Symbol(s) => {
@@ -56,14 +56,14 @@ fn eval(exp: RispExp, env: &mut Vec<HashMap<String, i32>>) -> RispExp {
                         // bind
                         while i < lst.len() - 1 {
                             if let RispExp::Symbol(s) = &lst[i] {
-                                if let RispExp::Number(v) = eval(lst[i + 1].clone(), env) {
+                                if let RispExp::Number(v) = eval(&lst[i + 1], env) {
                                     env.last_mut().unwrap().insert(s.to_string(), v);
                                 }
                             }
                             i += 2;
                         }
 
-                        let val = eval(lst.last().unwrap().clone(), env);
+                        let val = eval(lst.last().unwrap(), env);
 
                         env.pop();
                         val
@@ -72,7 +72,7 @@ fn eval(exp: RispExp, env: &mut Vec<HashMap<String, i32>>) -> RispExp {
                         let mut i = 1;
                         let mut nums = Vec::new();
                         while i < lst.len() {
-                            if let RispExp::Number(v) = eval(lst[i].clone(), env) {
+                            if let RispExp::Number(v) = eval(&lst[i], env) {
                                 nums.push(v);
                             }
 
@@ -85,7 +85,7 @@ fn eval(exp: RispExp, env: &mut Vec<HashMap<String, i32>>) -> RispExp {
                         let mut i = 1;
                         let mut nums = Vec::new();
                         while i < lst.len() {
-                            if let RispExp::Number(v) = eval(lst[i].clone(), env) {
+                            if let RispExp::Number(v) = eval(&lst[i], env) {
                                 nums.push(v);
                             }
 
@@ -104,11 +104,11 @@ fn eval(exp: RispExp, env: &mut Vec<HashMap<String, i32>>) -> RispExp {
                 unreachable!()
             }
         },
-        RispExp::Number(num) => RispExp::Number(num),
+        RispExp::Number(num) => RispExp::Number(*num),
         RispExp::Symbol(s) => {
             for e in env.iter().rev() {
-                if e.contains_key(&s) {
-                    let val = e.get(&s).unwrap();
+                if e.contains_key(s) {
+                    let val = e.get(s).unwrap();
                     return RispExp::Number(*val);
                 }
             }
@@ -133,7 +133,7 @@ impl Solution {
         let exp = parse(&tokens);
         println!("{:?}", exp);
         let mut env: Vec<HashMap<String, i32>> = Vec::new();
-        if let RispExp::Number(val) = eval(exp.0, &mut env) {
+        if let RispExp::Number(val) = eval(&exp.0, &mut env) {
             return val;
         }
         unreachable!()
