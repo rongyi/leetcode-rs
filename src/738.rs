@@ -3,31 +3,22 @@
 struct Solution;
 
 impl Solution {
-    pub fn monotone_increasing_digits(n: i32) -> i32 {
-        let mut digits: Vec<i32> = n
-            .to_string()
-            .chars()
-            .map(|c| c.to_digit(10).unwrap() as i32)
-            .collect();
+    pub fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {
+        let mut mono: Vec<usize> = Vec::new();
 
-        let sz = digits.len();
-        let mut j = sz;
-
-        for i in (1..sz).rev() {
-            // e.g. 321
-            // everytime it will make prev number one more smaller
-            if digits[i] < digits[i - 1] {
-                j = i;
-                digits[i - 1] = digits[i - 1] - 1;
+        let mut ret = vec![0; temperatures.len()];
+        for (i, &val) in temperatures.iter().enumerate().rev() {
+            while !mono.is_empty() && val >= temperatures[*mono.last().unwrap()] {
+                mono.pop();
             }
-        }
 
-        // then make all number after modified number as 9
-        for i in j..sz {
-            digits[i] = 9;
-        }
+            if !mono.is_empty() {
+                ret[i] = (*mono.last().unwrap() - i) as i32;
+            }
 
-        digits.into_iter().fold(0, |acc, cur| acc * 10 + cur)
+            mono.push(i);
+        }
+        ret
     }
 }
 
