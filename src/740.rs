@@ -13,7 +13,7 @@ impl Solution {
         // take[i] = skip[i-1] + values[i];
         // skip[i] = Math.max(skip[i-1], take[i-1]);
         // take[i] can only be derived from: if you skipped the [i-1]th bucket, and you take bucket[i].
-        // skip[i] through, can be derived from either take[i-1] or skip[i-1], whatever the bigger;
+        // skip[i] though, can be derived from either take[i-1] or skip[i-1], whatever the bigger;
         let mut take = 0;
         let mut skip = 0;
         for &num in score.iter() {
