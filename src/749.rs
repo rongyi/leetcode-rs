@@ -62,6 +62,7 @@ impl Solution {
             }
             ret += cur_cluster.wall_cnt;
 
+            // for next round, containated all neibor
             while !pq.is_empty() {
                 let cur_cluster = pq.pop().unwrap();
 
@@ -91,6 +92,7 @@ impl Solution {
         if grid[i as usize][j as usize] == 0 {
             c.wall_cnt += 1;
             c.uncontaminated.insert((i as usize, j as usize));
+            // this is important, only the 'first' layer
             return;
         }
 
