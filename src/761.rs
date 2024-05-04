@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 struct Solution;
 
+// https://leetcode.com/problems/special-binary-string/solutions/155621/logical-thinking-with-clear-code/
 // Logical Thinking
 // If we regard 1, 0 in the definition of the special string as '(' and ')' separately,
 // the problem is actually to get the string which is so-called valid parenthesis and meanwhile is the lexicographically largest.
