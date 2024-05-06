@@ -72,19 +72,13 @@ impl Solution {
                 ste.push(val);
             }
         }
-        println!("{:?}", ste);
         let inner = ste.pop().unwrap();
         let mut ret: Vec<String> = Vec::new();
         for p in inner.iter() {
             if p[0] == "0" {
                 continue;
             }
-            let mut cur = String::new();
-            for q in p.iter() {
-                cur.push_str(q);
-                cur.push('*');
-            }
-            cur.pop();
+            let cur = p.join("*");
             ret.push(cur);
         }
 
