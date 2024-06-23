@@ -26,6 +26,12 @@ impl Ord for Fraction {
 }
 
 impl Solution {
+    // [1, 7, 23, 29, 47]，那么有：
+    // 1/47   < 1/29    < 1/23 < 1/7
+    // 7/47   < 7/29    < 7/23
+    // 23/47  < 23/29
+    // 29/47
+    // 规律： 每一列递增，每一行递增
     pub fn kth_smallest_prime_fraction(arr: Vec<i32>, k: i32) -> Vec<i32> {
         let mut pq: BinaryHeap<Fraction> = BinaryHeap::new();
         let sz = arr.len();
