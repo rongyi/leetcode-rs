@@ -22,10 +22,12 @@ impl Solution {
         let mut change = vec![0; sz];
         // treat it like interval
         for (i, &num) in nums.iter().enumerate() {
-            println!("process index: {}, value: {}", i, num);
+            // println!("process index: {}, value: {}", i, num);
+            // when from first to last position
             let start = (i + 1) % sz;
+            // when from nums[i] index to nums[i] - 1 index
             let end = (i + 1 - num as usize + sz) % sz;
-            println!("start: {}, end: {}", start, end);
+            // println!("start: {}, end: {}", start, end);
             change[start] += 1;
             change[end] -= 1;
         }
