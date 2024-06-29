@@ -19,6 +19,7 @@ impl Solution {
 
         ret
     }
+
     fn dfs(graph: &Vec<Vec<i32>>, i: usize, color: &mut Vec<i32>) -> bool {
         if color[i] != 0 {
             return color[i] == 2;
