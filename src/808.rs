@@ -24,6 +24,7 @@ impl Solution {
         if dp[a as usize][b as usize] != 0.0 {
             return dp[a as usize][b as usize];
         }
+
         let serve_a = [100, 75, 50, 25];
         let serve_b = [0, 25, 50, 75];
         dp[a as usize][b as usize] = 0.0;
