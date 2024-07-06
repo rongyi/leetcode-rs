@@ -46,6 +46,7 @@ impl Solution {
     pub fn racecar(target: i32) -> i32 {
         let target = target as usize;
         let mut dp = vec![0; target + 1];
+        // bottom up
         for i in 1..=target {
             dp[i] = i32::MAX;
             let mut m = 1;
@@ -54,6 +55,7 @@ impl Solution {
                 let mut q = 0;
                 let mut p = 0;
                 while p < j {
+                    // the first case above
                     dp[i] = dp[i].min(m + 1 + q + 1 + dp[i - (j - p)]);
 
                     q += 1;
@@ -63,6 +65,7 @@ impl Solution {
                 m += 1;
                 j = (1 << m) - 1;
             }
+            // eqaul or greater case when j is go beyond i
             dp[i] = dp[i].min(m + if i == j { 0 } else { 1 } + dp[j - i]);
         }
 
