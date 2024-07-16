@@ -1,19 +1,21 @@
 struct Solution;
 struct DisjointSet {
     v: Vec<i32>,
-    size: usize,
+    size: i32,
 }
 
 impl DisjointSet {
     fn new(sz: usize) -> Self {
         DisjointSet {
             v: (0..sz).into_iter().map(|i| i as i32).collect::<Vec<i32>>(),
-            size: sz,
+            size: sz as i32,
         }
     }
-    fn size(&self) -> usize {
+
+    fn size(&self) -> i32 {
         self.size
     }
+
     fn find(&mut self, i: i32) -> i32 {
         if i != self.v[i as usize] {
             self.v[i as usize] = Self::find(self, self.v[i as usize]);
@@ -21,6 +23,7 @@ impl DisjointSet {
 
         self.v[i as usize]
     }
+
     fn join(&mut self, i: i32, j: i32) {
         let ri = Self::find(self, i);
         let rj = Self::find(self, j);
@@ -43,7 +46,7 @@ impl Solution {
                 }
             }
         }
-        ds.size() as i32
+        ds.size()
     }
     fn similar(a: &str, b: &str) -> bool {
         let mut diff = 0;
