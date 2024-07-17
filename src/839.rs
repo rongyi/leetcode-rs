@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 struct Solution;
 // or union find
 struct DisjointSet {
