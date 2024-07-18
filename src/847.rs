@@ -3,7 +3,6 @@ struct Solution;
 
 use std::collections::VecDeque;
 
-
 impl Solution {
     pub fn shortest_path_length(graph: Vec<Vec<i32>>) -> i32 {
         let sz = graph.len();
@@ -15,6 +14,7 @@ impl Solution {
         let mut visited = vec![vec![false; 1 << sz]; sz];
         let mut q: VecDeque<(usize, usize)> = VecDeque::new();
 
+        // start from each node
         for i in 0..sz {
             q.push_back((i, 1 << i));
             visited[i][1 << i] = true;
