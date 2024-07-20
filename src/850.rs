@@ -33,6 +33,8 @@ impl Solution {
                         start = y;
                     }
                     sum += cnt;
+                    // when rectange in a rectangle case, sum will first > 0 then == 0
+                    // only calculate valid case when sum is 0
                     if sum == 0 {
                         sum_y += y - start;
                         start = i32::MIN;
