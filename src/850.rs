@@ -10,6 +10,8 @@ impl Solution {
         for rec in rectangles.iter() {
             let (x1, y1, x2, y2) = (rec[0], rec[1], rec[2], rec[3]);
             sortx.entry(x1).or_default().push((y1, y2, 1));
+            // when in x2, we need to cancel y1, y2 in accumulation
+            // so -1 is a flag
             sortx.entry(x2).or_default().push((y1, y2, -1));
         }
         let mut y_acc: BTreeMap<i32, i32> = BTreeMap::new();
@@ -41,6 +43,11 @@ impl Solution {
             }
 
             for &(y1, y2, start_end) in y_dots.iter() {
+                // when in rectangle start x
+                // this will accumulate in a single line with y value
+                // but when in end x
+                // this will cancel the accumulation y1, y2 when in x2, i.e.
+                // this rectangle is end
                 *y_acc.entry(y1).or_default() += start_end;
                 *y_acc.entry(y2).or_default() += -start_end;
             }
