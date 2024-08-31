@@ -20,6 +20,18 @@ impl Solution {
                 deque.pop_front();
             }
 
+            // Q: Why keep the deque increase?
+            // A: If B[i] <= B[d.back()] and moreover we already know that i > d.back(), it means that compared with d.back(),
+            // B[i] can help us make the subarray length shorter and sum bigger. So no need to keep d.back() in our deque.
+
+            // More detailed on this, we always add at the LAST position
+            // B[d.back] <- B[i] <- ... <- B[future id]
+            // B[future id] - B[d.back()] >= k && B[d.back()] >= B[i]
+            // B[future id] - B[i] >= k too
+
+            // so no need to keep B[d.back()]
+            // 也就是说我们遇到了一个更好的选择，怎么理解，与当前pos更接近的prefixsum值变小，也就
+            // 意味着从这个位置到当前pos的区间sum更大了，所以前面的这个值肯定不是最优解了
             while !deque.is_empty() && prefix_sum[i] <= prefix_sum[*deque.back().unwrap()] {
                 deque.pop_back();
             }
