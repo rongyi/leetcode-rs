@@ -16,6 +16,7 @@ impl Solution {
         val > 1
     }
 
+    // b is the smaller one
     fn gcd(a: i32, b: i32) -> i32 {
         if b == 0 {
             a
