@@ -53,6 +53,7 @@ impl CBTInserter {
         let parent = &self.nodes[parent_idx];
         let parent_val = parent.borrow().val;
 
+        // perfect sum is 2^n - 1 must be odd number
         if self.nodes.len() % 2 == 1 {
             parent.borrow_mut().left = Some(new_node.clone());
         } else {
