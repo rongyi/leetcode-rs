@@ -20,6 +20,7 @@ impl Solution {
     fn bfs(grap: &Vec<Vec<i32>>, initial: &Vec<i32>, drop_node: i32) -> usize {
         let mut q: VecDeque<i32> = VecDeque::new();
         let mut visited = HashSet::new();
+        // don go this node
         visited.insert(drop_node);
 
         let mut ret = 0;
