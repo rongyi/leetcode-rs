@@ -16,12 +16,15 @@ impl Solution {
             dp[1 << i][i].push_str(&cur);
         }
         for mask in 1..(1 << sz) {
+            // end with j
             for j in 0..sz {
                 // mask don't have current node
                 if ((1 << j) & mask) == 0 {
                     continue;
                 }
+                // from i to j
                 for i in 0..sz {
+                    // mask contains i
                     if i != j && (mask & (1 << i)) > 0 {
                         let tmp: String =
                             words[j][overlap[i][j] as usize..].iter().copied().collect();
