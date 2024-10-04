@@ -28,7 +28,7 @@ impl Solution {
                         .get(&lower)
                         .or_else(|| vowel_map.get(&devowel))
                         .cloned()
-                        .unwrap_or_else(|| String::from(""))
+                        .unwrap_or("".to_string())
                 }
             })
             .collect()
