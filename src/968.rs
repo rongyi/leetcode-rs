@@ -37,6 +37,9 @@ impl Solution {
     // 1: there is no camera at this node; however, this node is monitored by at
     // least 1 of its children, which means at least 1 of its children has camera.
     // 2: there is a camera at this node.
+    // #define NO_CAMERA       0
+    // #define HAS_CAMERA      2
+    // #define NOT_NEEDED      1
     fn dfs(root: Option<&Rc<RefCell<TreeNode>>>, sum: &mut i32) -> i32 {
         if let Some(node) = root {
             let node = node.borrow();
