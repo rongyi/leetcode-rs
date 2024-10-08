@@ -14,23 +14,11 @@ impl Solution {
             let cura = &first_list[i];
             let curb = &second_list[j];
 
-            //       _____
-            // ____
-            //         a
-            if cura[0] > curb[1] {
-                j += 1;
-                continue;
+            let start = cura[0].max(curb[0]);
+            let end = cura[1].min(curb[1]);
+            if start <= end {
+                ret.push(vec![start, end]);
             }
-
-            // _____
-            //        _____
-            //
-            //   a
-            if cura[1] < curb[0] {
-                i += 1;
-                continue;
-            }
-            ret.push(vec![cura[0].max(curb[0]), cura[1].min(curb[1])]);
             if cura[1] == curb[1] {
                 i += 1;
                 j += 1;
