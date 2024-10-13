@@ -1,6 +1,16 @@
 struct Solution;
 
 impl Solution {
+    // Create a new array isFlipped[n].
+    // isFlipped[i] = 1 iff we flip K consecutive bits starting at A[i].
+
+    // We maintain a variable flipped and flipped = 1 iff the current bit is flipped.
+
+    // If flipped = 0 and A[i] = 0, we need to flip at A[i].
+    // If flipped = 1 and A[i] = 1, we need to flip at A[i].
+    // flipped[i - k] tells us if we started a flip K positions ago.
+    // If flipped[i - k] is 1, we started a flip there, and now it's ending.
+    // If flipped[i - k] is 0, we didn't start a flip there, so nothing changes.
     pub fn min_k_bit_flips(nums: Vec<i32>, k: i32) -> i32 {
         let sz = nums.len();
         let mut flipped = vec![0; sz];
