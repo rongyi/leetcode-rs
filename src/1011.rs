@@ -3,7 +3,7 @@ struct Solution;
 impl Solution {
     pub fn ship_within_days(weights: Vec<i32>, days: i32) -> i32 {
         let mut r: i32 = weights.iter().sum();
-        let mut l = (*weights.iter().max().unwrap()).max(r / days);
+        let mut l = weights.iter().max().unwrap().to_owned().max(r / days);
         while l < r {
             let m = l + (r - l) / 2;
             // yes, we can ship within days d, so we want to try smaller ship case
