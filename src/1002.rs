@@ -21,12 +21,14 @@ impl Solution {
         // prefix
         // e.g. 8625, we calculate 1XXX -> 7XXX uniq
         //                         80XX -> 85XX
+        //                         860x -> 861x
         for i in 0..k {
             for j in (if i > 0 { 0 } else { 1 })..digits[i] {
                 if !used[j as usize] {
                     ret += Self::perm(10 - (i as i32 + 1), k as i32 - (i as i32 + 1));
                 }
             }
+
             if used[digits[i] as usize] {
                 break;
             }
