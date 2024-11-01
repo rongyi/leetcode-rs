@@ -21,9 +21,9 @@ impl Solution {
             nj += 1;
         }
         let cross = if nj >= nums2.len() { 0 } else { 1 };
-        // 1. cross
+        // 1. we draw cross
         let v1 = cross + Self::dfs(nums1, nums2, i + 1, nj + 1, dp);
-        // 2. dont cross
+        // 2. no cross
         let v2 = Self::dfs(nums1, nums2, i + 1, j, dp);
         dp[i][j] = v1.max(v2);
 
