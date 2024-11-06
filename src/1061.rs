@@ -8,18 +8,22 @@ struct UnionFind {
 impl UnionFind {
     fn new() -> Self {
         Self {
-            parent: (0..26).collect(), // each one is in its own group
+            parent: (0..26).collect(),
         }
     }
+
     fn union(&mut self, c1: char, c2: char) {
-        let x = (c1 as u8 - 'a' as u8) as usize;
-        let y = (c2 as u8 - 'a' as u8) as usize;
-        let x_root = self.find(x);
-        let y_root = self.find(y);
-        if x_root < y_root {
-            self.parent[y_root] = x_root;
+        let idx1 = (c1 as u8 - 'a' as u8) as usize;
+        let idx2 = (c2 as u8 - 'a' as u8) as usize;
+        let px = self.find(idx1);
+        let py = self.find(idx2);
+
+        // chain together, with smallest char as root
+        if px < py {
+            // set px as root, py yield as root
+            self.parent[py] = px;
         } else {
-            self.parent[x_root] = y_root;
+            self.parent[px] = py;
         }
     }
 
@@ -27,7 +31,6 @@ impl UnionFind {
         if self.parent[x] != x {
             self.parent[x] = self.find(self.parent[x]);
         }
-
         self.parent[x]
     }
 }
