@@ -35,7 +35,7 @@ impl Solution {
     }
 
     fn delete_and_collect(
-        mut root: Option<Rc<RefCell<TreeNode>>>,
+        root: Option<Rc<RefCell<TreeNode>>>,
         target_vals: &HashSet<i32>,
         acc: &mut Vec<Option<Rc<RefCell<TreeNode>>>>,
         should_add_acc: bool,
@@ -63,7 +63,7 @@ impl Solution {
                             true,
                         );
                     } else {
-                        // just chop
+                        // just chop, dont add to acc
                         Self::delete_and_collect(
                             node.borrow().left.clone(),
                             target_vals,
@@ -75,7 +75,7 @@ impl Solution {
 
                 if node.borrow().right.is_some() {
                     let rval = node.borrow().right.as_ref().unwrap().borrow().val;
-                    // chop l and add
+                    // chop r and add
                     if target_vals.contains(&rval) {
                         Self::delete_and_collect(
                             node.borrow_mut().right.take(),
@@ -84,6 +84,7 @@ impl Solution {
                             true,
                         );
                     } else {
+                        // just chop dont add to acc
                         Self::delete_and_collect(
                             node.borrow().right.clone(),
                             target_vals,
