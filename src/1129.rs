@@ -1,4 +1,3 @@
-
 struct Solution;
 
 use std::collections::VecDeque;
@@ -24,17 +23,17 @@ impl Solution {
         dp[0] = [0, 0];
 
         // (node, color, dist)
-        let mut q = VecDeque::new();
+        let mut q: VecDeque<(i32, i32, i32)> = VecDeque::new();
         q.push_back((0, 0, 0));
         q.push_back((0, 1, 0));
         while let Some((node, color, dist)) = q.pop_front() {
             let next_edges = if color == 0 { &blue } else { &red };
             let next_color = 1 - color;
 
-            for &next_node in &next_edges[node] {
+            for &next_node in &next_edges[node as usize] {
                 if dp[next_node as usize][next_color as usize] == i32::MAX {
                     dp[next_node as usize][next_color as usize] = dist + 1;
-                    q.push_back((next_node as usize, next_color, dist + 1));
+                    q.push_back((next_node, next_color, dist + 1));
                 }
             }
         }
