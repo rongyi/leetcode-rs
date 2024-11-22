@@ -8,6 +8,10 @@ impl Solution {
         for &num in arr.iter() {
             while *stack.last().unwrap() <= num {
                 let mid = stack.pop().unwrap();
+                // only smaller get in first
+                // then new value will be checked again all smaller value to see if this is
+                // their first bigger number, if it is(cur <= newnumber aka num)
+                // pop this value and combine this two as one true
                 ret += mid * num.min(*stack.last().unwrap());
             }
 
