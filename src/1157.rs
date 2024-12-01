@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
-use std::collections::HashMap;
 
 struct Solution;
 
+use std::collections::HashMap;
 struct MajorityChecker {
     arr: Vec<i32>,
     pos: HashMap<i32, Vec<usize>>, // val's position
@@ -22,6 +22,7 @@ impl MajorityChecker {
         Self { arr, pos }
     }
 
+    // Boyer-Moore majority voting:
     fn query(&self, left: i32, right: i32, threshold: i32) -> i32 {
         let (l, r) = (left as usize, right as usize);
         for _ in 0..20 {
