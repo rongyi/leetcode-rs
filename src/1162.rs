@@ -2,11 +2,9 @@
 struct Solution;
 
 use std::collections::VecDeque;
-
-
 impl Solution {
     pub fn max_distance(grid: Vec<Vec<i32>>) -> i32 {
-        let mut n = grid.len();
+        let n = grid.len();
         let mut visited = vec![vec![false; n]; n];
         let mut q: VecDeque<(usize, usize)> = VecDeque::new();
         for i in 0..n {
@@ -24,6 +22,8 @@ impl Solution {
 
         let mut layer = -1;
         let dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+        // take 1 as virus, and flood with bfs
+        // each round means we get an 0 and we got a far away 0
         while !q.is_empty() {
             let sz = q.len();
 
