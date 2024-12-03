@@ -2,6 +2,7 @@
 struct Solution;
 
 impl Solution {
+    // https://leetcode.com/problems/last-substring-in-lexicographical-order/solutions/582703/c-simple-easy-solution-with-explanation-cheers/
     // We use "j" to find a better starting index. If any is found, we use it to update "i"
 
     // 1."i" is the starting index of the first substring
