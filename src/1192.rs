@@ -14,8 +14,14 @@ impl Solution {
         let mut visits = vec![-1; n];
         // try our best to lower the visit time of one node
         let mut low = vec![i32::MAX; n];
+        // assume one node consume 1 time unit for visiting
         let mut time = 0;
 
+        // Yes, exactly! You've grasped a key insight of the algorithm. When DFS returns from a child node v, we have complete information about:
+
+        // All nodes in v's subtree have been visited
+        // The low[v] value is finalized, containing the lowest discovery time reachable from v's subtree
+        // This is the perfect moment to check if edge (u,v) is a bridge by comparing low[v] and disc[u]
         Self::dfs(0, -1, &mut time, &mut visits, &mut low, &mut ret, &graph);
 
         ret
