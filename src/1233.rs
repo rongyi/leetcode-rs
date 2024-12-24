@@ -33,6 +33,7 @@ impl Solution {
         ret
     }
 
+    // a better way to learn recursive
     fn dfs(cur_node: &Node, ret: &mut Vec<String>, base: String) {
         for (dir, sub) in cur_node.vals.iter() {
             let mut cur_path = base.clone();
