@@ -1,6 +1,5 @@
 #![allow(dead_code)]
 
-
 struct Solution;
 
 use std::collections::{HashSet, VecDeque};
@@ -12,6 +11,7 @@ impl Solution {
         let mut start_player = (0, 0);
         let mut target = (0, 0);
 
+        // locate initial pos for player/box/target
         for i in 0..m {
             for j in 0..n {
                 match grid[i][j] {
@@ -48,6 +48,8 @@ impl Solution {
                     continue;
                 }
 
+                // newton's third law, if you want box go right
+                // then you must be left of current box position
                 let required_player_x = box_pos.0 as i32 - dx;
                 let required_player_y = box_pos.1 as i32 - dy;
 
