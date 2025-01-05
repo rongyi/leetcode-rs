@@ -33,6 +33,7 @@ impl Solution {
                 let nx = nx as usize;
                 let ny = ny as usize;
 
+                // the trick is here
                 let new_k = remain_k - grid[nx][ny];
                 if new_k >= 0 && !visited[nx][ny][new_k as usize] {
                     visited[nx][ny][new_k as usize] = true;
