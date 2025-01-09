@@ -10,6 +10,18 @@ impl Solution {
         while left < right {
             let mid = left + (right - left) / 2;
             let sum = arr.iter().map(|&x| x.min(mid)).sum::<i32>();
+            // If right is inclusive (nums.len() - 1):
+
+            // Use while left <= right
+            // Update with right = mid - 1
+            // If right is exclusive (nums.len()):
+
+            // Use while left < right
+            // Update with right = mid
+            // For finding leftmost/rightmost element:
+
+            // Leftmost: When equal, do right = mid
+            // Rightmost: When equal, do left = mid + 1
             if sum < target {
                 left = mid + 1;
             } else {
