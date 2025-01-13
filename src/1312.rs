@@ -4,31 +4,25 @@ struct Solution;
 
 impl Solution {
     pub fn min_insertions(s: String) -> i32 {
-        let s: Vec<char> = s.chars().collect();
+        let s = s.as_bytes();
         let sz = s.len();
         let mut dp = vec![vec![0; sz]; sz];
-        let lonest_prefix = Self::dfs(&s, 0, sz - 1, &mut dp);
-        sz as i32 - lonest_prefix
-    }
 
-    fn dfs(s: &Vec<char>, l: usize, r: usize, dp: &mut Vec<Vec<i32>>) -> i32 {
-        if l == r {
-            return 1;
-        }
-        if l > r {
-            return 0;
-        }
-        if dp[l][r] > 0 {
-            return dp[l][r];
-        }
-        if s[l] == s[r] {
-            dp[l][r] = 2 + Self::dfs(s, l + 1, r - 1, dp);
-            return dp[l][r];
+        for len in 2..=sz {
+            for i in 0..=sz - len {
+                let j = i + len - 1;
+                if s[i] == s[j] {
+                    dp[i][j] = dp[i + 1][j - 1];
+                } else {
+                    // insert at left or right
+                    // acc -> insert at right
+                    // aac -> insert at left
+                    dp[i][j] = dp[i + 1][j].min(dp[i][j - 1]) + 1;
+                }
+            }
         }
 
-        dp[l][r] = Self::dfs(s, l + 1, r, dp).max(Self::dfs(s, l, r - 1, dp));
-
-        dp[l][r]
+        dp[0][sz - 1]
     }
 }
 
