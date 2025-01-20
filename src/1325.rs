@@ -26,36 +26,21 @@ impl Solution {
         root: Option<Rc<RefCell<TreeNode>>>,
         target: i32,
     ) -> Option<Rc<RefCell<TreeNode>>> {
-        let mut new_tree;
-        let mut changed;
-        loop {
-            (new_tree, changed) = Self::dfs(root.clone(), target);
-            if new_tree.is_none() || !changed {
-                break;
-            }
-        }
-        new_tree
-    }
-
-    fn dfs(
-        root: Option<Rc<RefCell<TreeNode>>>,
-        target: i32,
-    ) -> (Option<Rc<RefCell<TreeNode>>>, bool) {
         if let Some(node) = root {
-            // target found
-            if node.borrow().left.is_none()
-                && node.borrow().right.is_none()
-                && node.borrow().val == target
-            {
-                return (None, true);
+            let mut node_ref = node.borrow_mut();
+
+            node_ref.left = Self::remove_leaf_nodes(node_ref.left.take(), target);
+            node_ref.right = Self::remove_leaf_nodes(node_ref.right.take(), target);
+
+            // delete current node
+            if node_ref.left.is_none() && node_ref.right.is_none() && node_ref.val == target {
+                return None;
             }
-            let (lsub, lchanged) = Self::dfs(node.borrow().left.clone(), target);
-            let (rsub, rchanged) = Self::dfs(node.borrow().right.clone(), target);
-            node.borrow_mut().left = lsub.clone();
-            node.borrow_mut().right = rsub.clone();
-            (Some(node.clone()), lchanged || rchanged)
+
+            drop(node_ref);
+            Some(node)
         } else {
-            (None, false)
+            None
         }
     }
 }
