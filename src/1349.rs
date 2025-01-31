@@ -17,16 +17,20 @@ impl Solution {
         let mut dp = vec![vec![0; 1 << n]; m + 1];
         for i in 1..=m {
             for prev_mask in 0..(1 << n) {
+                // no '11' as neighbour
                 if (prev_mask & (prev_mask << 1)) != 0 {
                     continue;
                 }
 
                 for cur_mask in 0..(1 << n) {
+                    // same as prev_mask
                     if (cur_mask & (cur_mask << 1)) != 0 {
                         continue;
                     }
+                    // cur mask every 1 has a valid seat, can sitdown
                     if (cur_mask & seat_mask[i - 1]) == cur_mask
-                        && (cur_mask & (prev_mask >> 1)) == 0
+                        && (cur_mask & (prev_mask >> 1)) == 0 // no upper left
+                        /*no upper right */
                         && (cur_mask & (prev_mask << 1)) == 0
                     {
                         dp[i][cur_mask] = dp[i][cur_mask]
