@@ -51,7 +51,7 @@ impl Solution {
             (false, 0, 0, 0)
         } else {
             // empty is a bst
-            (true, 0, i32::MAX, i32::MIN)
+            (true, 0, 0, 0) // other than sum, other value is useless
         }
     }
 }
