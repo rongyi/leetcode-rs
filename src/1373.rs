@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 struct Solution;
+struct Solution1;
 // Definition for a binary tree node.
 #[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
@@ -23,6 +24,39 @@ impl TreeNode {
 use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
+    pub fn max_sum_bst(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        let mut max_sum = 0;
+        Self::dfs(root.as_ref(), &mut max_sum);
+
+        max_sum
+    }
+
+    // is bst? sum, min, max
+    fn dfs(node: Option<&Rc<RefCell<TreeNode>>>, max_sum: &mut i32) -> (bool, i32, i32, i32) {
+        if let Some(node) = node {
+            let node = node.borrow();
+            let l = Self::dfs(node.left.as_ref(), max_sum);
+            let r = Self::dfs(node.right.as_ref(), max_sum);
+            // both sub tree is bst and current node val is also match as bst
+            if l.0
+                && r.0
+                && (node.left.is_none() || node.val > l.3)
+                && (node.right.is_none() || node.val < r.2)
+            {
+                *max_sum = (*max_sum).max(node.val + l.1 + r.1);
+                let current_min = if node.left.is_none() {node.val} else {l.2};
+                let current_max = if node.right.is_none() {node.val} else {r.3};
+                return (true, node.val + l.1 + r.1, current_min, current_max);
+            }
+            (false, 0, 0, 0)
+        } else {
+            // empty is a bst
+            (true, 0, i32::MAX, i32::MIN)
+        }
+    }
+}
+
+impl Solution1 {
     pub fn max_sum_bst(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
         let mut max_sum = 0;
         if let Some(node) = root.as_ref() {
