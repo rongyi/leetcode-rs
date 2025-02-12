@@ -23,6 +23,10 @@ impl Solution {
                 sum -= pq.pop().unwrap().0 as i64;
             }
 
+            // if current node's speed is poped out, so we don't pick
+            // current node, but here the max make sure the nonsense value: sum * cur_eff
+            // is <= previous ret, because cur_eff is <= the previous calculated eff,
+            // cause we tranverse from end(biggest) to start(smallest)
             ret = ret.max(sum * cur_eff as i64);
         }
 
