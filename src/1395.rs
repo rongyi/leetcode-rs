@@ -3,6 +3,10 @@
 struct Solution;
 
 impl Solution {
+    // For each soldier, count how many soldiers on the left and right have less
+    // and greater ratings.
+    // This soldier can form less[left] * greater[right] + greater[left] *
+    // less[right] teams.
     pub fn num_teams(rating: Vec<i32>) -> i32 {
         let sz = rating.len();
         let mut ret = 0;
