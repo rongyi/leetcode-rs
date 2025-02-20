@@ -20,18 +20,21 @@ impl Solution {
         cur_height: i32,
         parent: i32,
     ) -> i32 {
+        // 算所有子节点到这里的距离，单边的
         let mut ret = 0;
         if let Some(nexts) = graph.get(&cur_node) {
             for &c in nexts.iter() {
                 if c != parent {
                     let child_sum = Self::dfs(graph, hash_apple, c, cur_height + 1, cur_node);
                     if child_sum > 0 {
+                        // 所有子节点到当前节点的距离不包括从跟到当前节点的距离
                         ret += child_sum - cur_height;
                     }
                 }
             }
         }
         if ret > 0 || hash_apple[cur_node as usize] {
+            // 返回出去的时候统一加一次从根节点到这里的距离
             return ret + cur_height;
         }
 
