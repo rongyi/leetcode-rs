@@ -6,7 +6,6 @@ impl Solution {
     pub fn min_integer(num: String, mut k: i32) -> String {
         let mut chars: Vec<char> = num.chars().collect();
         let n = chars.len();
-        let mut result = String::new();
 
         let mut i = 0;
         while i < n && k > 0 {
