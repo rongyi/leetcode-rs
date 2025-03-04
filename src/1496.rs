@@ -19,10 +19,10 @@ impl Solution {
         for ch in path.chars() {
             // Update coordinates based on direction
             match ch {
-                'N' => y += 1,
-                'S' => y -= 1,
-                'E' => x += 1,
-                'W' => x -= 1,
+                'N' => x -= 1,
+                'S' => x += 1,
+                'E' => y += 1,
+                'W' => y -= 1,
                 _ => {} // Ignore invalid directions
             }
 
