@@ -21,22 +21,24 @@ impl Solution {
         count: &mut Vec<i32>,
         labels: &Vec<char>,
     ) -> Vec<i32> {
-        let cur_color = labels[node as usize] as usize - 'a' as usize;
-        let mut label_count = vec![0; 26];
-        label_count[cur_color] += 1;
+        let mut colors = vec![0; 26];
+        let cur_color_index = labels[node as usize] as usize - 'a' as usize;
+        colors[cur_color_index] += 1;
 
         for &next_node in graph[node as usize].iter() {
             if next_node != parent {
-                let child = Self::dfs(next_node, node, graph, count, labels);
+                let child_colors = Self::dfs(next_node, node, graph, count, labels);
+                // merge child label counts into parent label counts
                 for i in 0..26 {
-                    label_count[i] += child[i];
+                    colors[i] += child_colors[i];
                 }
             }
         }
 
-        count[node as usize] = label_count[cur_color as usize];
+        // by node index
+        count[node as usize] = colors[cur_color_index as usize];
 
-        label_count
+        colors
     }
 }
 fn main() {}
