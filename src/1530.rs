@@ -45,7 +45,9 @@ impl Solution {
                 // Leaf node case
                 if node.left.is_none() && node.right.is_none() {
                     let mut map = HashMap::new();
+                    // 1 is in the view of the leaf node's parent, not the leaf node itself
                     map.insert(1, 1);
+
                     return map;
                 }
 
@@ -62,7 +64,7 @@ impl Solution {
                     }
                 }
 
-                // Prepare result map
+                // Prepare result map, still for view of its parent, not the node itself
                 let mut current_map = HashMap::new();
 
                 // Helper function to add leaves with increased distance
@@ -83,4 +85,5 @@ impl Solution {
         }
     }
 }
+
 fn main() {}
