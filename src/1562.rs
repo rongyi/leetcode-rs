@@ -11,7 +11,17 @@ impl Solution {
         if m == n {
             return n as i32;
         }
-
+        // Algorithm Explanation:
+        // 1. We track the length of consecutive 1's after each operation
+        // 2. For each operation (flipping a bit from 0 to 1):
+        //    - We check the lengths of adjacent groups of 1's
+        //    - Merge these groups with the new bit
+        //    - Update the length information at the boundaries of the new group
+        // 3. We maintain a count of groups with exactly length m
+        //    - Decrement when existing groups of length m are merged
+        //    - Increment when new groups of length m are formed
+        // 4. Whenever we have groups of length m, we update the latest step
+        // 5. Return the latest step or -1 if no such group exists
         // Track lengths of consecutive 1s
         let mut length = vec![0; n + 2]; // +2 for boundary handling
 
@@ -32,6 +42,10 @@ impl Solution {
             let merged_length = left + right + 1;
 
             // Update lengths at boundaries of the merged group
+            // For each bit flip operation:
+            // We check the lengths of adjacent groups (left and right)
+            // Then merge these groups with the current position
+            // The merged_length is the total length of the new group after merging
             length[i - left] = merged_length;
             length[i + right] = merged_length;
             length[i] = merged_length; // Update at current position
