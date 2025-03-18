@@ -19,6 +19,7 @@ impl Solution {
 
         // Min-heap for Dijkstra's algorithm (effort, row, col)
         let mut min_heap = BinaryHeap::new();
+        // (effort, i, j)
         min_heap.push(Reverse((0, 0, 0))); // Start from (0,0) with 0 effort
 
         while let Some(Reverse((effort, r, c))) = min_heap.pop() {
