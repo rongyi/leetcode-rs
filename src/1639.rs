@@ -21,6 +21,8 @@ impl Solution {
         }
 
         // DP array to store the number of ways to form the prefix of target
+        // dp[i][j] represents the number of ways to form the first j characters of the target string
+        // using the first i positions of the words
         let mut dp = vec![vec![0; m + 1]; n + 1];
 
         // Initialize base case: empty target string can be formed in 1 way
