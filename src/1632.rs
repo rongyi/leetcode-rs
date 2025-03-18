@@ -76,6 +76,29 @@ impl Solution {
         }
 
         // Step 5: Process values in ascending order
+        // The Union-Find data structure is used to group positions with the same value
+        // that are in the same row or column. This is necessary because positions sharing
+        // a row or column must have ranks influenced by each other.
+        // The code processes values in ascending order and ensures that same value in same row or column
+        // have exactly the same rank. This is achieved through these steps:
+        //
+        // 1. For each value, we group all positions containing that value
+        // 2. If two positions with the same value share a row or column, they're grouped together
+        //    using the Union-Find data structure
+        // 3. All positions in the same group will be assigned the same rank
+        // 4. This rank is determined by taking the maximum of the current ranks of rows and columns
+        //    in the group, and then adding 1
+        //
+        // This ensures that:
+        // - Equal values in the same row/column get exactly the same rank
+        // - Ranks are assigned in ascending order of values
+        // - Ranks respect constraints from previous assignments
+        //
+        // For each value in the matrix:
+        // 1. We create a Union-Find with size m+n (m rows + n columns)
+        // 2. If two positions (i1,j1) and (i2,j2) have the same value and share a row (i1=i2)
+        //    or column (j1=j2), they must be in the same group
+        // 3. The rank of each position is determined by the maximum rank in its group
         for &val in &unique_values {
             let positions = &value_to_pos[&val];
 
@@ -90,6 +113,13 @@ impl Solution {
             // Find the root of each group and calculate the max rank
             let mut group_max_rank: HashMap<usize, i32> = HashMap::new();
 
+            // We need to fetch max_rank first to determine the appropriate rank for
+            // each group of positions with the same value. This step is crucial because:
+            // 1. Positions in same row/column with same value must have same rank
+            // 2. The rank must be higher than any previous rank in that row/column
+            // 3. For each group (connected component), we find the max existing rank
+            //    across all its rows and columns, then assign (max + 1) to the whole group
+            // This ensures that ranks increase monotonically and satisfy all constraints
             for &(i, j) in positions {
                 let root_i = uf.find(i);
                 let max_rank = group_max_rank.entry(root_i).or_insert(0);
