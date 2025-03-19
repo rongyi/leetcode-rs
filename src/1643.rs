@@ -32,7 +32,7 @@ impl Solution {
         let mut remaining_v = v_steps;
 
         // Construct the path step by step
-        for step in 0..total_steps {
+        for _step in 0..total_steps {
             // If all remaining steps must be vertical (no horizontal left)
             if remaining_h == 0 {
                 result.push('V');
