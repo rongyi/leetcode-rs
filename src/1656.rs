@@ -2,36 +2,36 @@
 
 struct Solution;
 
-impl Solution {
-    pub fn can_distribute(nums: Vec<i32>, quantity: Vec<i32>) -> bool {
-        let mut count = std::collections::HashMap::new();
-        for num in nums {
-            *count.entry(num).or_insert(0) += 1;
+struct OrderedStream {
+    ptr: usize,
+    stream: Vec<Option<String>>,
+}
+
+impl OrderedStream {
+    fn new(n: i32) -> Self {
+        OrderedStream {
+            ptr: 0,
+            stream: vec![None; n as usize],
+        }
+    }
+
+    fn insert(&mut self, id_key: i32, value: String) -> Vec<String> {
+        let index = id_key as usize - 1; // Convert to 0-indexed
+        self.stream[index] = Some(value);
+
+        let mut result = Vec::new();
+
+        // Check if we can return a chunk starting from ptr
+        if index == self.ptr {
+            // Collect consecutive values until we hit None
+            while self.ptr < self.stream.len() && self.stream[self.ptr].is_some() {
+                // Unwrap is safe here because we just checked that it's Some
+                result.push(self.stream[self.ptr].clone().unwrap());
+                self.ptr += 1;
+            }
         }
 
-        let mut counts: Vec<i32> = count.values().copied().collect();
-        let mut quantity = quantity;
-        quantity.sort_unstable_by(|a, b| b.cmp(a)); // Sort in descending order
-
-        fn backtrack(counts: &mut Vec<i32>, quantity: &Vec<i32>, index: usize) -> bool {
-            if index == quantity.len() {
-                return true;
-            }
-
-            for i in 0..counts.len() {
-                if counts[i] >= quantity[index] {
-                    counts[i] -= quantity[index];
-                    if backtrack(counts, quantity, index + 1) {
-                        return true;
-                    }
-                    counts[i] += quantity[index];
-                }
-            }
-
-            false
-        }
-
-        backtrack(&mut counts, &quantity, 0)
+        result
     }
 }
 
