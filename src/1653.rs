@@ -12,6 +12,8 @@ impl Solution {
                 bcount += 1;
                 dp[i + 1] = dp[i];
             } else {
+                // delete 'a': one more delete action + previous minimum deletions
+                // keey this 'a': need to delete all previous 'b's
                 dp[i + 1] = (dp[i] + 1).min(bcount);
             }
         }
