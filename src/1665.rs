@@ -14,7 +14,8 @@ impl Solution {
 
             if cur_min > prev_save {
                 ret += cur_min - prev_save;
-
+                // 此时消耗光了，省下来的就是这一轮的
+                // 从这一轮重新开始
                 prev_save = cur_min - cur_cost;
             } else {
                 prev_save -= cur_cost;
