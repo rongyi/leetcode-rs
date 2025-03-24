@@ -29,5 +29,6 @@ impl Solution {
         student_count[0] + student_count[1]
     }
 }
+// took 12 days to solve 1600 -> 1700
 
 fn main() {}
