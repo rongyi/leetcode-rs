@@ -8,21 +8,16 @@ impl Solution {
         let n = s.len();
         let mid = n / 2;
 
-        let vowels = |c: u8| -> bool { matches!(c, b'a' | b'e' | b'i' | b'o' | b'u') };
+        let a = s_bytes[0..mid]
+            .iter()
+            .filter(|&&c| c == b'a' || c == b'o' || c == b'e' || c == b'i' || c == b'u')
+            .count();
+        let b = s_bytes[mid..]
+            .iter()
+            .filter(|&&c| c == b'a' || c == b'o' || c == b'e' || c == b'i' || c == b'u')
+            .count();
 
-        let mut first_half_vowels = 0;
-        let mut second_half_vowels = 0;
-
-        for i in 0..mid {
-            if vowels(s_bytes[i]) {
-                first_half_vowels += 1;
-            }
-            if vowels(s_bytes[i + mid]) {
-                second_half_vowels += 1;
-            }
-        }
-
-        first_half_vowels == second_half_vowels
+        a == b
     }
 }
 
