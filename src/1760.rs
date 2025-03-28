@@ -3,6 +3,7 @@
 struct Solution;
 
 impl Solution {
+    // category: binary search
     pub fn minimum_size(nums: Vec<i32>, max_operations: i32) -> i32 {
         let mut left = 1;
         let mut right = *nums.iter().max().unwrap();
