@@ -37,6 +37,7 @@ impl Solution {
 
             for &next in &graph[cur_node] {
                 for c in 0..26 {
+                    // end with node next with color c if color c is the same as node color, path score + 1
                     dp[next][c] =
                         dp[next][c].max(dp[cur_node][c] + if colors[next] == c { 1 } else { 0 });
                 }
