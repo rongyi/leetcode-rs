@@ -19,6 +19,17 @@ impl Solution {
         // Use a sliding window to track the sum of dp[i] within the valid jump range
         let mut window_count = 0;
 
+        // This variable keeps track of how many previous positions we can jump from
+        // to reach the current position. It serves as an optimization to avoid
+        // checking all positions in the valid jump range for each i.
+        // If window_count > 0, it means there's at least one position in the
+        // valid range from which we can jump to the current position.
+
+        // To clarify: min_jump and max_jump are not fixed - they define the range
+        // for each position. For any position i, we can jump to positions
+        // from (i + min_jump) to (i + max_jump), as long as those positions
+        // contain '0'. The window_count helps us efficiently track how many
+        // positions in our valid jump range can be reached.
         for i in 1..n {
             // Update the window: add elements that came into range
             if i >= min_jump && dp[i - min_jump] {
