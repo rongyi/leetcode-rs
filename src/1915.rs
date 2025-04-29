@@ -9,6 +9,11 @@ impl Solution {
         let mut freq = vec![0; 1024];
         freq[0] = 1;
 
+        // Initialize a counter for wonderful substrings
+        // State is a 10-bit integer where each bit represents the parity of occurrences of a character (a to j)
+        // freq[state] counts how many times we've seen each state
+        // freq[0] = 1 accounts for the empty substring (all characters have even occurrences)
+
         for c in word.chars() {
             // Flip the bit corresponding to the character
             state ^= 1 << (c as u8 - b'a');
