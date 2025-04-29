@@ -4,71 +4,59 @@ struct Solution;
 
 impl Solution {
     pub fn count_sub_islands(grid1: Vec<Vec<i32>>, grid2: Vec<Vec<i32>>) -> i32 {
-        let rows = grid2.len();
-        let cols = grid2[0].len();
-        let mut visited = vec![vec![false; cols]; rows];
-        let mut count = 0;
+        let m = grid1.len();
+        let n = grid1[0].len();
+        let mut visited: Vec<Vec<bool>> = vec![vec![false; n]; m];
 
-        // Helper function to perform DFS
-        fn dfs(
-            grid1: &[Vec<i32>],
-            grid2: &[Vec<i32>],
-            visited: &mut [Vec<bool>],
-            r: usize,
-            c: usize,
-            is_subisland: &mut bool,
-        ) {
-            let rows = grid2.len();
-            let cols = grid2[0].len();
+        let mut acc = 0;
 
-            // Check if out of bounds or already visited or not land in grid2
-            if r >= rows || c >= cols || visited[r][c] || grid2[r][c] == 0 {
-                return;
-            }
-
-            // Mark as visited
-            visited[r][c] = true;
-
-            // If the corresponding cell in grid1 is not land, this is not a sub-island
-            if grid1[r][c] == 0 {
-                *is_subisland = false;
-            }
-
-            // Explore all four directions
-            let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
-            for (dr, dc) in directions {
-                let nr = r as i32 + dr;
-                let nc = c as i32 + dc;
-
-                if nr >= 0 && nr < rows as i32 && nc >= 0 && nc < cols as i32 {
-                    dfs(
-                        grid1,
-                        grid2,
-                        visited,
-                        nr as usize,
-                        nc as usize,
-                        is_subisland,
+        for i in 0..m {
+            for j in 0..n {
+                if !visited[i][j] && grid2[i][j] == 1 {
+                    let mut is_sub = true;
+                    Self::dfs(
+                        &grid1,
+                        &grid2,
+                        &mut visited,
+                        i as i32,
+                        j as i32,
+                        &mut is_sub,
                     );
-                }
-            }
-        }
-
-        // Iterate through each cell in grid2
-        for r in 0..rows {
-            for c in 0..cols {
-                // If it's an unvisited land in grid2
-                if grid2[r][c] == 1 && !visited[r][c] {
-                    let mut is_subisland = true;
-                    dfs(&grid1, &grid2, &mut visited, r, c, &mut is_subisland);
-
-                    if is_subisland {
-                        count += 1;
+                    if is_sub {
+                        acc += 1;
                     }
                 }
             }
         }
 
-        count
+        acc
+    }
+    fn dfs(
+        grid1: &Vec<Vec<i32>>,
+        grid2: &Vec<Vec<i32>>,
+        visited: &mut Vec<Vec<bool>>,
+        x: i32,
+        y: i32,
+        is_sub: &mut bool,
+    ) {
+        if x < 0 || x >= grid1.len() as i32 || y < 0 || y >= grid1[0].len() as i32 {
+            return;
+        }
+
+        if visited[x as usize][y as usize] || grid2[x as usize][y as usize] == 0 {
+            return;
+        }
+
+        visited[x as usize][y as usize] = true;
+
+        if grid1[x as usize][y as usize] == 0 {
+            *is_sub = false;
+        }
+
+        Self::dfs(grid1, grid2, visited, x + 1, y, is_sub);
+        Self::dfs(grid1, grid2, visited, x - 1, y, is_sub);
+        Self::dfs(grid1, grid2, visited, x, y + 1, is_sub);
+        Self::dfs(grid1, grid2, visited, x, y - 1, is_sub);
     }
 }
 
