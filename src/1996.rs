@@ -9,13 +9,13 @@ impl Solution {
                 a[0].cmp(&b[0])
             }
         });
-        let mut cur_min = i32::MIN;
+        let mut cur_max = i32::MIN;
         let mut count = 0;
         for prop in properties.iter().rev() {
-            if prop[1] < cur_min {
+            if prop[1] < cur_max {
                 count += 1;
             }
-            cur_min = cur_min.max(prop[1]);
+            cur_max = cur_max.max(prop[1]);
         }
         count
     }
