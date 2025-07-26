@@ -1,4 +1,3 @@
-use std::usize;
 
 pub struct Solution;
 // Definition for singly-linked list.
@@ -48,15 +47,59 @@ impl Solution {
         if critical_index.len() < 2 {
             return vec![-1, -1];
         }
-        let mut min_diff = usize::MAX;
-        for i in 0..critical_index.len() - 1 {
-            min_diff = min_diff.min(critical_index[i + 1] - critical_index[i]);
-        }
+        let min_diff = critical_index
+            .windows(2)
+            .map(|w| w[1] - w[0])
+            .min()
+            .unwrap();
 
         let max_distance = *critical_index.last().unwrap() - *critical_index.first().unwrap();
 
-        vec![min_diff as i32, max_distance as i32]
+        vec![min_diff, max_distance]
     }
+}
+
+pub fn nodes_between_critical_points(head: Option<Box<ListNode>>) -> Vec<i32> {
+    if head.is_none() || head.as_ref().unwrap().next.is_none() {
+        return vec![-1, -1];
+    }
+
+    let mut prev_val = head.as_ref().unwrap().val;
+    let mut node = head.as_ref().unwrap().next.as_ref();
+    let mut index = 1;
+    let mut critical_points = Vec::new();
+
+    while let Some(current) = node {
+        if let Some(next) = current.next.as_ref() {
+            let current_val = current.val;
+            let next_val = next.val;
+
+            if (current_val > prev_val && current_val > next_val)
+                || (current_val < prev_val && current_val < next_val)
+            {
+                critical_points.push(index);
+            }
+
+            prev_val = current_val;
+            node = current.next.as_ref();
+            index += 1;
+        } else {
+            break;
+        }
+    }
+
+    if critical_points.len() < 2 {
+        return vec![-1, -1];
+    }
+
+    let min_distance = critical_points
+        .windows(2)
+        .map(|w| w[1] - w[0])
+        .min()
+        .unwrap() as i32;
+    let max_distance = critical_points.last().unwrap() - critical_points.first().unwrap();
+
+    vec![min_distance, max_distance as i32]
 }
 
 fn main() {}
