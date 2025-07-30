@@ -40,18 +40,24 @@ impl Solution {
 
         let mut left = 0;
         let mut right = tasks.len().min(workers.len());
+        let mut ret = 0;
 
-        while left < right {
-            let mid = (left + right + 1) / 2;
+        while left <= right {
+            let mid = (left + right) / 2;
             if check(mid) {
-                left = mid;
+                ret = mid;
+                left = mid + 1;
             } else {
                 right = mid - 1;
             }
         }
 
-        left as _
+        ret as _
     }
 }
 
-fn main() {}
+fn main() {
+    let tasks = vec![3, 2, 1];
+    let workers = vec![0, 3, 3];
+    Solution::max_task_assign(tasks, workers, 1, 1);
+}
