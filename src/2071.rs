@@ -13,28 +13,31 @@ impl Solution {
         workers.sort();
 
         let check = |k: usize| -> bool {
-            let mut selected = tasks[..k].to_vec();
-            let mut available: VecDeque<_> = workers[workers.len() - k..].to_vec().into();
+            let selected_tasks = tasks[..k].to_vec();
+            let mut workers: VecDeque<i32> = workers[workers.len() - k..].to_vec().into();
             let mut rem_pills = pills;
 
-            for task in selected.iter().rev() {
-                if let Some(&w) = available.back() {
-                    if w >= *task {
-                        available.pop_back();
+            // match task from bigger to smaller
+            for &t in selected_tasks.iter().rev() {
+                if let Some(&backw) = workers.back() {
+                    if backw >= t {
+                        workers.pop_back();
                         continue;
                     }
                 }
-                if rem_pills == 0 {
+                if rem_pills <= 0 {
                     return false;
                 }
 
-                if let Some(idx) = available.iter().position(|&w| w + strength >= *task) {
-                    available.remove(idx);
+                // ok, not consume this tasks, need pill
+                if let Some(idx) = workers.iter().position(|&x| x + strength >= t) {
                     rem_pills -= 1;
+                    workers.remove(idx);
                 } else {
                     return false;
                 }
             }
+
             true
         };
 
