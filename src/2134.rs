@@ -7,6 +7,7 @@ impl Solution {
         nums.extend(nums.clone());
         let mut ones_in_win = 0;
         let mut cur_one_in_win = 0;
+        // so how to set window size? just make it to one count
         for (i, &val) in nums.iter().enumerate() {
             if i >= ones && nums[i - ones] == 1 {
                 cur_one_in_win -= 1;
