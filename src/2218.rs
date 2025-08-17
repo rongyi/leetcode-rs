@@ -14,6 +14,7 @@ impl Solution {
             return dp[i][k as usize];
         }
         let mut sum = 0;
+        // j is not index, but len
         for j in 0..=piles[i].len() as i32 {
             if k - j < 0 {
                 break;
