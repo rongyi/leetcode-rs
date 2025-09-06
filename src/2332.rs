@@ -1,5 +1,6 @@
 struct Solution;
 
+// the latest means the great
 impl Solution {
     pub fn latest_time_catch_the_bus(
         mut buses: Vec<i32>,
@@ -17,6 +18,7 @@ impl Solution {
                 acc += 1;
                 j += 1;
             }
+            // j stop at next chunk
             if i == m - 1 {
                 if acc < capacity {
                     let mut t = buses[i];
