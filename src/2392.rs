@@ -8,20 +8,27 @@ impl Solution {
         col_conditions: Vec<Vec<i32>>,
     ) -> Vec<Vec<i32>> {
         let k = k as usize;
-        let rows = Self::top_sort(k, &row_conditions);
-        let cols = Self::top_sort(k, &col_conditions);
-        if rows.is_empty() || cols.is_empty() {
+        let row_order = Self::top_sort(k, &row_conditions);
+        let col_order = Self::top_sort(k, &col_conditions);
+        if row_order.is_empty() || col_order.is_empty() {
             return Vec::new();
         }
-        let mut idx: Vec<(usize, usize)> = vec![(0, 0); k];
-        for i in 0..k {
-            idx[rows[i] - 1].0 = i;
-            idx[cols[i] - 1].1 = i;
+        // this way is better to understand
+        let mut row_pos = vec![0; k + 1];
+        for (i, &v) in row_order.iter().enumerate() {
+            row_pos[v] = i;
+        }
+        let mut col_pos = vec![0; k + 1];
+        for (i, &v) in col_order.iter().enumerate() {
+            col_pos[v] = i;
         }
         let mut ret: Vec<Vec<i32>> = vec![vec![0; k]; k];
-        for i in 0..k {
-            ret[idx[i].0][idx[i].1] = i as i32 + 1;
+        for i in 1..=k {
+            let r = row_pos[i];
+            let c = col_pos[i];
+            ret[r][c] = i as i32;
         }
+
         ret
     }
     fn top_sort(k: usize, conditions: &Vec<Vec<i32>>) -> Vec<usize> {
@@ -52,6 +59,7 @@ impl Solution {
             }
         }
 
+        // means each one is on this chain, valid
         if visited == k {
             return ret;
         }
