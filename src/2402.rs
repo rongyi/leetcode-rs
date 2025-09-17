@@ -40,6 +40,53 @@ impl Solution {
     }
 }
 
+impl Solution {
+    pub fn most_booked(n: i32, mut meetings: Vec<Vec<i32>>) -> i32 {
+        // make meeting in time order
+        meetings.sort_unstable();
+        // initial: all room is free
+        let mut free: BinaryHeap<Reverse<i32>> = (0..n).map(|v| Reverse(v)).collect();
+        // (next_free time, index)
+        let mut taken: BinaryHeap<Reverse<(i64, i32)>> = BinaryHeap::new();
+        let n = n as usize;
+        let mut cnt: Vec<i32> = vec![0; n];
+
+        for m in meetings.iter() {
+            let (start, end) = (m[0] as i64, m[1] as i64);
+            let duration = end - start;
+            // frist: fetch all used root by this tart time
+            while !taken.is_empty() && taken.peek().unwrap().0 .0 <= start {
+                let cur = taken.pop().unwrap().0 .1;
+                free.push(Reverse(cur));
+            }
+            if !free.is_empty() {
+                // take one from free
+                let cur_room = free.pop().unwrap().0;
+                // usage accumulation
+                cnt[cur_room as usize] += 1;
+                // and push to take with next free time
+                taken.push(Reverse((end, cur_room)));
+            } else {
+                // wait outside for the smallest ending room
+                let (room_end, cur_room) = taken.pop().unwrap().0;
+                cnt[cur_room as usize] += 1;
+                taken.push(Reverse((room_end + duration, cur_room)));
+            }
+        }
+        let mut max_val = 0;
+        let mut max_idx = 0;
+        for i in (0..n).rev() {
+            if cnt[i] >= max_val {
+                max_val = cnt[i];
+                max_idx = i;
+            }
+        }
+
+        max_idx as _
+    }
+}
+
+
 fn main() {
     let input: Vec<Vec<i32>> = [[1, 20], [2, 10], [3, 5], [4, 9], [6, 8]]
         .into_iter()
