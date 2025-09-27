@@ -19,6 +19,13 @@ impl Solution {
             if nums[i] == max_k {
                 max_idx = Some(i);
             }
+            // e.g. minK 3, maxK 5
+            // 3, 3, 4, 3, 4, 5
+            // start
+            //          min_index
+            //                 max_index
+            // range between [start, min_index] is all valid start
+            // to end range
             if min_idx.is_some() && max_idx.is_some() {
                 let min = min_idx.unwrap();
                 let max = max_idx.unwrap();
