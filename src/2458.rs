@@ -70,6 +70,20 @@ impl Solution {
 
             Self::peek_other_side(
                 node.left.as_ref(),
+                // crucial part to understand this solution,
+                // when we delete a node, we need to stand at the node's parent persipective
+                // so if node is at left child, either we pick
+                // 1. this parent node's right child
+                //        node
+                //      left   right...
+                // 2. or when deep down, for this case
+                //            parent
+                //          /       \
+                //       left      right...
+                //       /   \
+                //     target sub right...
+                //     we pick parent right most or current height + sub right most
+                //     you need to think about this
                 other_road_height.max(node_height + right_heights[&node.val]),
                 node_height + 1,
                 the_other_road,
@@ -112,4 +126,5 @@ impl Solution {
         }
     }
 }
+
 fn main() {}
