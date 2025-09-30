@@ -9,6 +9,7 @@ impl Solution {
         for v in costs.by_ref().take(candidates) {
             heap.push((Reverse(v), true));
         }
+        // by_ref make take dont mv
         for v in costs.by_ref().rev().take(candidates) {
             heap.push((Reverse(v), false));
         }
@@ -31,5 +32,12 @@ impl Solution {
 }
 
 fn main() {
-    let a = vec![1, 2, 3];
+    let a = vec![1, 2, 3, 4];
+    let mut b = a.into_iter();
+    for i in b.by_ref().take(2) {
+        println!("{i}");
+    }
+    for r in b {
+        println!("{r}");
+    }
 }
