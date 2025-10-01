@@ -13,15 +13,18 @@ impl Solution {
             graph[to].push(from);
         }
         let mut parent_of = vec![usize::MAX; sz];
+        // dist the roo to current node's distance
         let mut dist: Vec<usize> = vec![0; sz];
         Self::dfs(0, usize::MAX, 0, &mut parent_of, &mut dist, &graph);
 
         let mut cur = bob as usize;
         let mut bob_distance = 0;
         while parent_of[cur] != usize::MAX {
+            // bob consume all, he visit this node first
             if dist[cur] > bob_distance {
                 amount[cur] = 0;
             } else if dist[cur] == bob_distance {
+                // or at the same time
                 amount[cur] /= 2;
             }
             cur = parent_of[cur];
