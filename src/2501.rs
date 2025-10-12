@@ -1,29 +1,33 @@
 struct Solution;
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashSet};
 impl Solution {
     pub fn longest_square_streak(nums: Vec<i32>) -> i32 {
-        let mut uniq: BTreeSet<i64> = nums.iter().fold(BTreeSet::new(), |mut acc, cur| {
-            acc.insert(*cur as i64);
-            acc
-        });
+        let nums = nums.into_iter().collect::<HashSet<i32>>();
+        let mut max_streak = 0;
 
-        let mut ret = -1;
-        for &num in nums.iter() {
-            ret = ret.max(Self::lss(num as i64, &uniq));
+        for num in nums.iter() {
+            let mut cur_streak = 0;
+            // with overflow check
+            let Some(mut currnet) = num.checked_mul(*num) else {
+                continue;
+            };
+
+            while nums.contains(&currnet) {
+                cur_streak += 1;
+                let Some(c) = currnet.checked_mul(currnet) else {
+                    break;
+                };
+                currnet = c;
+            }
+            max_streak = max_streak.max(cur_streak + 1);
         }
-        ret
-    }
-    fn lss(mut num: i64, uniq: &BTreeSet<i64>) -> i32 {
-        let mut len = 0;
-        while uniq.contains(&num) {
-            num *= num;
-            len += 1;
+
+        if max_streak > 1 {
+            max_streak
+        } else {
+            -1
         }
-        if len < 2 {
-            return -1;
-        }
-        len
     }
 }
 
