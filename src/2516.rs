@@ -16,6 +16,7 @@ impl Solution {
         let mut ret = sz;
         // in win range we consume one, and left is decresing
         for j in 0..sz {
+            // left for user to take, from beginning or end
             acc[s[j]] -= 1;
             win_sz += 1;
             while acc[s[j]] < k {
