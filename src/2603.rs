@@ -13,6 +13,7 @@ impl Solution {
             graph[from].insert(to);
             graph[to].insert(from);
         }
+        // first, cut useless node from this tree
         let mut leaf_q = VecDeque::new();
         for i in 0..sz {
             if graph[i].len() == 1 && coins[i] == 0 {
@@ -32,8 +33,14 @@ impl Solution {
             }
         }
 
+        // now we drop all useless leaf
+        // we now drop two out most layers
+        // what we left is all edge we must tranverse
         let mut layers = 2;
+        // still use leafq, but now its empty
+        // find leaf node again
         for i in 0..sz {
+            // delete blindly, don't care have coin or not
             if graph[i].len() == 1 {
                 leaf_q.push_back(i);
             }
@@ -46,6 +53,7 @@ impl Solution {
                 if graph[cur].is_empty() {
                     continue;
                 }
+                // cut again
                 let p = *graph[cur].iter().next().unwrap();
                 graph[p].remove(&cur);
                 graph[cur].remove(&p);
