@@ -1,4 +1,3 @@
-
 struct Solution;
 
 use std::collections::HashMap;
@@ -12,18 +11,17 @@ impl Solution {
         }
 
         for idx_group in index.values() {
-            let mut prefix_sum = 0i64;
-            let sz = idx_group.len();
+            let mut prefix = 0i64;
             let total: i64 = idx_group.iter().map(|x| *x as i64).sum();
-
+            let sz = idx_group.len();
             for (i, &v) in idx_group.iter().enumerate() {
-                let post_sum = total - prefix_sum - v as i64;
-                ret[v] += (v as i64) * (i as i64);
-                ret[v] -= prefix_sum;
-                ret[v] -= (v as i64) * ((sz - i - 1) as i64);
-                ret[v] += post_sum;
+                let suffix = total - prefix - v as i64;
+                ret[v] += (i as i64) * v as i64;
+                ret[v] -= prefix;
+                ret[v] += suffix;
+                ret[v] -= (sz - i - 1) as i64 * v as i64;
 
-                prefix_sum += v as i64;
+                prefix += v as i64;
             }
         }
 
