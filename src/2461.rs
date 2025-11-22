@@ -1,34 +1,60 @@
 struct Solution;
 
-use std::collections::HashMap;
-impl Solution {
-    pub fn maximum_subarray_sum(nums: Vec<i32>, k: i32) -> i64 {
-        let nums: Vec<i64> = nums.into_iter().map(|v| v as i64).collect();
-        let mut win_nums: HashMap<i64, i32> = HashMap::new();
-        let k = k as usize;
-        let mut wing_acc = 0;
-        for i in 0..k {
-            *win_nums.entry(nums[i]).or_default() += 1;
-            wing_acc += nums[i];
-        }
-        let mut max_sum = 0;
-        if win_nums.len() == k {
-            max_sum = max_sum.max(wing_acc);
-        }
-        for i in k..nums.len() {
-            *win_nums.entry(nums[i]).or_default() += 1;
-            *win_nums.entry(nums[i - k]).or_default() -= 1;
-            if win_nums[&nums[i - k]] == 0 {
-                win_nums.remove(&nums[i - k]);
-            }
-            wing_acc += nums[i];
-            wing_acc -= nums[i - k];
-            if win_nums.len() == k {
-                max_sum = max_sum.max(wing_acc);
-            }
-        }
+// Definition for a binary tree node.
+#[derive(Debug, PartialEq, Eq)]
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Rc<RefCell<TreeNode>>>,
+    pub right: Option<Rc<RefCell<TreeNode>>>,
+}
 
-        max_sum
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode {
+            val,
+            left: None,
+            right: None,
+        }
+    }
+}
+use std::cell::RefCell;
+use std::rc::Rc;
+impl Solution {
+    pub fn replace_value_in_tree(
+        root: Option<Rc<RefCell<TreeNode>>>,
+    ) -> Option<Rc<RefCell<TreeNode>>> {
+        let root = if let Some(root) = root {
+            root
+        } else {
+            return None;
+        };
+        let mut level_sum = 0;
+        let mut q = vec![(root.clone(), 0)];
+        while !q.is_empty() {
+            let mut new_queue = vec![];
+            let mut new_level_sum = 0;
+            for (node, subtree_sum) in q.into_iter() {
+                node.borrow_mut().val = level_sum - subtree_sum;
+                let mut subtree_sum = 0;
+                let mut children = vec![];
+                if let Some(l) = node.borrow().left.clone() {
+                    subtree_sum += l.borrow().val;
+                    children.push(l);
+                }
+                if let Some(r) = node.borrow().right.clone() {
+                    subtree_sum += r.borrow().val;
+                    children.push(r);
+                }
+                new_level_sum += subtree_sum;
+                children
+                    .into_iter()
+                    .for_each(|node| new_queue.push((node, subtree_sum)));
+            }
+            q = new_queue;
+            level_sum = new_level_sum;
+        }
+        Some(root)
     }
 }
 
