@@ -11,13 +11,14 @@ impl Solution {
         let mut i: i32 = 1;
         let k = k as u32;
         loop {
-            let p = i.pow(k) as usize;
-            if p > n {
+            let cur = i.pow(k) as usize;
+            if cur > n {
                 break;
             }
-            for s in (p..=n).rev() {
-                dp[s] = (dp[s] + dp[s - p]) % m;
+            for s in (cur..=n).rev() {
+                dp[s] = (dp[s] + dp[s - cur]) % m;
             }
+
             i += 1;
         }
 
