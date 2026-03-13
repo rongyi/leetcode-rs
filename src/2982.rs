@@ -1,30 +1,45 @@
 struct Solution;
 
+use std::collections::HashMap;
+
 impl Solution {
     pub fn maximum_length(s: String) -> i32 {
-        let n = s.len();
         let s = s.as_bytes();
-        let mut ans = -1;
-        for c in b'a'..=b'z' {
-            let mut dp = vec![0; n + 2];
-            let mut cnt = vec![0; n + 2];
-            for i in (0..n).rev() {
-                if s[i] == c {
-                    dp[i] = dp[i + 1] + 1;
-                } else {
-                    dp[i] = 0;
-                }
-                cnt[dp[i]] += 1;
+        let n = s.len();
+        // counts[char_index][length] = frequency
+        let mut counts = vec![vec![0; n + 1]; 26];
+
+        let mut i = 0;
+        while i < n {
+            let mut j = i;
+            // Find the end of the current "special" block
+            while j < n && s[j] == s[i] {
+                j += 1;
             }
-            for len in (1..=n).rev() {
-                cnt[len - 1] += cnt[len];
-                if cnt[len] >= 3 {
-                    ans = ans.max(len as i32);
-                    break;
+
+            let char_idx = (s[i] - b'a') as usize;
+            let len = j - i;
+
+            // A block of length 'len' contributes to all shorter lengths
+            // e.g., "aaaa" (len 4) contains:
+            // 1 x len 4, 2 x len 3, 3 x len 2, 4 x len 1
+            for l in 1..=len {
+                counts[char_idx][l] += (len - l + 1) as i32;
+            }
+
+            i = j;
+        }
+
+        let mut max_len = -1;
+        for char_idx in 0..26 {
+            for l in 1..=n {
+                if counts[char_idx][l] >= 3 {
+                    max_len = max_len.max(l as i32);
                 }
             }
         }
-        ans
+
+        max_len
     }
 }
 
