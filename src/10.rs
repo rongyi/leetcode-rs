@@ -67,7 +67,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let va = Solution::re_match("a".as_bytes(), "..*".as_bytes());
-    println!("{}", va);
-}
+fn main() {}
