@@ -1,50 +1,45 @@
 struct Solution;
 
-use std::collections::{BTreeMap, HashSet};
 impl Solution {
     pub fn three_sum(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
-        let mut val_idx: BTreeMap<i32, Vec<usize>> = BTreeMap::new();
-        for (i, &num) in nums.iter().enumerate() {
-            val_idx.entry(num).or_default().push(i);
-        }
-        let mut res = HashSet::new();
-        for (&k1, v1) in val_idx.iter() {
-            for (&k2, v2) in val_idx.iter() {
-                if k2 < k1 {
-                    continue;
-                }
-                if v1.len() == 1 && v2.len() == 1 && k1 == k2 {
-                    continue;
-                }
-                let k3 = -(k1 + k2);
-                if k3 != k1 && k3 != k2 {
-                    if let Some(_v3) = val_idx.get(&k3) {
-                        let mut cur = vec![k1, k2, k3];
-                        cur.sort();
-                        res.insert(cur);
+        nums.sort_unstable();
+        let mut ret = vec![];
+        let sz = nums.len();
+
+        for i in 0..sz - 2 {
+            // no more valid
+            if nums[i] > 0 {
+                break;
+            }
+            // ignore duplicate
+            if i > 0 && nums[i] == nums[i - 1] {
+                continue;
+            }
+
+            let mut l = i + 1;
+            let mut r = sz - 1;
+            while l < r {
+                let sum = nums[i] + nums[l] + nums[r];
+                if sum == 0 {
+                    ret.push(vec![nums[i], nums[l], nums[r]]);
+                    while l < r && nums[l] == nums[l + 1] {
+                        l += 1;
                     }
-                } else if k3 == k1 {
-                    if v1.len() > 2 {
-                        let mut cur = vec![k1, k2, k1];
-                        cur.sort_unstable();
-                        res.insert(cur);
+                    while l < r && nums[r] == nums[r - 1] {
+                        r -= 1;
                     }
-                } else if k3 == k2 {
-                    if v2.len() > 2 {
-                        let mut cur = vec![k1, k2, k2];
-                        cur.sort_unstable();
-                        res.insert(cur);
-                    }
+                    l += 1;
+                    r -= 1;
+                } else if sum < 0 {
+                    l += 1;
+                } else {
+                    r -= 1;
                 }
             }
         }
 
-        res.into_iter().collect()
+        ret
     }
 }
 
-fn main() {
-    let input = vec![-1, 0, 1, 2, -1, -4];
-    let a = Solution::three_sum(input);
-    println!("{:?}", a);
-}
+fn main() {}
