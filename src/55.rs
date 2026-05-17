@@ -2,7 +2,6 @@ struct Solution;
 
 impl Solution {
     pub fn can_jump(nums: Vec<i32>) -> bool {
-        let mut cur_pos = 0;
         let mut far_reach = 0;
         for (i, &step) in nums.iter().enumerate() {
             if i > far_reach {
