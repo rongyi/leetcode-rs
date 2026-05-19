@@ -5,12 +5,15 @@ impl Solution {
         let m = m as usize;
         let n = n as usize;
         let mut dp = vec![vec![0; n]; m];
+
         for i in 0..m {
             dp[i][0] = 1;
         }
+
         for j in 0..n {
             dp[0][j] = 1;
         }
+
         for i in 1..m {
             for j in 1..n {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
