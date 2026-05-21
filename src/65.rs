@@ -3,89 +3,95 @@ struct Solution;
 enum State {
     Begin,
     Sign,
-    Digit,
-    DigitWithSign, // after seeing 'e'/'E' and optional sign
     Dot,
+
+    DigitWithE,       // hold 'e' tmp stat
+    DigitWithESign,   // hold 'e' tmp stat
+    DecimalWithE,     // hold 'e' tmp stat
+    DecimalWithESign, // hold 'e' tmp stat
+
+    Digit,
+    ExponentDigit,
     Decimal,
-    DotAfterDigit, // saw digit then dot (e.g., "3.")
-    Exponent,      // saw 'e' or 'E'
-    ExponentSign,  // saw sign after exponent
-    ExponentDigit, // saw digit after exponent (or exponent sign)
+    ExponentDecimal,
 }
 
 impl Solution {
     pub fn is_number(s: String) -> bool {
-        let mut state = State::Begin;
+        let mut st = State::Begin;
 
-        for c in s.trim().chars() {
-            match (&state, c) {
-                // Start state
+        // 1. optional '+'/'-' prefix
+
+        for c in s.to_ascii_lowercase().chars() {
+            match (st, c) {
                 (State::Begin, '+') | (State::Begin, '-') => {
-                    state = State::Sign;
+                    st = State::Sign;
                 }
+
                 (State::Begin, '0'..='9') => {
-                    state = State::Digit;
+                    st = State::Digit;
                 }
-                (State::Begin, '.') => {
-                    state = State::Dot;
-                }
-
-                // Sign state
+                // sign is optional, so every match for begin, should have a sign match as well
                 (State::Sign, '0'..='9') => {
-                    state = State::Digit;
+                    st = State::Digit;
                 }
-                (State::Sign, '.') => {
-                    state = State::Dot;
-                }
-
-                // Digit state
                 (State::Digit, '0'..='9') => {
-                    state = State::Digit;
-                }
-                (State::Digit, '.') => {
-                    state = State::DotAfterDigit;
-                }
-                (State::Digit, 'e') | (State::Digit, 'E') => {
-                    state = State::Exponent;
+                    st = State::Digit;
                 }
 
-                // Dot state (no digits before dot yet)
+                // decimal
+                (State::Begin, '.') => {
+                    st = State::Dot;
+                }
+                // sign is optional, so each with begin, follow a Sign match
+                (State::Sign, '.') => {
+                    st = State::Dot;
+                }
+                // match .333
                 (State::Dot, '0'..='9') => {
-                    state = State::Decimal;
+                    st = State::Decimal;
                 }
-
-                // DotAfterDigit state (saw digits, then a dot)
-                (State::DotAfterDigit, '0'..='9') => {
-                    state = State::Decimal;
+                // match 1.
+                (State::Digit, '.') => {
+                    st = State::Decimal;
                 }
-                (State::DotAfterDigit, 'e') | (State::DotAfterDigit, 'E') => {
-                    state = State::Exponent;
-                }
-
-                // Decimal state (has digits on both sides or one side of dot)
+                // match 1.333
                 (State::Decimal, '0'..='9') => {
-                    state = State::Decimal;
-                }
-                (State::Decimal, 'e') | (State::Decimal, 'E') => {
-                    state = State::Exponent;
+                    st = State::Decimal;
                 }
 
-                // Exponent state
-                (State::Exponent, '+') | (State::Exponent, '-') => {
-                    state = State::ExponentSign;
+                (State::Digit, 'e') => {
+                    st = State::DigitWithE;
                 }
-                (State::Exponent, '0'..='9') => {
-                    state = State::ExponentDigit;
-                }
-
-                // ExponentSign state
-                (State::ExponentSign, '0'..='9') => {
-                    state = State::ExponentDigit;
+                (State::Decimal, 'e') => {
+                    st = State::DecimalWithE;
                 }
 
-                // ExponentDigit state
+                (State::DigitWithE, '+') | (State::DigitWithE, '-') => {
+                    st = State::DigitWithESign;
+                }
+                (State::DecimalWithE, '+') | (State::DecimalWithE, '-') => {
+                    st = State::DecimalWithESign;
+                }
+
+                (State::DigitWithE, '0'..='9') => {
+                    st = State::ExponentDigit;
+                }
+                (State::DigitWithESign, '0'..='9') => {
+                    st = State::ExponentDigit;
+                }
                 (State::ExponentDigit, '0'..='9') => {
-                    state = State::ExponentDigit;
+                    st = State::ExponentDigit;
+                }
+
+                (State::DecimalWithE, '0'..='9') => {
+                    st = State::ExponentDecimal;
+                }
+                (State::ExponentDecimal, '0'..='9') => {
+                    st = State::ExponentDecimal;
+                }
+                (State::DecimalWithESign, '0'..='9') => {
+                    st = State::ExponentDecimal;
                 }
 
                 _ => {
@@ -95,10 +101,9 @@ impl Solution {
         }
 
         matches!(
-            state,
-            State::Digit | State::Decimal | State::DotAfterDigit | State::ExponentDigit
+            st,
+            State::Digit | State::Decimal | State::ExponentDigit | State::ExponentDecimal
         )
     }
 }
-
 fn main() {}
