@@ -23,23 +23,31 @@ impl Solution {
     }
 
     fn max_area(heights: Vec<i32>) -> i32 {
-        let mut stack = Vec::new();
+        let mut mono = Vec::new();
 
-        let mut ret = 0;
-        for i in 0..heights.len() {
-            while !stack.is_empty() && heights[i] < heights[*stack.last().unwrap()] {
-                let height_index = stack.pop().unwrap();
-                let width = if stack.is_empty() {
-                    i
+        let mut max_area = 0;
+        for (i, &v) in heights.iter().enumerate() {
+            while let Some(&prev_idx) = mono.last() {
+                if v < heights[prev_idx] {
+                    mono.pop();
+                    let height = heights[prev_idx];
+                    // we can makesure that current height is the lowest val from the next pos of prev mono idx (when empty, just from start)
+                    let width = if mono.is_empty() {
+                        i as i32
+                    } else {
+                        (i - 1 - *mono.last().unwrap()) as i32
+                    };
+                    let cur_are = height * width;
+                    max_area = max_area.max(cur_are);
                 } else {
-                    i - stack.last().unwrap() - 1
-                };
-                let cur = heights[height_index] * width as i32;
-                ret = ret.max(cur);
+                    break;
+                }
             }
-            stack.push(i);
+
+            mono.push(i);
         }
-        ret
+
+        max_area
     }
 }
 
