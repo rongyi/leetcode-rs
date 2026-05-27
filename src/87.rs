@@ -1,6 +1,46 @@
-struct Solution;
 
+struct SolutionDP;
+
+struct Solution;
+use std::collections::HashMap;
 impl Solution {
+    pub fn is_scramble(s1: String, s2: String) -> bool {
+        let s1 = s1.as_bytes();
+        let s2 = s2.as_bytes();
+        let mut memo = HashMap::new();
+
+        Self::dfs(s1, s2, &mut memo)
+    }
+
+    fn dfs<'a>(s1: &'a [u8], s2: &'a [u8], memo: &mut HashMap<(&'a [u8], &'a [u8]), bool>) -> bool {
+        if memo.contains_key(&(s1, s2)) {
+            return *memo.get(&(s1, s2)).unwrap();
+        }
+        if s1 == s2 {
+            memo.insert((s1, s2), true);
+            return true;
+        }
+
+        // try split and check
+        for i in 1..s1.len() {
+            if Self::dfs(&s1[..i], &s2[..i], memo) && Self::dfs(&s1[i..], &s2[i..], memo) {
+                memo.insert((s1, s2), true);
+                return true;
+            }
+            if Self::dfs(&s1[..i], &s2[s2.len() - i..], memo)
+                && Self::dfs(&s1[i..], &s2[..s2.len() - i], memo)
+            {
+                memo.insert((s1, s2), true);
+                return true;
+            }
+        }
+
+        memo.insert((s1, s2), false);
+        false
+    }
+}
+
+impl SolutionDP {
     pub fn is_scramble(s1: String, s2: String) -> bool {
         let s1 = s1.as_bytes();
         let s2 = s2.as_bytes();
