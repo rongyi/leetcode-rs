@@ -24,8 +24,8 @@ impl Solution {
         let mut w2 = 0;
 
         if pos + 1 < s.len() {
-            let check = (s[pos] - b'0') as usize * 10 + (s[pos + 1] - b'0') as usize;
-            if check >= 1 && check <= 26 {
+            let check = (s[pos] - b'0') * 10 + s[pos + 1] - b'0';
+            if check >= 10 && check <= 26 {
                 w2 = Self::helper(s, pos + 2, memo);
             }
         }
