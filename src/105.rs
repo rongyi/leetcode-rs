@@ -35,6 +35,7 @@ impl Solution {
         for (i, &v) in indorder.iter().enumerate() {
             if v == root_val {
                 split_idx = i;
+                break;
             }
         }
         // left has split_idx total, right has sz - split_idx - 1
