@@ -1,17 +1,19 @@
 struct Solution;
 
 impl Solution {
-    pub fn missing_number(mut nums: Vec<i32>) -> i32 {
-        nums.sort_unstable();
-        let mut expected = 0;
-        for num in nums.into_iter() {
-            if num != expected {
-                return expected;
-            }
-            expected += 1;
+    pub fn missing_number(nums: Vec<i32>) -> i32 {
+        let sz = nums.len();
+        // missing one
+        let mut bucket = vec![-1; sz + 1];
+        for v in nums {
+            bucket[v as usize] = v;
         }
-        expected
+        for (i, &v) in bucket.iter().enumerate() {
+            if v == -1 {
+                return i as i32;
+            }
+        }
+        unreachable!()
     }
 }
-
 fn main() {}
