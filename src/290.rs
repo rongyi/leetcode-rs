@@ -1,5 +1,4 @@
 struct Solution;
-
 use std::collections::HashMap;
 impl Solution {
     pub fn word_pattern(pattern: String, s: String) -> bool {
@@ -9,6 +8,7 @@ impl Solution {
         if words.len() != pattern.len() {
             return false;
         }
+
         for (i, c) in pattern.chars().enumerate() {
             match (bind1.get(&c), bind2.get(&words[i])) {
                 (Some(a), Some(b)) => {
