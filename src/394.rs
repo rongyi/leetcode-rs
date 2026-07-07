@@ -11,13 +11,13 @@ impl Solution {
             return ("".to_string(), s.len());
         }
         let mut cur: String = String::new();
-        let mut repeat = 0;
+        let mut next_sub_repeat = 0;
         let mut i = start;
         let sz = s.len();
 
         while i < sz {
             if s[i].is_ascii_digit() {
-                repeat = repeat * 10 + (s[i] - b'0') as usize;
+                next_sub_repeat = next_sub_repeat * 10 + (s[i] - b'0') as usize;
                 i += 1;
             } else if s[i].is_ascii_alphabetic() {
                 cur.push(s[i] as char);
@@ -25,10 +25,10 @@ impl Solution {
             } else if s[i] == b']' {
                 return (cur.repeat(parent_repeat), i + 1);
             } else if s[i] == b'[' {
-                let (sub, next_start) = Self::flat(s, i + 1, repeat);
+                let (sub, next_start) = Self::flat(s, i + 1, next_sub_repeat);
                 // reset
                 i = next_start;
-                repeat = 0;
+                next_sub_repeat = 0;
                 cur = format!("{}{}", cur, sub);
             }
         }
