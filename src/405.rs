@@ -1,0 +1,3 @@
+struct Solution;
+
+fn main() {}
