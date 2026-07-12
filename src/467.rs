@@ -11,7 +11,7 @@ impl Solution {
             } else {
                 max_len = 1;
             }
-            count[s[i] as usize] = count[s[i] as usize].max(max_len);
+            count[(s[i] - b'a') as usize] = count[(s[i] - b'a') as usize].max(max_len);
         }
 
         // count.iter().fold(0, |acc, &cur| acc + cur)
