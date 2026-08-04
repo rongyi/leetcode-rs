@@ -1,6 +1,20 @@
 struct Solution;
 
 impl Solution {
+    // pub fn min_steps(mut n: i32) -> i32 {
+    //     let mut ans = 0;
+    //     let mut d = 2;
+    //     while d * d <= n {
+    //         while n % d == 0 {
+    //             ans += d;      // each prime factor d costs d ops
+    //             n /= d;
+    //         }
+    //         d += 1;
+    //     }
+    //     if n > 1 { ans += n; } // leftover prime
+    //     ans
+    // }
+
     pub fn min_steps(n: i32) -> i32 {
         if n == 1 {
             return 0;
@@ -9,7 +23,6 @@ impl Solution {
         if n < 5 {
             return n;
         }
-
         let mut ret = 2;
         let mut len = 2;
         let mut copy_len = 1;
