@@ -1,54 +1,37 @@
-struct Solution;
-// Definition for a binary tree node.
-#[derive(Debug, PartialEq, Eq)]
-pub struct TreeNode {
-    pub val: i32,
-    pub left: Option<Rc<RefCell<TreeNode>>>,
-    pub right: Option<Rc<RefCell<TreeNode>>>,
-}
-
-impl TreeNode {
-    #[inline]
-    pub fn new(val: i32) -> Self {
-        TreeNode {
-            val,
-            left: None,
-            right: None,
-        }
-    }
-}
+struct Sollution;
 
 use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
     pub fn construct_maximum_binary_tree(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
-        Self::make_node(&nums, 0, (nums.len() - 1) as i32)
+        Self::make_node(&nums)
     }
 
-    fn make_node(nums: &[i32], start: i32, end: i32) -> Option<Rc<RefCell<TreeNode>>> {
-        if start > end {
+    fn make_node(nums: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+        if nums.is_empty() {
             return None;
         }
-        if start == end {
-            return Some(Rc::new(RefCell::new(TreeNode::new(nums[start as usize]))));
+        if nums.len() == 1 {
+            return Some(Rc::new(RefCell::new(TreeNode::new(nums[0]))));
         }
-        let mut max_idx = start;
-        let mut max_num = nums[start as usize];
-        for i in start..=end {
-            max_num = max_num.max(nums[i as usize]);
-            if max_num == nums[i as usize] {
+        let mut max_val = i32::MIN;
+        let mut max_idx = 0;
+        for (i, &v) in nums.iter().enumerate() {
+            if v > max_val {
                 max_idx = i;
+                max_val = v;
             }
         }
-        let mut node = TreeNode::new(max_num);
+
+        let mut node = TreeNode::new(max_val);
         // all in right
-        if max_idx == start {
-            node.right = Self::make_node(nums, max_idx + 1, end);
-        } else if max_idx == end {
-            node.left = Self::make_node(nums, start, end - 1);
+        if max_idx == 0 {
+            node.right = Self::make_node(&nums[1..])
+        } else if max_idx == nums.len() - 1 {
+            node.left = Self::make_node(&nums[0..nums.len() - 1]);
         } else {
-            node.left = Self::make_node(nums, start, max_idx - 1);
-            node.right = Self::make_node(nums, max_idx + 1, end);
+            node.left = Self::make_node(&nums[0..max_idx]);
+            node.right = Self::make_node(&nums[max_idx + 1..]);
         }
 
         Some(Rc::new(RefCell::new(node)))
