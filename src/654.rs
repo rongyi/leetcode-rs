@@ -24,15 +24,8 @@ impl Solution {
         }
 
         let mut node = TreeNode::new(max_val);
-        // all in right
-        if max_idx == 0 {
-            node.right = Self::make_node(&nums[1..])
-        } else if max_idx == nums.len() - 1 {
-            node.left = Self::make_node(&nums[0..nums.len() - 1]);
-        } else {
-            node.left = Self::make_node(&nums[0..max_idx]);
-            node.right = Self::make_node(&nums[max_idx + 1..]);
-        }
+        node.left = Self::make_node(&nums[0..max_idx]);
+        node.right = Self::make_node(&nums[max_idx + 1..]);
 
         Some(Rc::new(RefCell::new(node)))
     }
