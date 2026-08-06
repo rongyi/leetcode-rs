@@ -22,8 +22,9 @@ impl Solution {
                 }
             }
         }
+
         while !normal.is_empty() && !patch_stars.is_empty() {
-            // *( case can not pass
+            // *( case can not pass, not value , the index compare
             if *normal.last().unwrap() > *patch_stars.last().unwrap() {
                 return false;
             }
