@@ -1,3 +1,5 @@
+struct Solution;
+
 use std::collections::HashMap;
 
 struct MapSum {
@@ -20,18 +22,14 @@ impl MapSum {
     }
 
     fn sum(&self, prefix: String) -> i32 {
-        let mut val = 0;
-
-        for (k, v) in self.words.iter() {
-            if k.len() < prefix.len() {
-                continue;
-            }
-            if k.starts_with(&prefix) {
-                val += *v;
-            }
-        }
-
-        val as i32
+        self.words
+            .iter()
+            .filter(|kv| kv.0.len() >= prefix.len() && kv.0.starts_with(&prefix))
+            .fold(0, |mut acc, kv| {
+                acc += *kv.1;
+                acc
+            })
     }
 }
+
 fn main() {}
