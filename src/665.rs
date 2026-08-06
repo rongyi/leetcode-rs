@@ -1,30 +1,60 @@
 struct Solution;
 
 impl Solution {
-    // 顺序检查凹变段和逆序检查凸变段。
-    // 如果满足，则asc和desc中的较小值必然不大于1。
+    /// LeetCode 665: Non-decreasing Array
+    ///
+    /// Can we make the array non-decreasing with at most ONE modification?
+    ///
+    /// # Why two passes?
+    ///
+    /// A single modification can fix at most one "drop" (left scan) AND
+    /// at most one "rise" (right scan). If both scans find > 1 problem,
+    /// one edit can't fix both ends → false.
     pub fn check_possibility(nums: Vec<i32>) -> bool {
-        let mut from_left = 0;
-        let mut from_right = 0;
-        let mut max_sofar = i32::MIN;
-        for &num in nums.iter() {
-            if num >= max_sofar {
-                max_sofar = num;
+        // Left pass: count elements smaller than the running max (drops).
+        let mut drops = 0;
+        let mut max_so_far = i32::MIN;
+        for &num in &nums {
+            if num >= max_so_far {
+                max_so_far = num;
             } else {
-                from_left += 1;
-            }
-        }
-        let mut min_sofar = i32::MAX;
-        for &num in nums.iter().rev() {
-            if num <= min_sofar {
-                min_sofar = num;
-            } else {
-                from_right += 1;
+                drops += 1;
             }
         }
 
-        !(from_left > 1 && from_right > 1)
+        // Right pass: count elements larger than the running min (rises).
+        let mut rises = 0;
+        let mut min_so_far = i32::MAX;
+        for &num in nums.iter().rev() {
+            if num <= min_so_far {
+                min_so_far = num;
+            } else {
+                rises += 1;
+            }
+        }
+
+        !(drops > 1 && rises > 1)
     }
 }
 
-fn main() {}
+fn main() {
+    let tests = [
+        (vec![4, 2, 3], true),
+        (vec![4, 2, 1], false),
+        (vec![3, 4, 2, 3], false),
+        (vec![1, 2, 5, 3, 4], true),
+        (vec![3, 3, 2, 2], false),
+        (vec![1], true),
+    ];
+
+    for (nums, expected) in &tests {
+        let result = Solution::check_possibility(nums.clone());
+        println!(
+            "{} nums={:?} → {} (expected {})",
+            if result == *expected { "✓" } else { "✗" },
+            nums,
+            result,
+            expected
+        );
+    }
+}
