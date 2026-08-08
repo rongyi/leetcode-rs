@@ -1,44 +1,77 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
+    /// LeetCode 688: Knight Probability in Chessboard
+    ///
+    /// dp[k][r][c] = number of length-k walks on the board that END at (r,c),
+    /// where the walk may start at ANY cell. The knight's move graph is
+    /// undirected (moves are reversible), so:
+    ///   walks(S→any F)  =  walks(any T→S)
+    ///
+    /// So dp[k][row][col] / 8^k is exactly the probability that a walk
+    /// FROM (row, col) stays on the board for k moves.
     pub fn knight_probability(n: i32, k: i32, row: i32, column: i32) -> f64 {
-        // only use f64 can pass
-        let mut dp = vec![vec![vec![-1.0; n as usize]; n as usize]; (k + 1) as usize];
+        let n = n as usize;
+        let mut dp = vec![vec![vec![-1.0; n]; n]; (k + 1) as usize];
 
-        Self::recur(&mut dp, n, k, row, column) / 8f64.powf(k as f64) // total sample space
+        Self::recur(&mut dp, n, k, row as usize, column as usize) / 8f64.powf(k as f64)
     }
 
-    fn recur(dp: &mut Vec<Vec<Vec<f64>>>, n: i32, k: i32, r: i32, c: i32) -> f64 {
-        if r < 0 || r >= n || c < 0 || c >= n {
-            return 0.0;
+    fn recur(dp: &mut Vec<Vec<Vec<f64>>>, n: usize, k: i32, r: usize, c: usize) -> f64 {
+        if r >= n || c >= n {
+            return 0.0; // off board — this position contributes nothing
         }
-
         if k == 0 {
-            return 1.0;
+            return 1.0; // every on-board cell is reachable with 0 moves
+        }
+        if dp[k as usize][r][c] != -1.0 {
+            return dp[k as usize][r][c];
         }
 
-        if dp[k as usize][r as usize][c as usize] != -1.0 {
-            return dp[k as usize][r as usize][c as usize];
-        }
-
-        dp[k as usize][r as usize][c as usize] = 0.0;
-
-        for i in -2..=2 {
-            if i == 0 {
-                continue;
+        dp[k as usize][r][c] = 0.0;
+        // The 8 knight moves.
+        const MOVES: [(i32, i32); 8] = [
+            (-2, -1),
+            (-2, 1),
+            (-1, -2),
+            (-1, 2),
+            (1, -2),
+            (1, 2),
+            (2, -1),
+            (2, 1),
+        ];
+        for (dr, dc) in MOVES {
+            let nr = r as i32 + dr;
+            let nc = c as i32 + dc;
+            if nr >= 0 && nr < n as i32 && nc >= 0 && nc < n as i32 {
+                dp[k as usize][r][c] += Self::recur(dp, n, k - 1, nr as usize, nc as usize);
             }
-
-            dp[k as usize][r as usize][c as usize] +=
-                Self::recur(dp, n, k - 1, r + i, c + (3 - i.abs()))
-                    + Self::recur(dp, n, k - 1, r + i, c - (3 - i.abs()));
         }
 
-        dp[k as usize][r as usize][c as usize]
+        dp[k as usize][r][c]
     }
 }
 
 fn main() {
-    let a = 8f64.powf(30f64);
-    println!("{:?}", a);
+    let tests = [
+        (3, 2, 0, 0, 0.0625),
+        (1, 0, 0, 0, 1.0),
+        (3, 1, 0, 0, 0.25),
+        (8, 30, 6, 4, 0.00019052566298311536),
+    ];
+
+    for (n, k, row, col, expected) in &tests {
+        let result = Solution::knight_probability(*n, *k, *row, *col);
+        let pass = (result - expected).abs() < 1e-9;
+        println!(
+            "{} n={} k={} ({},{}) → {:.12} (expected {:.12})",
+            if pass { "✓" } else { "✗" },
+            n,
+            k,
+            row,
+            col,
+            result,
+            expected
+        );
+    }
 }
