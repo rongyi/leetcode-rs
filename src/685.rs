@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -53,13 +52,14 @@ impl Solution {
         } else {
             // if p1 is in a circle, then must remove p1 edge, otherwise, remove the
             // later one, p2
-            // which means return the circle side edge
             while p1 != target && parent[p1] > 0 {
                 p1 = parent[p1];
             }
+            // p1 is in a cyle, we remove this side
             if p1 == target {
                 return vec![parent[target] as i32, target as i32];
             }
+            // another one
             return vec![p2 as i32, target as i32];
         }
     }
