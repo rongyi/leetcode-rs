@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -26,7 +25,7 @@ impl Solution {
             }
         }
 
-        scores.into_iter().fold(0, |acc, x| acc + x)
+        scores.into_iter().sum()
     }
 }
 
