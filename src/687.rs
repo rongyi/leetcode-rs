@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 // Definition for a binary tree node.
@@ -29,6 +28,7 @@ impl Solution {
         }
         let mut ret = 0;
 
+        // 按“父辈”的意愿做下去
         Self::recur(root.as_ref(), root.clone().unwrap().borrow().val, &mut ret);
 
         ret - 1
@@ -50,4 +50,5 @@ impl Solution {
         }
     }
 }
+
 fn main() {}
