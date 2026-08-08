@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -10,17 +8,16 @@ impl Solution {
         for i in 0..m {
             for j in 0..n {
                 if grid[i][j] == 1 {
-                    let mut cur_max = 0;
-                    Self::dfs(&mut grid, i as i32, j as i32, &mut cur_max);
-                    ret = ret.max(cur_max);
+                    let mut cur_sz = 0;
+                    Self::dfs(&mut grid, i as i32, j as i32, &mut cur_sz);
+                    ret = ret.max(cur_sz);
                 }
             }
         }
-
         ret
     }
 
-    fn dfs(grid: &mut Vec<Vec<i32>>, i: i32, j: i32, cur_max: &mut i32) {
+    fn dfs(grid: &mut Vec<Vec<i32>>, i: i32, j: i32, cur_sz: &mut i32) {
         let m = grid.len() as i32;
         let n = grid[0].len() as i32;
         if i < 0 || i >= m || j < 0 || j >= n || grid[i as usize][j as usize] == 0 {
@@ -28,12 +25,12 @@ impl Solution {
         }
 
         grid[i as usize][j as usize] = 0;
-        *cur_max += 1;
+        *cur_sz += 1;
 
-        Self::dfs(grid, i + 1, j, cur_max);
-        Self::dfs(grid, i - 1, j, cur_max);
-        Self::dfs(grid, i, j + 1, cur_max);
-        Self::dfs(grid, i, j - 1, cur_max);
+        Self::dfs(grid, i + 1, j, cur_sz);
+        Self::dfs(grid, i - 1, j, cur_sz);
+        Self::dfs(grid, i, j + 1, cur_sz);
+        Self::dfs(grid, i, j - 1, cur_sz);
     }
 }
 
