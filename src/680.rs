@@ -1,9 +1,8 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
     pub fn valid_palindrome(s: String) -> bool {
-        let s: Vec<char> = s.chars().collect();
+        let s = s.as_bytes();
         let mut i = 0;
         let mut j = s.len() - 1;
         while i < j {
@@ -15,7 +14,7 @@ impl Solution {
         }
         true
     }
-    fn is_palindrom(s: &[char]) -> bool {
+    fn is_palindrom(s: &[u8]) -> bool {
         let mut i = 0;
         let mut j = s.len() - 1;
         while i < j {
