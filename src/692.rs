@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -30,11 +29,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input: Vec<String> = ["i", "love", "leetcode", "i", "love", "coding"]
-        .into_iter()
-        .map(|s| s.to_string())
-        .collect();
-    let out = Solution::top_k_frequent(input, 2);
-    println!("{:?}", out);
-}
+fn main() {}
