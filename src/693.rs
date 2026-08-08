@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -17,7 +16,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let val = Solution::has_alternating_bits(5);
-    println!("{}", val);
-}
+fn main() {}
