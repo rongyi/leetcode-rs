@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 use std::collections::HashSet;
@@ -8,6 +6,7 @@ impl Solution {
         words.sort_unstable();
         let mut cache = HashSet::new();
         let mut ret = String::new();
+
         for w in words.into_iter() {
             let mut prev = w.clone();
             prev.pop();
