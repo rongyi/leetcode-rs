@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -14,26 +12,26 @@ impl Solution {
         // Base case: dp[0][0] = 0
         // target: dp[m][n]
 
-        // if s1[i-1] = s2[j-1]   // no deletion
+        // if s1[i-1] == s2[j-1]   // no deletion
         //     dp[i][j] = dp[i-1][j-1];
         // else   // delete either s1[i-1] or s2[j-1]
         //     dp[i][j] = min(dp[i-1][j]+s1[i-1], dp[i][j-1]+s2[j-1]);
         let mut dp = vec![vec![0; n + 1]; m + 1];
 
         for j in 1..=n {
-            // delete all s2
+            // empty s1, so delete s2 till j - 1
             dp[0][j] = dp[0][j - 1] + s2[j - 1] as i32;
         }
 
         for i in 1..=m {
-            // delete all s1 till i - 1
+            // empty s2, so delete all s1 till i - 1
             dp[i][0] = dp[i - 1][0] + s1[i - 1] as i32;
             for j in 1..=n {
                 if s1[i - 1] == s2[j - 1] {
                     // just follow
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    // delete one of theme
+                    // delete one of them
                     dp[i][j] =
                         (dp[i - 1][j] + s1[i - 1] as i32).min(dp[i][j - 1] + s2[j - 1] as i32);
                 }
