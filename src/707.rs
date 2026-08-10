@@ -1,119 +1,96 @@
-#![allow(dead_code)]
+struct Solution;
 
-#[derive(Default)]
-struct ListNode {
+struct Node {
     val: i32,
-    next: Option<Box<ListNode>>,
+    next: Option<Box<Node>>,
 }
 
-impl ListNode {
-    fn new(val: i32) -> Self {
-        Self { val, next: None }
-    }
+pub struct MyLinkedList {
+    head: Option<Box<Node>>,
+    len: usize,
 }
 
-#[derive(Default)]
-struct MyLinkedList {
-    head: Option<Box<ListNode>>,
-}
-
-/**
- * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
- */
 impl MyLinkedList {
-    fn new() -> Self {
-        Self { head: None }
+    pub fn new() -> Self {
+        MyLinkedList { head: None, len: 0 }
     }
 
-    fn get(&self, index: i32) -> i32 {
-        let mut cur = self.head.as_ref();
-        let mut i = index;
-        while let Some(node) = cur {
-            if i == 0 {
-                return node.val;
-            }
-            cur = node.next.as_ref();
-            i -= 1;
+    pub fn get(&self, index: i32) -> i32 {
+        if index < 0 || index as usize >= self.len {
+            return -1;
         }
-        -1
+
+        let mut curr = self.head.as_ref();
+        for _ in 0..index {
+            if let Some(node) = curr {
+                curr = node.next.as_ref();
+            }
+        }
+
+        curr.map_or(-1, |node| node.val)
     }
 
-    fn add_at_head(&mut self, val: i32) {
-        let mut new_node = ListNode::new(val);
-        new_node.next = self.head.take();
-        self.head = Some(Box::new(new_node));
+    pub fn add_at_head(&mut self, val: i32) {
+        let new_node = Box::new(Node {
+            val,
+            next: self.head.take(),
+        });
+        self.head = Some(new_node);
+        self.len += 1;
     }
 
-    fn add_at_tail(&mut self, val: i32) {
-        if self.head.is_none() {
-            self.head = Some(Box::new(ListNode::new(val)));
+    pub fn add_at_tail(&mut self, val: i32) {
+        self.add_at_index(self.len as i32, val);
+    }
+
+    pub fn add_at_index(&mut self, index: i32, val: i32) {
+        if index < 0 || index as usize > self.len {
+            return;
+        }
+        if index == 0 {
+            self.add_at_head(val);
             return;
         }
 
-        let mut cur = self.head.as_mut();
-        while let Some(node) = cur {
-            if node.next.is_none() {
-                node.next = Some(Box::new(ListNode::new(val)));
-                break;
-            } else {
-                cur = node.next.as_mut();
+        let mut curr = self.head.as_mut();
+        for _ in 0..(index - 1) {
+            if let Some(node) = curr {
+                curr = node.next.as_mut();
             }
+        }
+
+        if let Some(node) = curr {
+            let new_node = Box::new(Node {
+                val,
+                next: node.next.take(),
+            });
+            node.next = Some(new_node);
+            self.len += 1;
         }
     }
 
-    fn add_at_index(&mut self, index: i32, val: i32) {
+    pub fn delete_at_index(&mut self, index: i32) {
+        if index < 0 || index as usize >= self.len {
+            return;
+        }
         if index == 0 {
-            let origin_head = self.head.take();
-            let mut new_node = ListNode::new(val);
-            new_node.next = origin_head;
-            self.head = Some(Box::new(new_node));
-
+            self.head = self.head.take().and_then(|node| node.next);
+            self.len -= 1;
             return;
         }
 
-        let mut cur = self.head.as_mut();
-        for _ in 0..index - 1 {
-            // test contain invalid index
-            if let Some(node) = cur {
-                cur = node.next.as_mut();
-            } else {
-                // invalid index
-                return;
+        let mut curr = self.head.as_mut();
+        for _ in 0..(index - 1) {
+            if let Some(node) = curr {
+                curr = node.next.as_mut();
             }
         }
 
-        if let Some(node) = cur {
-            let origin_next = node.next.take();
-            let mut new_node = ListNode::new(val);
-            new_node.next = origin_next;
-            node.next = Some(Box::new(new_node));
-        }
-    }
-
-    fn delete_at_index(&mut self, index: i32) {
-        if index == 0 {
-            let mut cur = self.head.take();
-            if let Some(node) = cur.as_mut() {
-                self.head = node.next.take();
-            }
-        }
-
-        let mut cur = self.head.as_mut();
-        for _ in 0..index - 1 {
-            // test contain invalid index!
-            if let Some(node) = cur {
-                cur = node.next.as_mut();
-            } else {
-                // invalid index
-                return;
-            }
-        }
-        // delete cur->next
-        if let Some(node) = cur {
-            let mut next = node.next.take();
-            if let Some(next_node) = next.as_mut() {
-                node.next = next_node.next.take();
+        if let Some(node) = curr {
+            let node_to_remove = node.next.take();
+            if let Some(mut target) = node_to_remove {
+                node.next = target.next.take();
+                self.len -= 1;
             }
         }
     }
