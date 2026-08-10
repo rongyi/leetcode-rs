@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -42,23 +40,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input = [
-        "/*Test program */",
-        "int main()",
-        "{ ",
-        "  // variable declaration ",
-        "int a, b, c;",
-        "/* This is a test",
-        "   multiline  ",
-        "   comment for ",
-        "   testing */",
-        "a = b + c;",
-        "}",
-    ]
-    .into_iter()
-    .map(|s| s.to_string())
-    .collect();
-
-    Solution::remove_comments(input);
-}
+fn main() {}
