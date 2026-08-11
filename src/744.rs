@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -24,8 +22,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input = vec!['c', 'f', 'j'];
-    let a = Solution::next_greatest_letter(input, 'd');
-    println!("{}", a);
-}
+fn main() {}
