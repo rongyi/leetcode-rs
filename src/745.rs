@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+struct Solution;
 
 use std::collections::HashMap;
 
@@ -7,25 +7,30 @@ struct WordFilter {
 }
 
 impl WordFilter {
-    //https://leetcode.com/problems/prefix-and-suffix-search/solutions/1185249/c-no-trie-a-hashmap-soln/
     fn new(words: Vec<String>) -> Self {
         let mut data = HashMap::new();
-        for (i, w) in words.into_iter().enumerate() {
-            let w: Vec<_> = w.chars().collect();
-            let mut p = String::new();
+        for (idx, w) in words.into_iter().enumerate() {
+            // let w: Vec<_> = w.chars().collect();
             let sz = w.len();
-            for j in 0..sz {
-                p.push(w[j]);
-                let mut s = String::new();
-                for k in (0..sz).rev() {
-                    s.insert(0, w[k]);
-                    // apple insert
-                    // a|e a|le a|ple a|pple a|apple
-                    let key = p.clone() + "|" + &s.clone();
-                    println!("{}", key);
-                    data.insert(key, i as i32 + 1);
+
+            // Generate all possible prefix-suffix combinations
+            for i in 0..=sz {
+                for j in 0..=sz {
+                    let prefix = &w[0..i];
+                    let suffix = &w[sz - j..];
+                    let key = format!("{}|{}", prefix, suffix);
+                    data.insert(key, idx as i32);
                 }
             }
+            // for j in 0..sz {
+            //     p.push(w[j]);
+            //     let mut s = String::new();
+            //     for k in (0..sz).rev() {
+            //         s.insert(0, w[k]);
+            //         let key = p.clone() + "|" + &s.clone();
+            //         data.insert(key, i as i32 + 1);
+            //     }
+            // }
         }
 
         Self { data }
@@ -33,13 +38,8 @@ impl WordFilter {
 
     fn f(&self, pref: String, suff: String) -> i32 {
         let key = pref + "|" + &suff;
-
-        self.data.get(&key).unwrap_or(&0) - 1
+        *self.data.get(&key).unwrap_or(&-1)
     }
 }
 
-fn main() {
-    let input = ["apple"].into_iter().map(|s| s.to_string()).collect();
-    let mut wf = WordFilter::new(input);
-    wf.f("a".to_string(), "e".to_string());
-}
+fn main() {}
