@@ -1,12 +1,16 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
     pub fn intersection_size_two(mut intervals: Vec<Vec<i32>>) -> i32 {
+        // sort by ending point, and make strict range first processed so
+        // the selected point can be easily fit next round when ending is same
         intervals.sort_by(|l, r| {
+            // ending same?
             if l[1] == r[1] {
+                // decresing
                 r[0].cmp(&l[0])
             } else {
+                // increasing
                 l[1].cmp(&r[1])
             }
         });
@@ -17,16 +21,10 @@ impl Solution {
         let mut p2 = -1;
 
         for i in 0..sz {
-            //          |___|
-            //      |_______|
-            // 按照排序规则，结尾相同的，短的在前
-            // 所以出现这种情况 [p1, p2]肯定满足
             if intervals[i][0] <= p1 {
                 continue;
             }
 
-            // |----| |-----|
-            //   p1 p2 cur
             if intervals[i][0] > p2 {
                 ret += 2;
                 p2 = intervals[i][1];

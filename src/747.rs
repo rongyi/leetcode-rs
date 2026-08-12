@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -17,4 +15,7 @@ impl Solution {
         idx as i32
     }
 }
+
+
+
 fn main() {}
