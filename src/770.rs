@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 use std::{cmp::Ordering, collections::HashMap};
@@ -19,8 +17,8 @@ impl Solution {
 
         // replace
         for exp in exps.iter_mut() {
-            if m.contains_key(exp) {
-                *exp = (*m.get(exp).unwrap()).to_string();
+            if let Some(val) = m.get(exp) {
+                *exp = (*val).to_string();
             }
         }
 
@@ -188,9 +186,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input1 = vec![];
-    let input2 = vec![];
-    let val = Solution::basic_calculator_iv("(e + 8) * (e - 8)".to_string(), input1, input2);
-    println!("{:?}", val);
-}
+fn main() {}
