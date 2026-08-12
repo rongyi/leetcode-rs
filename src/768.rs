@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -18,7 +16,6 @@ impl Solution {
 
         for i in 0..sz - 1 {
             // 能在某个位置劈开的条件是，前面一坨的最大值都不能比后面最小的还要小，否则就拼不起来了
-            // Algorithm: Iterate through the array, each time all elements to the left are smaller (or equal) to all elements to the right, there is a new chunck.
             if max_till_cur[i] <= min_after_cur[i + 1] {
                 ret += 1;
             }
