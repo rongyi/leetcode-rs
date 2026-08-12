@@ -1,46 +1,35 @@
-#![allow(dead_code)]
-
-
 struct Solution;
 
-use std::collections::VecDeque;
 impl Solution {
     pub fn is_toeplitz_matrix(matrix: Vec<Vec<i32>>) -> bool {
         let m = matrix.len();
         let n = matrix[0].len();
-        let mut visited = vec![vec![false; n]; m];
-        visited[0][n - 1] = true;
-        let mut q = VecDeque::new();
-        q.push_back((0, n - 1));
 
-        while !q.is_empty() {
-            let sz = q.len();
-            let mut val = None;
-            for _ in 0..sz {
-                let (x, y) = q.pop_front().unwrap();
-                match val {
-                    Some(val) => {
-                        if val != matrix[x][y] {
-                            return false;
-                        }
-                    }
-                    None => val = Some(matrix[x][y]),
+        // Check each diagonal starting from the first row
+        for j in 0..n {
+            let val = matrix[0][j];
+            let mut i = 1;
+            let mut k = j + 1;
+            while i < m && k < n {
+                if matrix[i][k] != val {
+                    return false;
                 }
-                for d in &[[0, 1], [1, 0], [-1, 0], [0, -1]] {
-                    let nx = x as i32 + d[0];
-                    let ny = y as i32 + d[1];
-                    if nx < 0
-                        || nx >= m as i32
-                        || ny < 0
-                        || ny >= n as i32
-                        || visited[nx as usize][ny as usize]
-                    {
-                        continue;
-                    }
-                    visited[nx as usize][ny as usize] = true;
+                i += 1;
+                k += 1;
+            }
+        }
 
-                    q.push_back((nx as usize, ny as usize));
+        // Check each diagonal starting from the first column
+        for i in 1..m {
+            let val = matrix[i][0];
+            let mut j = 1;
+            let mut k = i + 1;
+            while k < m && j < n {
+                if matrix[k][j] != val {
+                    return false;
                 }
+                j += 1;
+                k += 1;
             }
         }
 
