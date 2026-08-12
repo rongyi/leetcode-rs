@@ -1,11 +1,13 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 use std::collections::{HashSet, VecDeque};
 impl Solution {
     pub fn sliding_puzzle(board: Vec<Vec<i32>>) -> i32 {
         let target = "123450".to_string();
+        // each index pos can move to other index, like, for 0, we can move right
+        // to 1, and move down to 3
+        // 0, 1, 2
+        // 3, 4, 5   layout
         let dirs = vec![
             vec![1, 3],
             vec![0, 2, 4],
@@ -54,7 +56,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input = vec![vec![1, 2, 3], vec![4, 0, 5]];
-    Solution::sliding_puzzle(input);
-}
+fn main() {}
