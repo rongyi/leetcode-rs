@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -19,7 +18,7 @@ impl Solution {
             let mut cur_right_most = right_most[idx];
             let mut i = next_index;
 
-            // fetch right most
+            // drive to right most
             while i <= cur_right_most {
                 cur_right_most = cur_right_most.max(right_most[(s[i] as u8 - 'a' as u8) as usize]);
                 i += 1;
@@ -37,7 +36,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let a = Solution::partition_labels("ababcbacadefegdehijhklij".to_string());
-    println!("{:?}", a);
-}
+fn main() {}
