@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -7,12 +5,11 @@ impl Solution {
         let mut ret = 0;
 
         let mut cur_max = 0;
+        // Key insight: A chunk can end at position i iff
+        // all elements up to i are exactly the numbers 0..i
+        // This is true iff max(arr[0..=i]) == i
         for i in 0..arr.len() {
-            // The basic idea is to use max[] array to keep track of the max value until the current position,
-            // and compare it to the sorted array (indexes from 0 to arr.length - 1). If the max[i] equals the
-            // element at index i in the sorted array, then the final count++.
             cur_max = cur_max.max(arr[i]);
-            // here i means in sorted array to here the max value should be i
             if i as i32 == cur_max {
                 ret += 1;
             }
