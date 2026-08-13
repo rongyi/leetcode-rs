@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -54,6 +52,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    Solution::can_transform("RXR".to_string(), "XXR".to_string());
-}
+fn main() {}
