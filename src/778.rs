@@ -1,9 +1,6 @@
-#![allow(dead_code)]
-
-use std::collections::{BinaryHeap, HashSet};
-
 struct Solution;
 
+use std::collections::{BinaryHeap, HashSet};
 impl Solution {
     pub fn swim_in_water(grid: Vec<Vec<i32>>) -> i32 {
         let mut visited: HashSet<i32> = HashSet::new();
