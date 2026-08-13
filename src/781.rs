@@ -1,9 +1,6 @@
-#![allow(dead_code)]
-
-use std::collections::HashMap;
-
 struct Solution;
 
+use std::collections::HashMap;
 impl Solution {
     pub fn num_rabbits(answers: Vec<i32>) -> i32 {
         let mut canbemet: HashMap<i32, i32> = HashMap::new();
@@ -15,9 +12,11 @@ impl Solution {
                 continue;
             }
             if canbemet.contains_key(&num) {
-                canbemet.entry(num).and_modify(|v| *v -= 1);
-                if canbemet[&num] == 0 {
-                    canbemet.remove(&num);
+                if let Some(v) = canbemet.get_mut(&num) {
+                    *v -= 1;
+                    if *v == 0 {
+                        canbemet.remove(&num);
+                    }
                 }
             } else {
                 ret += num + 1;
