@@ -1,38 +1,35 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
     pub fn letter_case_permutation(s: String) -> Vec<String> {
-        let mut ret = Vec::new();
         let mut s: Vec<char> = s.chars().collect();
+        let mut ret: Vec<String> = Vec::new();
 
         Self::recur(&mut s, &mut ret, 0);
 
         ret
     }
-    fn recur(s: &mut Vec<char>, ret: &mut Vec<String>, idx: usize) {
-        if idx == s.len() {
+
+    fn recur(s: &mut Vec<char>, ret: &mut Vec<String>, i: usize) {
+        if i == s.len() {
             ret.push(s.iter().collect());
             return;
         }
-        // pick current case or just ignore digit
-        Self::recur(s, ret, idx + 1);
+        // don't change case
+        Self::recur(s, ret, i + 1);
+        // change case
+        if s[i].is_alphabetic() {
+            let origin = s[i];
+            let case_trans = if s[i].is_lowercase() {
+                s[i].to_ascii_uppercase()
+            } else {
+                s[i].to_ascii_lowercase()
+            };
+            s[i] = case_trans;
+            Self::recur(s, ret, i + 1);
 
-        if s[idx].is_alphabetic() {
-            // change case
-            if s[idx].is_lowercase() {
-                s[idx] = ('A' as u8 + s[idx] as u8 - 'a' as u8) as char;
-            } else {
-                s[idx] = ('a' as u8 + s[idx] as u8 - 'A' as u8) as char;
-            }
-            Self::recur(s, ret, idx + 1);
-            // restore
-            if s[idx].is_lowercase() {
-                s[idx] = ('A' as u8 + s[idx] as u8 - 'a' as u8) as char;
-            } else {
-                s[idx] = ('a' as u8 + s[idx] as u8 - 'A' as u8) as char;
-            }
+            // restore back
+            s[i] = origin;
         }
     }
 }
