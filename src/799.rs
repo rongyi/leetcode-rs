@@ -1,10 +1,7 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
     pub fn champagne_tower(poured: i32, query_row: i32, query_glass: i32) -> f64 {
-        // simulation
         let mut row = vec![poured as f64];
         for r in 0..query_row as usize {
             let mut next_row = vec![0.0; r + 2];
@@ -22,7 +19,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let val = Solution::champagne_tower(2, 1, 1);
-    println!("{}", val);
-}
+fn main() {}
