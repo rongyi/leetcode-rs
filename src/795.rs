@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -21,6 +20,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input = vec![1, 1, 1];
-}
+fn main() {}
