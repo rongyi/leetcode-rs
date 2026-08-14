@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -24,10 +23,8 @@ impl Solution {
         if dp[a as usize][b as usize] != 0.0 {
             return dp[a as usize][b as usize];
         }
-
         let serve_a = [100, 75, 50, 25];
         let serve_b = [0, 25, 50, 75];
-
         dp[a as usize][b as usize] = 0.0;
         for i in 0..serve_a.len() {
             dp[a as usize][b as usize] += Self::dfs(a - serve_a[i], b - serve_b[i], dp);
