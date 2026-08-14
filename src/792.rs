@@ -1,8 +1,6 @@
-#![allow(dead_code)]
 struct Solution;
 
 use std::collections::HashSet;
-
 impl Solution {
     pub fn num_matching_subseq(s: String, words: Vec<String>) -> i32 {
         let s: Vec<char> = s.chars().collect();
