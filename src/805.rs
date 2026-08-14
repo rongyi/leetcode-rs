@@ -1,7 +1,65 @@
-#![allow(dead_code)]
 struct Solution;
 
 use std::collections::HashSet;
+
+mod ai {
+    struct Solution;
+
+    use std::collections::HashSet;
+    impl Solution {
+        pub fn split_array_same_average(nums: Vec<i32>) -> bool {
+            let n = nums.len();
+            let total_sum: i32 = nums.iter().sum();
+
+            if n <= 1 {
+                return false;
+            }
+
+            // Try each possible subset size k
+            for k in 1..=n / 2 {
+                // Check if total_sum * k is divisible by n
+                // this is deduced from math
+                // sum_A * (n - k) = (total_sum - sum_A) * k
+                // sum_A * n - sum_A * k = total_sum * k - sum_A * k
+                // sum_A * n = total_sum * k
+                if (total_sum * k as i32) % n as i32 != 0 {
+                    continue;
+                }
+
+                let target_sum = total_sum * k as i32 / n as i32;
+
+                // DP: dp[size] = HashSet of possible sums with exactly 'size' elements
+                let mut dp = vec![HashSet::new(); k + 1];
+                dp[0].insert(0); // Empty subset has sum 0
+
+                // Try each number
+                for &num in &nums {
+                    // IMPORTANT: Go backwards to avoid reusing the same element
+                    for size in (1..=k).rev() {
+                        // For each sum achievable with (size-1) elements
+                        let new_sums: Vec<i32> =
+                            dp[size - 1].iter().map(|&sum| sum + num).collect();
+
+                        // Add all new sums to dp[size]
+                        for cur_sum in new_sums {
+                            // Optimization: Only keep sums <= target_sum
+                            if cur_sum <= target_sum {
+                                dp[size].insert(cur_sum);
+                            }
+                        }
+                    }
+                }
+
+                // Check if we found a subset of size k with sum = target_sum
+                if dp[k].contains(&target_sum) {
+                    return true;
+                }
+            }
+
+            false
+        }
+    }
+}
 
 impl Solution {
     pub fn split_array_same_average(nums: Vec<i32>) -> bool {
@@ -10,6 +68,8 @@ impl Solution {
         let m = sz / 2;
         let mut is_possible = false;
 
+        // sum_A / k = (total_sum - sum_A) / (n - k)
+        // -> sum_A * n = total_sum * k
         for i in 0..m {
             if is_possible {
                 break;
@@ -21,14 +81,9 @@ impl Solution {
         if !is_possible {
             return false;
         }
-        let mut sums: Vec<HashSet<i32>> = vec![HashSet::new(); m + 1];
+        let mut sums: Vec<HashSet<i32>> = vec![HashSet::new(); sz];
         sums[0].insert(0);
 
-        // vector<vector<unordered_set<int>>> sums(n, vector<unordered_set<int>>(n/2+1));
-        // sums[i][j] is all possible combination sum of j numbers from the subarray A[0, i];
-        // Goal: sums[n-1][k], for all k in range [1, n/2]
-        // Initial condition: sums[i][0] = {0}, 0 <= i <= n-1; sums[0][1] = {all numbers in the array};
-        // Deduction: sums[i+1][j] = sums[i][j] "join" (sums[i][j-1] + A[i+1])
         for &num in nums.iter() {
             for i in (1..=m).rev() {
                 for &t in sums[i - 1].clone().iter() {
