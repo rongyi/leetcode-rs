@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -8,25 +6,27 @@ impl Solution {
         let sz = s.len();
         let mut ret: Vec<i32> = vec![i32::MAX; sz];
 
-        let mut prev: Option<usize> = None;
+        let mut distance = i32::MAX;
         for i in 0..sz {
             if s[i] == c {
                 ret[i] = 0;
-                prev = Some(i);
+                distance = 0;
             } else {
-                if let Some(prev) = prev {
-                    ret[i] = ret[i].min((i - prev) as i32);
+                if distance != i32::MAX {
+                    distance += 1;
+                    ret[i] = distance;
                 }
             }
         }
-        let mut after: Option<usize> = None;
+        distance = i32::MAX;
         for i in (0..sz).rev() {
             if s[i] == c {
                 ret[i] = 0;
-                after = Some(i);
+                distance = 0;
             } else {
-                if let Some(after) = after {
-                    ret[i] = ret[i].min((after - i) as i32);
+                if distance != i32::MAX {
+                    distance += 1;
+                    ret[i] = ret[i].min(distance);
                 }
             }
         }
