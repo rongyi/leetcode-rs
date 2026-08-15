@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 use std::collections::HashSet;
