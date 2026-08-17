@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 struct Solution;
 
 impl Solution {
@@ -18,9 +16,7 @@ impl Solution {
         let mut max_pft = 0;
         let mut i = 0;
         let sz = difficulty.len();
-
         for &w in worker.iter() {
-            // yeah, this worker *can* finish this job
             while i < sz && w >= dp[i].0 {
                 max_pft = max_pft.max(dp[i].1);
                 i += 1;
