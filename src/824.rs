@@ -12,6 +12,7 @@ impl Solution {
         for (i, w) in words.iter_mut().enumerate() {
             let mut need_skip = false;
             if !vowels.contains(&w[0]) {
+                // add first to end, when not vowels
                 w.push(w[0]);
                 need_skip = true;
             }
