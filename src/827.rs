@@ -1,8 +1,6 @@
-#![allow(dead_code)]
-
-use std::{collections::{HashMap, HashSet}};
-
 struct Solution;
+
+use std::collections::{HashMap, HashSet};
 
 impl Solution {
     pub fn largest_island(mut grid: Vec<Vec<i32>>) -> i32 {
@@ -21,12 +19,12 @@ impl Solution {
                     let cur_area = Self::dfs(&mut grid, &dirs, i as i32, j as i32, index);
                     ret = ret.max(cur_area);
                     area.insert(index, cur_area);
-                    
+
                     index += 1;
                 }
             }
         }
-        
+
         // tranverse all 0 node
         for i in 0..n {
             for j in 0..n {
@@ -35,7 +33,7 @@ impl Solution {
                 }
                 let mut visited: HashSet<i32> = HashSet::new();
                 let mut cur = 1;
-                
+
                 for d in dirs.iter() {
                     let nx = i as i32 + d[0];
                     let ny = j as i32 + d[1];
