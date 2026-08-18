@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
@@ -28,7 +27,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let input = vec![2, 1, 4, 7, 3, 2, 5];
-    Solution::longest_mountain(input);
-}
+fn main() {}
