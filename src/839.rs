@@ -1,21 +1,19 @@
-#![allow(dead_code)]
-
 struct Solution;
-// or union find
+
 struct DisjointSet {
     v: Vec<i32>,
-    size: i32,
+    size: usize,
 }
 
 impl DisjointSet {
     fn new(sz: usize) -> Self {
         DisjointSet {
             v: (0..sz).into_iter().map(|i| i as i32).collect::<Vec<i32>>(),
-            size: sz as i32,
+            size: sz,
         }
     }
 
-    fn size(&self) -> i32 {
+    fn size(&self) -> usize {
         self.size
     }
 
@@ -49,7 +47,7 @@ impl Solution {
                 }
             }
         }
-        ds.size()
+        ds.size() as i32
     }
     fn similar(a: &str, b: &str) -> bool {
         let mut diff = 0;
