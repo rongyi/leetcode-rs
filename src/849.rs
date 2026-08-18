@@ -1,22 +1,20 @@
-#![allow(dead_code)]
 struct Solution;
 
 impl Solution {
     pub fn max_dist_to_closest(seats: Vec<i32>) -> i32 {
         let sz = seats.len();
-        let mut dist1 = vec![i32::MAX; sz];
-        let mut dist2 = vec![i32::MAX; sz];
+        let mut to_right = vec![i32::MAX; sz];
+        let mut to_left = vec![i32::MAX; sz];
         let mut prev = -1;
         for i in 0..sz {
             if seats[i] == 1 {
                 prev = i as i32;
             } else {
                 if prev != -1 {
-                    dist1[i] = i as i32 - prev;
+                    to_right[i] = i as i32 - prev;
                 }
             }
         }
-        let mut ret = 0;
 
         prev = -1;
         for i in (0..sz).rev() {
@@ -24,18 +22,19 @@ impl Solution {
                 prev = i as i32;
             } else {
                 if prev != -1 {
-                    dist2[i] = prev - i as i32;
+                    to_left[i] = prev - i as i32;
                 }
             }
         }
 
-        for i in 0..sz {
-            if seats[i] == 0 {
-                ret = ret.max(dist1[i].min(dist2[i]));
-            }
-        }
-
-        ret
+        to_right
+            .into_iter()
+            .zip(to_left.into_iter())
+            .enumerate()
+            .filter(|&(idx, (_a, _b))| seats[idx] == 0)
+            .map(|(_idx, (a, b))| a.min(b))
+            .max()
+            .unwrap()
     }
 }
 
