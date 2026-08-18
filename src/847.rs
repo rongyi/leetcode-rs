@@ -1,49 +1,43 @@
-#![allow(dead_code)]
 struct Solution;
 
 use std::collections::VecDeque;
 
 impl Solution {
     pub fn shortest_path_length(graph: Vec<Vec<i32>>) -> i32 {
-        let sz = graph.len();
-        if sz == 1 {
-            return 0;
+        let n = graph.len();
+        let full_mask = (1 << n) - 1;
+
+        // Use a 2D array for distance: dist[mask][node]
+        let mut dist = vec![vec![i32::MAX; n]; 1 << n];
+        let mut queue = VecDeque::new();
+
+        // Initialize: start from each node
+        for i in 0..n {
+            let mask = 1 << i;
+            dist[mask][i] = 0;
+            queue.push_back((mask, i));
         }
-        // all mask eq to 1
-        let success = (1 << sz) - 1;
-        let mut visited = vec![vec![false; 1 << sz]; sz];
-        let mut q: VecDeque<(usize, usize)> = VecDeque::new();
 
-        // start from each node
-        for i in 0..sz {
-            q.push_back((i, 1 << i));
-            visited[i][1 << i] = true;
-        }
+        while let Some((mask, u)) = queue.pop_front() {
+            let d = dist[mask][u];
 
-        let mut step = 0;
-
-        while !q.is_empty() {
-            let sz = q.len();
-            for _ in 0..sz {
-                let (node, mask) = q.pop_front().unwrap();
-                for &node_next in graph[node].iter() {
-                    let node_next = node_next as usize;
-                    let mask_next = mask | (1 << node_next);
-                    if mask_next == success {
-                        return step + 1;
-                    }
-
-                    if !visited[node_next][mask_next] {
-                        visited[node_next][mask_next] = true;
-                        q.push_back((node_next, mask_next));
-                    }
-                }
+            // If we've visited all nodes
+            if mask == full_mask {
+                return d;
             }
 
-            step += 1;
+            for &v in &graph[u] {
+                let v = v as usize;
+                let next_mask = mask | (1 << v);
+
+                if dist[next_mask][v] > d + 1 {
+                    dist[next_mask][v] = d + 1;
+                    queue.push_back((next_mask, v));
+                }
+            }
         }
 
-        step
+        -1
     }
 }
 
