@@ -1,27 +1,29 @@
-#![allow(dead_code)]
 struct Solution;
 
 use std::collections::{HashSet, VecDeque};
-
 impl Solution {
     pub fn can_visit_all_rooms(rooms: Vec<Vec<i32>>) -> bool {
-        let mut visited: HashSet<i32> = HashSet::new();
+        let mut unlocked_rooms: HashSet<i32> = HashSet::new();
         let mut q: VecDeque<i32> = VecDeque::new();
+        let sz = rooms.len();
+
         q.push_back(0);
+
         while !q.is_empty() {
             let cur = q.pop_front().unwrap();
-            visited.insert(cur);
-            if visited.len() == rooms.len() {
+            unlocked_rooms.insert(cur);
+            if unlocked_rooms.len() == sz {
                 return true;
             }
-            for &next in rooms[cur as usize].iter() {
-                if !visited.contains(&next) {
-                    q.push_back(next);
+
+            for &key_for_next_room in rooms[cur as usize].iter() {
+                if !unlocked_rooms.contains(&key_for_next_room) {
+                    q.push_back(key_for_next_room);
                 }
             }
         }
 
-        visited.len() == rooms.len()
+        unlocked_rooms.len() == rooms.len()
     }
 }
 
