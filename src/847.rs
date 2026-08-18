@@ -8,6 +8,7 @@ impl Solution {
         let full_mask = (1 << n) - 1;
 
         // Use a 2D array for distance: dist[mask][node]
+        // dist[mask][v]: visiting node set: mask, with last node is v
         let mut dist = vec![vec![i32::MAX; n]; 1 << n];
         let mut queue = VecDeque::new();
 
