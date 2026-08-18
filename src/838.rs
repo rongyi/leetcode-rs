@@ -29,6 +29,7 @@ impl Solution {
             } else if s[i] == 'R' {
                 if r != -1 {
                     let mut j = i as i32 - 1;
+                    // the origin R need not to be modified
                     while j > r && s[j as usize] == '.' {
                         s[j as usize] = 'R';
                         j -= 1;
