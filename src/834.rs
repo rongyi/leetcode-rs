@@ -1,5 +1,76 @@
-#![allow(dead_code)]
 struct Solution;
+
+mod ai {
+    struct Solution;
+
+    impl Solution {
+        pub fn sum_of_distances_in_tree(n: i32, edges: Vec<Vec<i32>>) -> Vec<i32> {
+            let n = n as usize;
+            // Build adjacency list
+            let mut graph = vec![Vec::new(); n];
+            for edge in edges {
+                let u = edge[0] as usize;
+                let v = edge[1] as usize;
+                graph[u].push(v);
+                graph[v].push(u);
+            }
+
+            // Arrays to store subtree sizes and answer
+            let mut size = vec![0; n];
+            let mut ans = vec![0; n];
+
+            // First DFS: compute subtree sizes and sum of distances from root (node 0)
+            Self::dfs1(0, n, &graph, &mut size, &mut ans);
+
+            // Second DFS: compute answers for all nodes using rerooting technique
+            Self::dfs2(0, n, &graph, &mut size, &mut ans);
+
+            ans
+        }
+
+        // First DFS: post-order traversal
+        // Returns subtree size and contributes to ans[0] (sum of distances from root)
+        fn dfs1(
+            u: usize,
+            parent: usize,
+            graph: &Vec<Vec<usize>>,
+            size: &mut Vec<i32>,
+            ans: &mut Vec<i32>,
+        ) {
+            size[u] = 1;
+            for &v in &graph[u] {
+                if v == parent {
+                    continue;
+                }
+                Self::dfs1(v, u, graph, size, ans);
+                size[u] += size[v];
+                ans[0] += size[v]; // Each node in v's subtree contributes 1 to distance from root
+            }
+        }
+
+        // Second DFS: pre-order traversal with rerooting
+        fn dfs2(
+            u: usize,
+            parent: usize,
+            graph: &Vec<Vec<usize>>,
+            size: &Vec<i32>,
+            ans: &mut Vec<i32>,
+        ) {
+            for &v in &graph[u] {
+                if v == parent {
+                    continue;
+                }
+                // Reroot from u to v
+                // When moving root from u to v:
+                // - Nodes in v's subtree get 1 closer (size[v] nodes)
+                // - All other nodes get 1 farther (n - size[v] nodes)
+                let n = ans.len() as i32;
+                ans[v] = ans[u] - size[v] + (n - size[v]);
+                Self::dfs2(v, u, graph, size, ans);
+            }
+        }
+    }
+}
 
 impl Solution {
     pub fn sum_of_distances_in_tree(n: i32, edges: Vec<Vec<i32>>) -> Vec<i32> {
@@ -29,13 +100,8 @@ impl Solution {
             Self::dfs(g, num_dis, next_node, cur);
 
             node_count += num_dis[next_node as usize].0;
-            // x个节点已知的distance之和和y
-            // 现在x作为结合‘挂’在了一个新的节点 y上，如下图
-            //    y
-            //   /
-            //  x
-            // 这样的化x已经数好的distance到y会全部多一跳， 总共多少？ 集合X的节点数
-            // 公式就是以下
+            // it's subtotal path and from parent to this subtree(including itself), the single path
+            // is going though size(subtree) times
             total_distance += num_dis[next_node as usize].1 + num_dis[next_node as usize].0;
         }
 
@@ -53,11 +119,10 @@ impl Solution {
         if pre == -1 {
             ret[cur as usize] = num_dis[cur as usize].1;
         } else {
-            // https://leetcode.com/problems/sum-of-distances-in-tree/discuss/161975/My-DFS-sulotion-two-passes
-            // (1) we divide the tree into two parts(two dotted circles).
-            // (2) the total number of k subtree is num[k], and pis farther of k, the total number of p subtree except k subtree is N - num[k].
-            // (3) assume we have calculated node p, now we should calculate node k, each node in k subtree should decrease by 1, and each node in p subtree except k subtree should increase by 1.
-            // (4) so we get ans[k] = ans[p] - num[k] * 1 + (N - num[k]) * 1, which is ans[k] = ans[p] + N - 2 * num[k].
+            // Reroot from u to v
+            // When moving root from u to v:
+            // - Nodes in v's subtree get 1 closer (size[v] nodes)
+            // - All other nodes get 1 farther (n - size[v] nodes)
             ret[cur as usize] = ret[pre as usize] + n - 2 * num_dis[cur as usize].0;
         }
 
