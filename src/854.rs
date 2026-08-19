@@ -1,5 +1,58 @@
 struct Solution;
 
+mod ai {
+    struct Solution;
+
+    use std::collections::{HashSet, VecDeque};
+
+    impl Solution {
+        pub fn k_similarity(s1: String, s2: String) -> i32 {
+            let s1: Vec<char> = s1.chars().collect();
+            let s2: Vec<char> = s2.chars().collect();
+            let n = s1.len();
+
+            // Pre-check: if strings are already equal
+            if s1 == s2 {
+                return 0;
+            }
+
+            let mut queue = VecDeque::new();
+            let mut visited = HashSet::new();
+
+            queue.push_back((s1.clone(), 0));
+            visited.insert(s1);
+
+            while let Some((mut curr, steps)) = queue.pop_front() {
+                // Find first mismatch
+                let mut i = 0;
+                while i < n && curr[i] == s2[i] {
+                    i += 1;
+                }
+
+                if i == n {
+                    return steps;
+                }
+
+                // Only try swaps that put the correct character at position i
+                for j in i + 1..n {
+                    if curr[j] == s2[i] && curr[j] != s2[j] {
+                        curr.swap(i, j);
+
+                        if !visited.contains(&curr) {
+                            visited.insert(curr.clone());
+                            queue.push_back((curr.clone(), steps + 1));
+                        }
+
+                        curr.swap(i, j);
+                    }
+                }
+            }
+
+            -1
+        }
+    }
+}
+
 impl Solution {
     pub fn k_similarity(s1: String, s2: String) -> i32 {
         let mut s1: Vec<char> = s1.chars().collect();
@@ -50,4 +103,5 @@ impl Solution {
         0
     }
 }
+
 fn main() {}
