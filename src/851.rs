@@ -1,7 +1,6 @@
 struct Solution;
+
 use std::collections::HashMap;
-
-
 impl Solution {
     pub fn loud_and_rich(richer: Vec<Vec<i32>>, quiet: Vec<i32>) -> Vec<i32> {
         let sz = quiet.len();
@@ -39,6 +38,51 @@ impl Solution {
         }
 
         ret[cur]
+    }
+}
+
+mod ai {
+    struct Solution;
+
+    use std::collections::VecDeque;
+
+    impl Solution {
+        pub fn loud_and_rich(richer: Vec<Vec<i32>>, quiet: Vec<i32>) -> Vec<i32> {
+            let sz = quiet.len();
+            let mut ret: Vec<i32> = (0..sz as i32).collect();
+
+            // build graph, from richer to poorer
+            let mut graph = vec![vec![]; sz];
+            let mut indegree = vec![0; sz];
+
+            for rich in richer.iter() {
+                // u -> v
+                let (u, v) = (rich[0] as usize, rich[1] as usize);
+                graph[u].push(v);
+                indegree[v] += 1;
+            }
+            let mut q = VecDeque::new();
+
+            for i in 0..sz {
+                if indegree[i] == 0 {
+                    q.push_back(i);
+                }
+            }
+            while let Some(u) = q.pop_front() {
+                // to poorer node
+                for &v in graph[u].iter() {
+                    if quiet[ret[u] as usize] < quiet[ret[v] as usize] {
+                        ret[v] = ret[u];
+                    }
+                    indegree[v] -= 1;
+                    if indegree[v] == 0 {
+                        q.push_back(v);
+                    }
+                }
+            }
+
+            ret
+        }
     }
 }
 
