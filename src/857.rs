@@ -1,41 +1,41 @@
 struct Solution;
 
+use core::f64;
 use std::collections::BinaryHeap;
 
 impl Solution {
     pub fn mincost_to_hire_workers(quality: Vec<i32>, wage: Vec<i32>, k: i32) -> f64 {
-        let mut workers: Vec<(f64, i32)> = quality
-            .iter()
-            .zip(wage.iter())
-            .map(|(&q, &w)| (w as f64 / q as f64, q))
-            .collect();
+        // 1. 得按比例最小的人来，什么意思： 意思就是你看那谁谁谁，能力那么强才拿那么点，你们
+        //    都学着点。
+        // 2. 比例最小的来，大家总共拿多少？ ==> 最小的那个比例 ratio * (k sum quality)
+        // 性价比之王排在最前面，躺着挣钱的在最后面
+        let sz = quality.len();
 
-        workers.sort_unstable_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        let mut workers = Vec::new();
+        for i in 0..sz {
+            let ratio: f64 = wage[i] as f64 / quality[i] as f64;
+            workers.push((ratio, quality[i]));
+        }
+        workers.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        let mut pq = BinaryHeap::new();
 
-        let mut quality_sum = 0;
-        let mut max_heap = BinaryHeap::new();
-        let mut min_cost = f64::INFINITY;
+        let mut ret: f64 = f64::MAX;
+        let mut qsum = 0;
 
-        for (ratio, q) in workers {
-            quality_sum += q;
-            max_heap.push(q);
+        for &(ratio, qlt) in workers.iter() {
+            pq.push(qlt);
+            qsum += qlt;
 
-            if max_heap.len() > k as usize {
-                // Anyone who has this question:
-                // Why do we choose the highest quality person to remove? Why not choosing other workers?
-                // Answer:
-                // Since the workers are sorted in the increasing order of the wage/quality ratio, the global ratio will never decrease. For the previously scanned wrokers, we do not care about their personal ratios any more because their personal ratios will always be less than (or equal to) the current global ratio. So the previous workers' personal ratio will never affect the total payment.
-                // Similarly, their personal base payment (i.e. the wage input) has been satisfied already. As the global ratio increases, their actual payemnt will only increase or stay the same, and will never become lower than their base payment.
-                // So when deciding whom to remove, the only thing that matters is the workers' quality. With a given global ratio, removing the highest quality worker will reduces the total payment as much as possible. That is why we want to removing the highest quality worker.
-                quality_sum -= max_heap.pop().unwrap();
+            if pq.len() > k as usize {
+                qsum -= pq.pop().unwrap();
             }
 
-            if max_heap.len() == k as usize {
-                min_cost = min_cost.min(ratio * quality_sum as f64);
+            if pq.len() == k as usize {
+                ret = ret.min(qsum as f64 * ratio);
             }
         }
 
-        min_cost
+        ret
     }
 }
 
