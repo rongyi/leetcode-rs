@@ -1,32 +1,38 @@
 struct Solution;
-use std::collections::BinaryHeap;
 
+use std::collections::BinaryHeap;
+use std::collections::VecDeque;
 
 impl Solution {
-    pub fn advantage_count(mut nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-        let sz = nums1.len();
-        nums1.sort_unstable();
-        let mut heap: BinaryHeap<(i32, usize)> = nums2
-            .into_iter()
-            .enumerate()
-            .map(|(i, num)| (num, i))
-            .collect();
+    pub fn advantage_count(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+        let n = nums1.len();
+        let mut nums1_sorted = nums1.clone();
+        nums1_sorted.sort_unstable();
+        let mut available: VecDeque<i32> = nums1_sorted.into_iter().collect();
 
-        let mut ret = vec![0; sz];
-        let mut low = 0;
-        let mut high = sz - 1;
+        // Use max-heap for nums2 to process largest values first
+        let mut heap = BinaryHeap::new();
+        for (i, &val) in nums2.iter().enumerate() {
+            heap.push((val, i));
+        }
 
-        while let Some((num2, idx)) = heap.pop() {
-            if nums1[high] > num2 {
-                ret[idx] = nums1[high];
-                high -= 1;
-            } else {
-                ret[idx] = nums1[low];
-                low += 1;
+        let mut result = vec![0; n];
+
+        while let Some((target, idx)) = heap.pop() {
+            // For the largest remaining target, we need the largest possible
+            // element that can beat it, or sacrifice the smallest
+            if let Some(&largest) = available.back() {
+                if largest > target {
+                    // Use the largest available to beat the largest target
+                    result[idx] = available.pop_back().unwrap();
+                } else {
+                    // Can't beat it, sacrifice the smallest
+                    result[idx] = available.pop_front().unwrap();
+                }
             }
         }
 
-        ret
+        result
     }
 }
 
