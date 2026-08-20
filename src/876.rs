@@ -13,23 +13,18 @@ impl ListNode {
         ListNode { next: None, val }
     }
 }
+
 impl Solution {
     pub fn middle_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        let sz = Self::len(head.as_ref());
-        let mut cur = head.as_ref();
-        for _ in 0..sz / 2 {
-            let next = cur.unwrap().next.as_ref();
-            cur = next;
+        let mut slow = head.as_ref();
+        let mut fast = head.as_ref();
+
+        while fast.is_some() && fast.as_ref().unwrap().next.is_some() {
+            slow = slow.as_ref().unwrap().next.as_ref();
+            fast = fast.as_ref().unwrap().next.as_ref().unwrap().next.as_ref();
         }
-        cur.map(|c| c.clone())
-    }
-    fn len(node: Option<&Box<ListNode>>) -> usize {
-        if let Some(node) = node {
-            1 + Self::len(node.next.as_ref())
-        } else {
-            0
-        }
+
+        slow.map(|v| v.clone())
     }
 }
-
 fn main() {}
