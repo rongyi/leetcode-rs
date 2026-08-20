@@ -18,6 +18,7 @@ impl TreeNode {
         }
     }
 }
+
 use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
@@ -25,23 +26,22 @@ impl Solution {
         root1: Option<Rc<RefCell<TreeNode>>>,
         root2: Option<Rc<RefCell<TreeNode>>>,
     ) -> bool {
-        let mut c1 = Vec::new();
-        let mut c2 = Vec::new();
-        Self::collect(root1.as_ref(), &mut c1);
-        Self::collect(root2.as_ref(), &mut c2);
+        let mut l1 = vec![];
+        let mut l2 = vec![];
+        Self::collect_leaf(root1.as_ref(), &mut l1);
+        Self::collect_leaf(root2.as_ref(), &mut l2);
 
-        c1 == c2
+        l1 == l2
     }
-    fn collect(root: Option<&Rc<RefCell<TreeNode>>>, out: &mut Vec<i32>) {
-        if let Some(node) = root {
+    fn collect_leaf(node: Option<&Rc<RefCell<TreeNode>>>, out: &mut Vec<i32>) {
+        if let Some(node) = node {
             let node = node.borrow();
             if node.left.is_none() && node.right.is_none() {
                 out.push(node.val);
             }
-            Self::collect(node.left.as_ref(), out);
-            Self::collect(node.right.as_ref(), out);
+            Self::collect_leaf(node.left.as_ref(), out);
+            Self::collect_leaf(node.right.as_ref(), out);
         }
     }
 }
-
 fn main() {}
