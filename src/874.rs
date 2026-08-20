@@ -1,44 +1,49 @@
-use std::collections::HashSet;
-
 struct Solution;
+
+use std::collections::HashSet;
 
 impl Solution {
     pub fn robot_sim(commands: Vec<i32>, obstacles: Vec<Vec<i32>>) -> i32 {
-        // North, East, South, West
-        let dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+        // Directions: north, east, south, west
+        let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+        let mut dir_idx = 0; // Start facing north
         let mut x = 0;
         let mut y = 0;
-        // 0 north
-        // 1 east
-        // 2 south
-        // 3 west
-        let mut direction = 0;
-        let mut ret = 0;
+        let mut max_dist = 0;
 
+        // Store obstacles in a HashSet for O(1) lookup
         let obstacle_set: HashSet<(i32, i32)> =
             obstacles.into_iter().map(|obs| (obs[0], obs[1])).collect();
 
-        for c in commands.into_iter() {
-            if c == -2 {
-                direction = (direction + 4 - 1) % 4;
-            } else if c == -1 {
-                direction = (direction + 1) % 4;
-            } else {
-                for _ in 0..c {
-                    let nx = x + dirs[direction][0];
-                    let ny = y + dirs[direction][1];
-                    if !obstacle_set.contains(&(nx, ny)) {
-                        x = nx;
-                        y = ny;
-                        ret = ret.max(x * x + y * y);
-                    } else {
-                        break;
+        for &cmd in &commands {
+            match cmd {
+                -2 => {
+                    // Turn left (counter-clockwise)
+                    dir_idx = (dir_idx + 3) % 4;
+                }
+                -1 => {
+                    // Turn right (clockwise)
+                    dir_idx = (dir_idx + 1) % 4;
+                }
+                1..=9 => {
+                    // Move forward
+                    let (dx, dy) = directions[dir_idx];
+                    for _ in 0..cmd {
+                        let next_x = x + dx;
+                        let next_y = y + dy;
+                        if obstacle_set.contains(&(next_x, next_y)) {
+                            break;
+                        }
+                        x = next_x;
+                        y = next_y;
+                        max_dist = max_dist.max(x * x + y * y);
                     }
                 }
+                _ => unreachable!(),
             }
         }
 
-        ret
+        max_dist
     }
 }
 
