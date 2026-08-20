@@ -2,21 +2,33 @@ struct Solution;
 
 impl Solution {
     pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
-        let mut l = 1;
-        let mut r = 1000_000_000;
-        while l < r {
-            let m = l + (r - l) / 2;
-            let mut total = 0;
-            for &p in piles.iter() {
-                total += (p + m - 1) / m;
-            }
-            if total > h {
-                l = m + 1;
+        let mut left = 1;
+        let mut right = *piles.iter().max().unwrap();
+
+        while left <= right {
+            let mid = left + (right - left) / 2;
+            if Self::can_finish(&piles, h, mid) {
+                right = mid - 1;
             } else {
-                r = m;
+                left = mid + 1;
             }
         }
-        l
+
+        left
+    }
+
+    fn can_finish(piles: &[i32], h: i32, speed: i32) -> bool {
+        let mut hours = 0;
+        for &pile in piles {
+            // Calculate hours needed for this pile
+            // Ceiling division: (pile + speed - 1) / speed
+            hours += (pile + speed - 1) / speed;
+            // Early exit if already exceeded h
+            if hours > h {
+                return false;
+            }
+        }
+        hours <= h
     }
 }
 
