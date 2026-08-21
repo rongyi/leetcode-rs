@@ -2,34 +2,53 @@ struct Solution;
 
 impl Solution {
     pub fn nth_magical_number(n: i32, a: i32, b: i32) -> i32 {
-        let m = 1e9 as i64 + 7;
-        let n = n as i64;
+        const MOD: i64 = 1_000_000_007;
+
+        fn gcd(mut x: i64, mut y: i64) -> i64 {
+            while y != 0 {
+                let temp = y;
+                y = x % y;
+                x = temp;
+            }
+            x
+        }
+
+        fn lcm(x: i64, y: i64) -> i64 {
+            x / gcd(x, y) * y
+        }
+
         let a = a as i64;
         let b = b as i64;
+        let n = n as i64;
+        let l = lcm(a, b);
 
-        let lcm = a * b / Self::gcd(a, b);
-        let mut l = 2;
-        let mut r = 1e14 as i64;
-        while l < r {
-            let mid = l + (r - l) / 2;
-            if mid / a + mid / b - m / lcm < n as i64 {
-                l = mid + 1;
+        // Number of magical numbers in one LCM cycle
+        let cycle_count = l / a + l / b - 1;
+        let full_cycles = n / cycle_count;
+        let remainder = n % cycle_count;
+
+        // Base value from full cycles
+        let base = (full_cycles % MOD) * (l % MOD) % MOD;
+
+        if remainder == 0 {
+            return base as i32;
+        }
+
+        // Find the remainder-th magical number within one cycle
+        let mut left = 0;
+        let mut right = l;
+
+        while left < right {
+            let mid = left + (right - left) / 2;
+            let count = mid / a + mid / b;
+            if count < remainder {
+                left = mid + 1;
             } else {
-                r = mid;
+                right = mid;
             }
         }
-        (l % m) as i32
-    }
 
-    fn gcd(mut x: i64, mut y: i64) -> i64 {
-        let mut r;
-        while y > 0 {
-            r = x % y;
-            x = y;
-            y = r;
-        }
-
-        x as i64
+        ((base + left) % MOD) as i32
     }
 }
 
