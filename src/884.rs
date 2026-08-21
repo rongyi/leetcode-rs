@@ -1,20 +1,33 @@
-
 struct Solution;
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+
 impl Solution {
     pub fn uncommon_from_sentences(s1: String, s2: String) -> Vec<String> {
-        let w1: Vec<String> = s1.split(' ').map(|s| s.to_string()).collect();
-        let w2: Vec<String> = s2.split(' ').map(|s| s.to_string()).collect();
-        let mut cnt: HashMap<String, i32> = HashMap::new();
-        for w in w1.into_iter().chain(w2.into_iter()) {
-            *cnt.entry(w).or_insert(0) += 1;
+        let mut set1: HashMap<_, i32> = HashMap::new();
+        let mut set2: HashMap<_, i32> = HashMap::new();
+
+        for w in s1.split(' ') {
+            *set1.entry(w).or_default() += 1;
+        }
+        for w in s2.split(' ') {
+            *set2.entry(w).or_default() += 1;
+        }
+        let mut out = vec![];
+
+        for (k, &v) in set1.iter() {
+            if v == 1 && !set2.contains_key(k) {
+                out.push(k.to_string());
+            }
         }
 
-        cnt.into_iter()
-            .filter(|&(_, v)| v == 1)
-            .map(|(k, _v)| k)
-            .collect()
+        for (k, &v) in set2.iter() {
+            if v == 1 && !set1.contains_key(k) {
+                out.push(k.to_string());
+            }
+        }
+
+        out
     }
 }
 
