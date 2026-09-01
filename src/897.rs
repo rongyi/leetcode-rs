@@ -32,16 +32,16 @@ impl Solution {
 
         val
     }
-    fn inorder_traversal(node: Option<Rc<RefCell<TreeNode>>>, cur: &mut Rc<RefCell<TreeNode>>) {
+    fn inorder_traversal(node: Option<Rc<RefCell<TreeNode>>>, prev: &mut Rc<RefCell<TreeNode>>) {
         if let Some(n) = node {
             let mut n = n.borrow_mut();
-            Self::inorder_traversal(n.left.take(), cur);
+            Self::inorder_traversal(n.left.take(), prev);
 
-            cur.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(n.val))));
-            let next = cur.borrow().right.clone().unwrap();
-            *cur = next;
+            prev.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(n.val))));
+            let next = prev.borrow().right.clone().unwrap();
+            *prev = next;
 
-            Self::inorder_traversal(n.right.take(), cur);
+            Self::inorder_traversal(n.right.take(), prev);
         }
     }
 }

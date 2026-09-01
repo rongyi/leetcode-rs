@@ -1,4 +1,3 @@
-
 struct Solution;
 
 use std::collections::HashMap;
@@ -12,11 +11,13 @@ impl Solution {
 
         for j in 0..sz {
             *cnt.entry(fruits[j]).or_insert(0) += 1;
+
             while cnt.len() > 2 {
-                let left = cnt.get_mut(&fruits[i]).unwrap();
-                *left -= 1;
-                if *left == 0 {
-                    cnt.remove(&fruits[i]);
+                if let Some(left) = cnt.get_mut(&fruits[i]) {
+                    *left -= 1;
+                    if *left == 0 {
+                        cnt.remove(&fruits[i]);
+                    }
                 }
 
                 i += 1;
