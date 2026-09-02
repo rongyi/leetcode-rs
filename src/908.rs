@@ -8,11 +8,8 @@ impl Solution {
         let max = *nums.iter().max().unwrap();
         let min = *nums.iter().min().unwrap();
         let diff = max - min - 2 * k;
-        if diff > 0 {
-            diff
-        } else {
-            0
-        }
+
+        diff.max(0)
     }
 }
 
