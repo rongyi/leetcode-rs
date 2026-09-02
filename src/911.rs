@@ -46,13 +46,10 @@ impl TopVotedCandidate {
         //     }
         // }
 
-        // match self.times.binary_search(&t) {
-        //     Ok(idx) => self.leaders[idx],
-        //     Err(idx) => self.leaders[idx - 1],
-        // }
-
-        let idx = self.times.partition_point(|&time| time <= t);
-        self.leaders[idx - 1]
+        match self.times.binary_search(&t) {
+            Ok(idx) => self.leaders[idx],
+            Err(idx) => self.leaders[idx - 1],
+        }
     }
 }
 
