@@ -17,6 +17,7 @@ impl Solution {
         }
         let mut ret = 0;
 
+        // k is the third num we choose, nums[i]+ nums[j] equal some val is counted by dp[j][somevalue]
         for k in 2..sz {
             if arr[k] <= target {
                 for j in 0..k {

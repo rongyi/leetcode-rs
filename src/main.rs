@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+
 mod lc04 {
 
     struct Solution;
