@@ -3,7 +3,6 @@ struct Solution;
 impl Solution {
     pub fn min_add_to_make_valid(s: String) -> i32 {
         let mut left = 0;
-        let mut right = 0;
         let mut stk: Vec<char> = Vec::new();
 
         for c in s.chars() {
@@ -17,9 +16,8 @@ impl Solution {
                 }
             }
         }
-        right = stk.len() as i32;
 
-        left + right
+        left + stk.len() as i32
     }
 }
 
