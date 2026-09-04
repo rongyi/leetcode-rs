@@ -19,6 +19,7 @@ impl Solution {
             }
         }
         let mut ret = i32::MAX;
+        // 是的，就是这么朴实无华
         for &(x1, y1) in land1.iter() {
             for &(x2, y2) in land2.iter() {
                 let cur = i32::abs(x1 - x2) + i32::abs(y1 - y2);
