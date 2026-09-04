@@ -1,5 +1,40 @@
 struct Solution;
 
+mod ai {
+    struct Solution;
+
+    impl Solution {
+        pub fn min_flips_mono_incr(s: String) -> i32 {
+            let s = s.as_bytes();
+            let n = s.len();
+
+            let total_ones = s.iter().filter(|&&c| c == b'1').count();
+            let total_zeros = n - total_ones;
+
+            let mut min_flips = total_ones.min(total_zeros);
+            let mut ones_seen = 0;
+            let mut zeros_seen = 0;
+
+            // Try split before each position
+            for i in 0..=n {
+                if i > 0 {
+                    if s[i - 1] == b'1' {
+                        ones_seen += 1;
+                    } else {
+                        zeros_seen += 1;
+                    }
+                }
+
+                let right_zeros = total_zeros - zeros_seen;
+                let flips = ones_seen + right_zeros;
+                min_flips = min_flips.min(flips);
+            }
+
+            min_flips as i32
+        }
+    }
+}
+
 impl Solution {
     pub fn min_flips_mono_incr(s: String) -> i32 {
         let mut one_cnt = 0;
