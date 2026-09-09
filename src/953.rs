@@ -1,36 +1,23 @@
 struct Solution;
 
+use std::collections::HashMap;
 impl Solution {
     pub fn is_alien_sorted(words: Vec<String>, order: String) -> bool {
-        let mut char_order = vec![0; 26];
-        let words: Vec<Vec<char>> = words.into_iter().map(|s| s.chars().collect()).collect();
-
+        let mut sorted: HashMap<char, usize> = HashMap::new();
         for (i, c) in order.chars().enumerate() {
-            char_order[(c as u8 - b'a') as usize] = i;
+            sorted.insert(c, i);
         }
 
-        for i in 0..words.len() - 1 {
-            if !Self::is_sorted(&words[i], &words[i + 1], &char_order) {
-                return false;
-            }
+        let mut normalized: Vec<Vec<usize>> = Vec::with_capacity(words.len());
+        for w in words.iter() {
+            let cur: Vec<usize> = w.chars().map(|c| sorted[&c]).collect();
+            normalized.push(cur);
         }
 
-        true
-    }
+        let mut sorted_normalize: Vec<Vec<usize>> = normalized.clone();
+        sorted_normalize.sort_unstable();
 
-    fn is_sorted(word1: &[char], word2: &[char], char_order: &Vec<usize>) -> bool {
-        let mut i = 0;
-        while i < word1.len() && i < word2.len() {
-            let c1 = word1[i];
-            let c2 = word2[i];
-            if c1 != c2 {
-                return char_order[(c1 as u8 - b'a') as usize]
-                    < char_order[(c2 as u8 - b'a') as usize];
-            }
-            i += 1;
-        }
-
-        word1.len() <= word2.len()
+        sorted_normalize == normalized
     }
 }
 
