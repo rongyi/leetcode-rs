@@ -2,20 +2,25 @@ struct Solution;
 
 impl Solution {
     pub fn min_increment_for_unique(mut nums: Vec<i32>) -> i32 {
-        nums.sort_unstable();
-        let mut ret = 0;
-        let mut prev = nums[0];
+        if nums.is_empty() {
+            return 0;
+        }
 
-        for &num in nums.iter().skip(1) {
-            if num <= prev {
-                ret += prev + 1 - num;
-                prev += 1;
-            } else {
-                prev = num;
+        // 1. Sort the array
+        nums.sort_unstable();
+
+        let mut moves = 0;
+
+        // 2. Iterate and enforce strict ordering: nums[i] > nums[i - 1]
+        for i in 1..nums.len() {
+            if nums[i] <= nums[i - 1] {
+                let target = nums[i - 1] + 1;
+                moves += target - nums[i];
+                nums[i] = target;
             }
         }
 
-        ret
+        moves
     }
 }
 
