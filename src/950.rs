@@ -1,22 +1,20 @@
-use std::collections::VecDeque;
-
 struct Solution;
 
+use std::collections::VecDeque;
 impl Solution {
     pub fn deck_revealed_increasing(mut deck: Vec<i32>) -> Vec<i32> {
-        deck.sort_unstable_by(|a, b| b.cmp(a));
-        let mut ret = VecDeque::new();
+        deck.sort_unstable();
+        let mut q = VecDeque::new();
 
-        for &card in deck.iter() {
-            if !ret.is_empty() {
-                if let Some(last) = ret.pop_back() {
-                    ret.push_front(last);
-                }
+        // to simulate
+        for &card in deck.iter().rev() {
+            if let Some(last) = q.pop_back() {
+                q.push_front(last);
             }
-            ret.push_front(card);
+            q.push_front(card);
         }
 
-        ret.into()
+        q.into()
     }
 }
 
