@@ -1,5 +1,22 @@
-
 struct Solution;
+
+mod ai {
+    struct Solution;
+
+    impl Solution {
+        pub fn k_closest(mut points: Vec<Vec<i32>>, k: i32) -> Vec<Vec<i32>> {
+            let k = k as usize;
+
+            // QuickSelect: Partitions points so that the top `k` closest
+            // elements are placed in indices `0..k`.
+            points.select_nth_unstable_by_key(k - 1, |p| p[0] * p[0] + p[1] * p[1]);
+
+            // Truncate to keep only the first `k` elements
+            points.truncate(k);
+            points
+        }
+    }
+}
 
 use std::{
     cmp::Reverse,
