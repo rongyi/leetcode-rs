@@ -6,6 +6,7 @@ impl Solution {
         let m = strs.len();
         let n = strs[0].len();
         let mut ret = 0;
+
         for j in 0..n {
             let mut i = 1;
             let mut has_equal = false;
@@ -22,9 +23,11 @@ impl Solution {
                 i += 1;
             }
             // no need to see afterward, this column is already sorted
+            // we can make sure whatever after this column, the string is already sorted
             if i == m && !has_equal {
                 return ret;
             }
+
             if i < m {
                 for k in 0..m {
                     strs[k][j] = '*';
