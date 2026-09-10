@@ -29,28 +29,19 @@ impl Solution {
         }
         let mut q = VecDeque::new();
 
-        let mut prev_hole = false;
         q.push_back(root.clone());
 
-        while !q.is_empty() {
-            let sz = q.len();
-            let mut has_hole = false;
-            for _ in 0..sz {
-                let cur = q.pop_front().unwrap();
-                if let Some(node) = cur {
-                    if has_hole || prev_hole {
-                        return false;
-                    }
-                    let node = node.borrow();
-                    q.push_back(node.left.clone());
-                    q.push_back(node.right.clone());
-                } else {
-                    has_hole = true;
-                    continue;
+        while let Some(cur) = q.pop_front() {
+            match cur {
+                Some(node) => {
+                    let n = node.borrow();
+                    q.push_back(n.left.clone());
+                    q.push_back(n.right.clone());
+                }
+                None => {
+                    return q.into_iter().all(|n| n.is_none());
                 }
             }
-
-            prev_hole = has_hole;
         }
 
         true
