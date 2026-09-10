@@ -12,15 +12,20 @@ impl Solution {
         nums.sort_by_key(|&x| x.abs());
 
         for &num in nums.iter() {
-            if count[&num] == 0 {
-                continue;
-            }
-            let cur = count[&num];
-            if count.get(&(num * 2)).unwrap_or(&0) < count.get(&num).unwrap_or(&0) {
-                return false;
-            }
+            match count.get(&num) {
+                Some(&cur) if cur == 0 => {
+                    continue;
+                }
+                Some(&cur) => {
+                    let pair_key = num * 2;
+                    if *count.get(&pair_key).unwrap_or(&0) < cur {
+                        return false;
+                    }
 
-            count.entry(num * 2).and_modify(|v| *v -= cur);
+                    count.entry(num * 2).and_modify(|v| *v -= cur);
+                }
+                None => continue,
+            }
         }
 
         true
