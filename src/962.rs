@@ -2,32 +2,35 @@ struct Solution;
 
 impl Solution {
     pub fn max_width_ramp(nums: Vec<i32>) -> i32 {
-        let sz = nums.len();
-        let mut min_lst = vec![0; sz];
-        let mut max_lst = vec![0; sz];
+        let mut stack: Vec<usize> = Vec::new();
+        let n = nums.len();
 
-        min_lst[0] = nums[0];
-        for i in 1..sz {
-            min_lst[i] = min_lst[i - 1].min(nums[i]);
-        }
-        max_lst[sz - 1] = nums[sz - 1];
-        for i in (0..sz - 1).rev() {
-            max_lst[i] = max_lst[i + 1].max(nums[i]);
-        }
-        let mut left = 0;
-        let mut right = 0;
-
-        let mut ret = 0;
-        while right < sz {
-            if min_lst[left] <= max_lst[right] {
-                ret = ret.max((right - left) as i32);
-                right += 1;
-            } else {
-                left += 1;
+        // Step 1: Build a strictly decreasing stack of indices.
+        // We only care about decreasing values because if a later value is larger,
+        // it would make a narrower ramp than an earlier, smaller value.
+        for i in 0..n {
+            if stack.is_empty() || nums[i] < nums[*stack.last().unwrap()] {
+                stack.push(i);
             }
         }
 
-        ret
+        let mut max_width = 0;
+
+        // Step 2: Iterate from right to left to maximize width (j - i).
+        for j in (0..n).rev() {
+            // While the current right-side element is greater than or equal to
+            // the element at the top of the stack, it's a valid ramp.
+            while let Some(&i) = stack.last() {
+                if nums[j] >= nums[i] {
+                    max_width = max_width.max(j - i);
+                    stack.pop(); // Pop because no smaller `j` can make a wider ramp for this `i`
+                } else {
+                    break;
+                }
+            }
+        }
+
+        max_width as i32
     }
 }
 
