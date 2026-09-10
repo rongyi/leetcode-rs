@@ -39,6 +39,7 @@ impl Solution {
     ) -> bool {
         if let Some(node) = root {
             let node = node.borrow();
+            // we have swapped if nessary, and still not match, return false
             if *index >= voyage.len() || node.val != voyage[*index] {
                 return false;
             }
@@ -48,6 +49,8 @@ impl Solution {
                 && node.left.as_ref().unwrap().borrow().val
                     != voyage.get(*index).copied().unwrap_or(-1)
             {
+                // flip parent node, based on left and right value
+                // if dont match left, we flip left/right node, and identified by parent node in flip
                 flips.push(node.val);
                 Self::dfs(node.right.as_ref(), voyage, index, flips)
                     && Self::dfs(node.left.as_ref(), voyage, index, flips)
