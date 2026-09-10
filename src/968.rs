@@ -53,6 +53,7 @@ impl Solution {
             }
             return 0;
         } else {
+            // 假装被人照顾到，空的时候
             1
         }
     }
