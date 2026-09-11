@@ -30,20 +30,17 @@ impl Solution {
         Self::dfs(root.as_ref(), None, &mut x_level, &mut x_parent, x, 0);
         Self::dfs(root.as_ref(), None, &mut y_level, &mut y_parent, y, 0);
 
-        // x != y so, if either parent is None, we can return false
-        if x_parent.is_none() || y_parent.is_none() {
-            return false;
+        match (x_parent, y_parent) {
+            (Some(x), Some(y)) => {
+                if x == y {
+                    return false;
+                }
+                return x_level == y_level;
+            }
+            _ => return false,
         }
-
-        if x_level != y_level {
-            return false;
-        }
-        if x_parent.unwrap() == y_parent.unwrap() {
-            return false;
-        }
-
-        true
     }
+
     fn dfs(
         node: Option<&Rc<RefCell<TreeNode>>>,
         parent: Option<i32>,
