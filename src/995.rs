@@ -1,5 +1,41 @@
 struct Solution;
 
+mod ai {
+    struct Solution;
+
+    impl Solution {
+        pub fn min_k_bit_flips(mut nums: Vec<i32>, k: i32) -> i32 {
+            let n = nums.len();
+            let k = k as usize;
+            let mut total_flips = 0;
+            let mut current_flips = 0;
+
+            for i in 0..n {
+                // Remove the flip that started at (i - k) since it no longer covers index i
+                if i >= k && nums[i - k] >= 2 {
+                    current_flips -= 1;
+                }
+
+                // An element's effective value is 0 if its raw value equals (current_flips % 2)
+                if nums[i] == (current_flips & 1) {
+                    // Not enough elements left to complete a K-bit flip
+                    if i + k > n {
+                        return -1;
+                    }
+
+                    total_flips += 1;
+                    current_flips += 1;
+
+                    // Mark in-place that a flip originated at index i
+                    nums[i] += 2;
+                }
+            }
+
+            total_flips
+        }
+    }
+}
+
 impl Solution {
     // Create a new array isFlipped[n].
     // isFlipped[i] = 1 iff we flip K consecutive bits starting at A[i].
