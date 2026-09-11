@@ -18,6 +18,7 @@ impl TreeNode {
         }
     }
 }
+
 use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
@@ -28,13 +29,16 @@ impl Solution {
 
         ret
     }
+
     fn dfs(root: Option<&Rc<RefCell<TreeNode>>>, mv: &mut i32) -> i32 {
         if let Some(node) = root {
             let node = node.borrow();
             let l = Self::dfs(node.left.as_ref(), mv);
             let r = Self::dfs(node.right.as_ref(), mv);
+            // 大于 0 代表要上贡给 parent， 小于 0 代表要伸手要的赤字
             *mv += l.abs() + r.abs();
 
+            // Return the net balance of this subtree to the parent
             node.val + l + r - 1
         } else {
             0
