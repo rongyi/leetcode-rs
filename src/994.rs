@@ -46,6 +46,7 @@ impl Solution {
                 }
             }
         }
+
         if num_good > 0 {
             return -1;
         }
