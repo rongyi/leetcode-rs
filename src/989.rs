@@ -5,17 +5,13 @@ impl Solution {
         let mut carry = 0;
 
         let mut ret = Vec::new();
-        for i in num.into_iter().rev() {
-            let cur = i + k % 10 + carry;
+        let mut i = num.len() as i32 - 1;
+        while i >= 0 || k > 0 {
+            let cur = if i >= 0 { num[i as usize] } else { 0 } + k % 10 + carry;
             ret.push(cur % 10);
             carry = cur / 10;
             k /= 10;
-        }
-        while k > 0 {
-            let cur = k % 10 + carry;
-            ret.push(cur % 10);
-            k /= 10;
-            carry = cur / 10;
+            i -= 1;
         }
 
         if carry > 0 {
@@ -23,6 +19,7 @@ impl Solution {
         }
 
         ret.reverse();
+
         ret
     }
 }
