@@ -7,18 +7,18 @@ impl Solution {
         }
 
         let n = n as usize;
-        let mut trust_count = vec![0; n + 1];
-        let mut trusted_by = vec![0; n + 1];
+        let mut out_count = vec![0; n + 1];
+        let mut in_count = vec![0; n + 1];
 
         for p in trust.iter() {
             let a = p[0] as usize;
             let b = p[1] as usize;
-            trust_count[a] += 1;
-            trusted_by[b] += 1;
+            out_count[a] += 1;
+            in_count[b] += 1;
         }
 
         for i in 1..=n {
-            if trust_count[i] == 0 && trusted_by[i] == n - 1 {
+            if out_count[i] == 0 && in_count[i] == n - 1 {
                 return i as i32;
             }
         }
