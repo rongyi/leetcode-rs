@@ -6,16 +6,17 @@ impl Solution {
         let mut ret: Vec<i32> = Vec::with_capacity(queries.len());
 
         for q in queries.into_iter() {
-            let index = q[1] as usize;
-            let val = q[0];
+            let (index, val) = (q[1] as usize, q[0]);
 
             if nums[index] % 2 == 0 {
                 sum -= nums[index];
             }
+
             nums[index] += val;
             if nums[index] % 2 == 0 {
                 sum += nums[index];
             }
+
             ret.push(sum);
         }
 
