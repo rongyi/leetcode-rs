@@ -1,30 +1,33 @@
 struct Solution;
 
-use std::collections::VecDeque;
 impl Solution {
     pub fn mincost_tickets(days: Vec<i32>, costs: Vec<i32>) -> i32 {
-        let mut ret = 0;
+        let last_day = *days.last().unwrap() as usize;
 
-        let mut last7: VecDeque<(i32, i32)> = VecDeque::new();
-        let mut last30: VecDeque<(i32, i32)> = VecDeque::new();
-        for d in days.into_iter() {
-            while !last7.is_empty() && last7.front().unwrap().0 + 7 <= d {
-                last7.pop_front();
-            }
-            while !last30.is_empty() && last30.front().unwrap().0 + 30 <= d {
-                last30.pop_front();
-            }
-            last7.push_back((d, ret + costs[1]));
-            last30.push_back((d, ret + costs[2]));
-
-            let val1 = ret + costs[0];
-            let val2 = last7.front().unwrap().1.min(last30.front().unwrap().1);
-            // i32::min(ret + costs[0], val);
-            let val = val1.min(val2);
-            ret = val;
+        // Mark which calendar days are travel days
+        let mut is_travel_day = vec![false; last_day + 1];
+        for &day in &days {
+            is_travel_day[day as usize] = true;
         }
 
-        ret
+        // dp[i] = minimum cost to cover all travel days up to day i
+        let mut dp = vec![0; last_day + 1];
+
+        for i in 1..=last_day {
+            if !is_travel_day[i] {
+                // Not traveling today, cost remains same as yesterday
+                dp[i] = dp[i - 1];
+            } else {
+                // Consider buying 1-day, 7-day, or 30-day pass today
+                let cost1 = dp[i - 1] + costs[0];
+                let cost7 = dp[i.saturating_sub(7)] + costs[1];
+                let cost30 = dp[i.saturating_sub(30)] + costs[2];
+
+                dp[i] = cost1.min(cost7).min(cost30);
+            }
+        }
+
+        dp[last_day]
     }
 }
 

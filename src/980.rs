@@ -5,6 +5,7 @@ impl Solution {
         let mut start_x = 0;
         let mut start_y = 0;
         let mut empty_cnt = 0;
+
         for i in 0..grid.len() {
             for j in 0..grid[0].len() {
                 if grid[i][j] == 1 {
@@ -34,6 +35,7 @@ impl Solution {
             }
             return 0;
         }
+        // visited mark
         grid[x as usize][y as usize] = -1;
         let mut total_path = 0;
 
@@ -41,6 +43,7 @@ impl Solution {
         for d in dirs.into_iter() {
             total_path += Self::dfs(grid, x + d[0], y + d[1], empty_cnt, visited_empty + 1);
         }
+        // restore
         grid[x as usize][y as usize] = 0;
 
         total_path
