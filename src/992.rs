@@ -5,6 +5,7 @@ impl Solution {
     pub fn subarrays_with_k_distinct(nums: Vec<i32>, k: i32) -> i32 {
         Self::at_most_k(&nums, k) - Self::at_most_k(&nums, k - 1)
     }
+
     fn at_most_k(nums: &Vec<i32>, k: i32) -> i32 {
         let mut ret = 0;
         let mut i = 0;
