@@ -5,12 +5,14 @@ impl Solution {
         let sz = nums.len();
         let mut ret = 0;
         let mut i = 0;
-        let mut cur_flips = 0;
+
+        let mut zero_count = 0;
+
         for j in 0..sz {
-            cur_flips += 1 - nums[j];
-            while cur_flips > k {
+            zero_count += 1 - nums[j];
+            while zero_count > k {
                 if nums[i] == 0 {
-                    cur_flips -= 1;
+                    zero_count -= 1;
                 }
                 i += 1;
             }
