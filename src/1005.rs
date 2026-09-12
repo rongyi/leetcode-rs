@@ -1,33 +1,26 @@
 struct Solution;
 
 impl Solution {
-    pub fn largest_sum_after_k_negations(nums: Vec<i32>, k: i32) -> i32 {
-        let pos_sum: i32 = nums.iter().filter(|&&x| x >= 0).sum();
-        let mut negs: Vec<i32> = nums.iter().filter(|&&x| x < 0).copied().collect();
-        let neg_sz = negs.len() as i32;
-        let min_abs = nums.iter().map(|&x| x.abs()).min().unwrap();
+    pub fn largest_sum_after_k_negations(mut nums: Vec<i32>, mut k: i32) -> i32 {
+        // Sort in ascending order to bring the most negative numbers to the front
+        nums.sort_unstable();
 
-        if k == neg_sz {
-            return pos_sum - negs.into_iter().sum::<i32>();
-        }
-
-        // k has some left
-        if neg_sz < k {
-            let left_flips = k - neg_sz;
-
-            if left_flips % 2 == 1 {
-                return pos_sum - negs.into_iter().sum::<i32>() - min_abs * 2;
+        // Pass 1: Negate negative numbers starting from the smallest (most negative)
+        for num in nums.iter_mut() {
+            if *num < 0 && k > 0 {
+                *num = -*num;
+                k -= 1;
             }
-
-            return pos_sum - negs.into_iter().sum::<i32>();
-        }
-        // consume all k
-        negs.sort_unstable();
-        for i in 0..k as usize {
-            negs[i] *= -1;
         }
 
-        pos_sum + negs.into_iter().sum::<i32>()
+        // Pass 2: If k is still odd, flip the smallest value in the modified array
+        if k % 2 == 1 {
+            if let Some(min_val) = nums.iter_mut().min() {
+                *min_val = -*min_val;
+            }
+        }
+
+        nums.iter().sum()
     }
 }
 
