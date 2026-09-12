@@ -2,29 +2,40 @@ struct Solution;
 
 impl Solution {
     pub fn min_domino_rotations(tops: Vec<i32>, bottoms: Vec<i32>) -> i32 {
-        let ret = Self::check(tops[0], &tops, &bottoms);
+        let n = tops.len();
+        let candidates = [tops[0], bottoms[0]];
+        let mut ans = i32::MAX;
 
-        if ret != -1 {
-            return ret;
-        }
+        for &target in &candidates {
+            let mut top_rot = 0;
+            let mut bot_rot = 0;
+            let mut possible = true;
 
-        Self::check(bottoms[0], &tops, &bottoms)
-    }
+            for i in 0..n {
+                if tops[i] != target && bottoms[i] != target {
+                    possible = false;
+                    break;
+                } else if tops[i] != target {
+                    // tops[i] 需要旋转才能变成 target
+                    top_rot += 1;
+                } else if bottoms[i] != target {
+                    // bottoms[i] 需要旋转才能变成 target
+                    bot_rot += 1;
+                }
+                // 如果两面都等于 target，不需要旋转
+            }
 
-    fn check(x: i32, tops: &Vec<i32>, bottoms: &Vec<i32>) -> i32 {
-        let mut top_rotations = 0;
-        let mut bottom_rotations = 0;
-
-        for i in 0..tops.len() {
-            if tops[i] != x && bottoms[i] != x {
-                return -1;
-            } else if tops[i] != x {
-                top_rotations += 1;
-            } else if bottoms[i] != x {
-                bottom_rotations += 1;
+            if possible {
+                ans = ans.min(top_rot.min(bot_rot));
             }
         }
-        top_rotations.min(bottom_rotations)
+
+        if ans == i32::MAX {
+            -1
+        } else {
+            ans
+        }
     }
 }
+
 fn main() {}
