@@ -8,17 +8,16 @@ impl Solution {
         }
         let mut part = 0;
         let mut cur_sum = 0;
-        for (i, &num) in arr.iter().enumerate() {
+        let target = sum / 3;
+
+        for &num in arr.iter() {
             cur_sum += num;
-            if cur_sum == sum / 3 {
+            if cur_sum == target {
                 part += 1;
                 cur_sum = 0;
             }
-            if part == 2 && i != arr.len() - 1 {
-                return true;
-            }
         }
-        false
+        part >= 3
     }
 }
 
