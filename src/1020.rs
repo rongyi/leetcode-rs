@@ -13,14 +13,16 @@ impl Solution {
             Self::dfs(&mut grid, m as i32 - 1, j);
         }
 
-        grid.into_iter().fold(0, |mut acc, lst| {
-            let cur_acc = lst.into_iter().fold(0, |mut acc, cur| {
-                acc += cur;
-                acc
-            });
-            acc += cur_acc;
-            acc
-        })
+        grid.iter().flatten().filter(|&&x| x == 1).count() as i32
+
+        // grid.into_iter().fold(0, |mut acc, lst| {
+        //     let cur_acc = lst.into_iter().fold(0, |mut acc, cur| {
+        //         acc += cur;
+        //         acc
+        //     });
+        //     acc += cur_acc;
+        //     acc
+        // })
 
         // let mut ret = 0;
         // for i in 0..m {
