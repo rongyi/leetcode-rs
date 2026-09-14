@@ -28,14 +28,14 @@ impl Solution {
         total
     }
 
-    fn recur(node: Option<&Rc<RefCell<TreeNode>>>, sum: i32, total: &mut i32) {
+    fn recur(node: Option<&Rc<RefCell<TreeNode>>>, acc: i32, total: &mut i32) {
         if let Some(node) = node {
             let n = node.borrow();
             if n.left.is_none() && n.right.is_none() {
-                *total += (sum << 1) + n.val;
+                *total += (acc << 1) + n.val;
             }
-            Self::recur(n.left.as_ref(), (sum << 1) + n.val, total);
-            Self::recur(n.right.as_ref(), (sum << 1) + n.val, total);
+            Self::recur(n.left.as_ref(), (acc << 1) + n.val, total);
+            Self::recur(n.right.as_ref(), (acc << 1) + n.val, total);
         }
     }
 }
