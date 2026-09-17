@@ -9,10 +9,11 @@ impl Solution {
             let mut cur_max = 0;
             for l in 1..=chunk {
                 // the first index in chunk which len is l
-                if i as i32 - l + 1 < 0 {
+                let chunk_start = i as i32 - l + 1;
+                if chunk_start < 0 {
                     break;
                 }
-                cur_max = cur_max.max(nums[(i as i32 - l + 1) as usize]);
+                cur_max = cur_max.max(nums[chunk_start as usize]);
                 dp[i] = dp[i].max(cur_max * l + if i as i32 >= l { dp[i - l as usize] } else { 0 });
             }
         }
