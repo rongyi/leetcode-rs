@@ -13,7 +13,7 @@ impl Solution {
             }
         }
 
-        true
+        unreachable!()
     }
 }
 
