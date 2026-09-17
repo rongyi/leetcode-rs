@@ -1,22 +1,22 @@
 struct Solution;
 
+use std::collections::HashMap;
 impl Solution {
     pub fn majority_element(nums: Vec<i32>) -> i32 {
-        let mut candidate = nums[0];
-        let mut count = 0;
-
-        for &num in &nums {
-            if count == 0 {
-                candidate = num;
-                count = 1;
-            } else if num == candidate {
-                count += 1;
+        let mut major_num = nums[0];
+        let mut cnt = 0;
+        for &num in nums.iter() {
+            if cnt == 0 {
+                major_num = num;
+                cnt = 1;
+            } else if num == major_num {
+                cnt += 1;
             } else {
-                count -= 1;
+                cnt -= 1;
             }
         }
 
-        candidate
+        major_num
     }
 }
 
