@@ -7,13 +7,12 @@ impl Solution {
 
         while !heap.is_empty() {
             let big = heap.pop().unwrap();
-            let small = heap.pop();
-            if small.is_none() {
+            if let Some(small) = heap.pop() {
+                if small != big {
+                    heap.push(big - small);
+                }
+            } else {
                 return big;
-            }
-            let small = small.unwrap();
-            if small != big {
-                heap.push(big - small);
             }
         }
 
@@ -21,10 +20,4 @@ impl Solution {
     }
 }
 
-fn main() {
-    let mut heap = BinaryHeap::new();
-    heap.push(1);
-    heap.push(2);
-    let cur = heap.pop().unwrap();
-    println!("{}", cur);
-}
+fn main() {}
