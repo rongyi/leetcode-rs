@@ -2,19 +2,20 @@ struct Solution;
 
 impl Solution {
     pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
-        if nums.len() <= 1 {
-            return nums.len() as _;
+        // at most twice
+        // whtat even previous two same or not
+        let mut next_write_pos = 2;
+        let sz = nums.len();
+        if sz <= 2 {
+            return sz as _;
         }
-        let mut write_pos = 2;
-
-        for j in 2..nums.len() {
-            if nums[j] != nums[write_pos - 2] {
-                nums[write_pos] = nums[j];
-                write_pos += 1;
+        for i in 2..sz {
+            if nums[i] != nums[next_write_pos - 2] {
+                nums[next_write_pos] = nums[i];
+                next_write_pos += 1;
             }
         }
-
-        write_pos as _
+        next_write_pos as _
     }
 }
 
