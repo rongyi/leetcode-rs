@@ -31,13 +31,9 @@ impl Solution {
 
         grid.into_iter()
             .map(|r| String::from_utf8(r).unwrap())
-            .fold(String::new(), |mut acc, cur| {
-                acc.push_str(&cur);
-                acc
-            })
+            .collect::<Vec<_>>()
+            .join("")
     }
 }
 
-fn main() {
-    Solution::convert("PAYPALISHIRING".to_string(), 3);
-}
+fn main() {}
