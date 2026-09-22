@@ -38,6 +38,7 @@ impl Solution {
                 // put back those
                 if let Some(v) = expect.get_mut(&s[i]) {
                     // when v < 0 , it means we have way more this char after, dont panic
+                    // 开始肉疼了，之前无所吊谓，反正后面多的是
                     if *v >= 0 {
                         need_match += 1;
                     }
