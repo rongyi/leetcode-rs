@@ -12,6 +12,7 @@ impl ListNode {
         ListNode { next: None, val }
     }
 }
+
 impl Solution {
     pub fn reverse_between(
         mut head: Option<Box<ListNode>>,
@@ -39,6 +40,7 @@ impl Solution {
                 Some(mut cur) => {
                     let next = cur.next.take();
                     if cur_idx >= left && cur_idx <= right {
+                        // yes, in reverse order
                         cur.next = rtail.next.take();
                         rtail.next = Some(cur);
                     } else {
