@@ -22,7 +22,7 @@ impl Solution {
         let mut remain = head;
 
         loop {
-            let (cur_chunk, next_chunk, is_full) = Self::split(remain, k);
+            let (cur_chunk, next_chunk, is_full) = Self::take_chunk_by_size(remain, k);
             if is_full {
                 // insert as reverse order
                 let mut cur = cur_chunk;
@@ -44,7 +44,8 @@ impl Solution {
             }
 
             remain = next_chunk;
-            // need to drive tail to newlys chain end
+            // need to drive tail to newly chain end for next insert
+            // a little optimize, if last not full chunk, ignore this action
             while tail.next.is_some() {
                 tail = tail.next.as_mut().unwrap();
             }
@@ -53,8 +54,8 @@ impl Solution {
         dummy.next
     }
 
-    fn split(
-        mut head: Option<Box<ListNode>>,
+    fn take_chunk_by_size(
+        head: Option<Box<ListNode>>,
         k: i32,
     ) -> (Option<Box<ListNode>>, Option<Box<ListNode>>, bool) {
         let mut dummy = Box::new(ListNode::new(-1));
