@@ -1,7 +1,6 @@
 struct Solution;
 
 use std::collections::{HashSet, VecDeque};
-
 impl Solution {
     pub fn min_mutation(start: String, end: String, bank: Vec<String>) -> i32 {
         let mut dict: HashSet<String> = bank.into_iter().collect();
@@ -30,20 +29,25 @@ impl Solution {
     }
 
     fn edit(cur: &str, dict: &mut HashSet<String>, q: &mut VecDeque<String>) {
-        // clear cur in dict to make it not go this way
+        // clear cur in dict to make it not go this way again
         dict.remove(cur);
 
-        let cur: Vec<char> = cur.chars().collect();
+        let mut cur: Vec<char> = cur.chars().collect();
         for i in 0..cur.len() {
-            let mut ch = cur.clone();
+            let origin = cur[i];
             for c in ['A', 'C', 'G', 'T'] {
-                ch[i] = c;
-                let edit_gen: String = ch.iter().collect();
+                if c == origin {
+                    continue;
+                }
+                cur[i] = c;
+                let edit_gen: String = cur.iter().collect();
                 if dict.contains(&edit_gen) {
                     q.push_back(edit_gen.clone());
+                    // burn after reading
                     dict.remove(&edit_gen);
                 }
             }
+            cur[i] = origin;
         }
     }
 }
