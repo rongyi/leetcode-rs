@@ -1,17 +1,18 @@
 struct Solution;
 
+fn main() {}
+
 impl Solution {
     pub fn range_bitwise_and(mut left: i32, mut right: i32) -> i32 {
-        let mut step = 0;
+        let mut shift = 0;
         // common prefix
         while left != right {
             left >>= 1;
             right >>= 1;
-            step += 1;
+            shift += 1;
         }
 
-        left << step
+        // restore the common prefix
+        left << shift
     }
 }
-
-fn main() {}
