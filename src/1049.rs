@@ -1,23 +1,22 @@
 struct Solution;
 
+fn main() {}
+
 impl Solution {
     pub fn last_stone_weight_ii(stones: Vec<i32>) -> i32 {
         let sum: i32 = stones.iter().sum();
-        let sz = sum / 2 + 1;
-        let mut dp = vec![false; sz as usize];
-        dp[0] = true;
-        let mut max_sum = 0;
-        for stone in stones {
-            for j in (stone..sz).rev() {
-                if dp[(j - stone) as usize] {
-                    dp[j as usize] = true;
-                    max_sum = max_sum.max(j);
-                }
+        let target = sum as usize / 2;
+
+        let mut dp = vec![0; target + 1];
+
+        for &stone in stones.iter() {
+            let weight = stone as usize;
+            for j in (weight..=target).rev() {
+                // either pick this stone:
+                dp[j] = dp[j].max(dp[j - weight] + stone);
             }
         }
 
-        sum - 2 * max_sum
+        sum - 2 * dp[target] as i32
     }
 }
-
-fn main() {}
