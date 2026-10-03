@@ -22,6 +22,7 @@ impl Solution {
                 cnt.insert(0, 1);
                 let mut cur_sum = 0;
                 for k in 0..m {
+                    // keep add this range between col i and j (may be a single column)
                     cur_sum += matrix[k][j] - if i > 0 { matrix[k][i - 1] } else { 0 };
                     // don't understand this statement?
                     // https://leetcode.com/problems/subarray-sum-equals-k/solutions/1759909/c-full-explained-every-step-w-dry-run-o-n-2-o-n-two-approaches/
