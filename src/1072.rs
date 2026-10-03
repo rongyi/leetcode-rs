@@ -6,6 +6,9 @@ impl Solution {
         let m = matrix.len();
         let n = matrix[0].len();
         for i in 0..m {
+            // find same pattern, i.e.
+            // [1, 0, 1] with [1, 0, 1] will keep same for toggle column 1 with same value
+            // [1, 0, 1] with [0, 1, 0] will keep same for toggle colmn 1 , with complement value
             let mut flip = Vec::with_capacity(n);
             for &num in matrix[i].iter() {
                 flip.push(1 - num);
