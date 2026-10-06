@@ -6,6 +6,7 @@ impl Solution {
         let s2: Vec<char> = str2.chars().collect();
         let m = s1.len();
         let n = s2.len();
+        // dp is lcs(longest common subsequence)
         let mut dp = vec![vec![0; n + 1]; m + 1];
 
         for i in 0..m {
@@ -21,6 +22,7 @@ impl Solution {
         let mut ret = Vec::new();
         let mut i = m;
         let mut j = n;
+        // preserve the longest chain
         while i > 0 && j > 0 {
             if s1[i - 1] == s2[j - 1] {
                 ret.push(s1[i - 1]);
