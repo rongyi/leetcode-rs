@@ -10,8 +10,9 @@ impl Solution {
         let n = grid[0].len() as i32;
         while !q.is_empty() {
             ret += 1;
-            let mut q2: VecDeque<(i32, i32)> = VecDeque::new();
-            while !q.is_empty() {
+
+            let sz = q.len();
+            for _ in 0..sz {
                 let (x, y) = q.pop_front().unwrap();
                 if grid[x as usize][y as usize] == 1 {
                     continue;
@@ -36,15 +37,14 @@ impl Solution {
                                 && ny < n
                                 && grid[nx as usize][ny as usize] == 0
                             {
-                                q2.push_back((nx, ny));
+                                q.push_back((nx, ny));
                             }
                         }
                     }
                 }
             }
-            q = q2.clone();
-            q2.clear();
         }
+
         -1
     }
 }
