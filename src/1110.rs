@@ -18,6 +18,7 @@ impl TreeNode {
         }
     }
 }
+
 use std::cell::RefCell;
 use std::collections::HashSet;
 use std::rc::Rc;
@@ -29,71 +30,33 @@ impl Solution {
         let mut ret = Vec::new();
         let to_deletes: HashSet<i32> = to_delete.into_iter().collect();
 
-        Self::delete_and_collect(root.clone(), &to_deletes, &mut ret, true);
+        Self::dfs(root.clone(), &to_deletes, &mut ret, true);
 
         ret
     }
 
-    fn delete_and_collect(
+    fn dfs(
         root: Option<Rc<RefCell<TreeNode>>>,
         target_vals: &HashSet<i32>,
         acc: &mut Vec<Option<Rc<RefCell<TreeNode>>>>,
-        should_add_acc: bool,
-    ) {
-        if let Some(node) = root.clone() {
-            let val = node.borrow().val;
-            // ok delete this node
-            if target_vals.contains(&val) {
-                let l = node.borrow_mut().left.take();
-                let r = node.borrow_mut().right.take();
-                Self::delete_and_collect(l, target_vals, acc, true);
-                Self::delete_and_collect(r, target_vals, acc, true);
+        is_root: bool,
+    ) -> Option<Rc<RefCell<TreeNode>>> {
+        if let Some(n) = root.clone() {
+            let mut node = n.borrow_mut();
+            let should_delete = target_vals.contains(&node.val);
+            node.left = Self::dfs(node.left.take(), target_vals, acc, should_delete);
+            node.right = Self::dfs(node.right.take(), target_vals, acc, should_delete);
+
+            if should_delete {
+                return None;
             } else {
-                if should_add_acc {
+                if is_root {
                     acc.push(root.clone());
                 }
-                if node.borrow().left.is_some() {
-                    let lval = node.borrow().left.as_ref().unwrap().borrow().val;
-                    // chop l and add
-                    if target_vals.contains(&lval) {
-                        Self::delete_and_collect(
-                            node.borrow_mut().left.take(),
-                            target_vals,
-                            acc,
-                            true,
-                        );
-                    } else {
-                        // just chop, dont add to acc
-                        Self::delete_and_collect(
-                            node.borrow().left.clone(),
-                            target_vals,
-                            acc,
-                            false,
-                        );
-                    }
-                }
-
-                if node.borrow().right.is_some() {
-                    let rval = node.borrow().right.as_ref().unwrap().borrow().val;
-                    // chop r and add
-                    if target_vals.contains(&rval) {
-                        Self::delete_and_collect(
-                            node.borrow_mut().right.take(),
-                            target_vals,
-                            acc,
-                            true,
-                        );
-                    } else {
-                        // just chop dont add to acc
-                        Self::delete_and_collect(
-                            node.borrow().right.clone(),
-                            target_vals,
-                            acc,
-                            false,
-                        );
-                    }
-                }
+                return root;
             }
+        } else {
+            None
         }
     }
 }
