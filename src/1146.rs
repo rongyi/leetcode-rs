@@ -4,6 +4,7 @@ use std::collections::{BTreeMap, HashMap};
 #[derive(Debug, Default)]
 struct SnapshotArray {
     snap_id: i32,
+    // group by index, and each index have snap history
     snaps: HashMap<i32, BTreeMap<i32, i32>>,
 }
 
