@@ -3,37 +3,45 @@ struct Solution;
 impl Solution {
     pub fn stone_game_ii(piles: Vec<i32>) -> i32 {
         let sz = piles.len();
-        let mut suffix_sum = vec![0; sz];
+        let mut suffix_sum = vec![0; sz + 1];
 
-        suffix_sum[sz - 1] = piles[sz - 1];
-        for i in (0..sz - 1).rev() {
+        for i in (0..sz).rev() {
             suffix_sum[i] = suffix_sum[i + 1] + piles[i];
         }
 
-        let mut dp = vec![vec![-1; sz + 1]; sz];
+        let mut memo = vec![vec![-1; sz + 1]; sz];
 
-        fn dfs(i: usize, m: usize, suffix_sum: &Vec<i32>, dp: &mut Vec<Vec<i32>>) -> i32 {
-            if i >= suffix_sum.len() {
-                return 0;
+        fn dfs(
+            i: usize,
+            m: usize,
+            piles: &[i32],
+            suffix_sum: &Vec<i32>,
+            memo: &mut Vec<Vec<i32>>,
+        ) -> i32 {
+            if i + 2 * m >= piles.len() {
+                return suffix_sum[i];
             }
-            if dp[i][m] != -1 {
-                return dp[i][m];
+
+            if memo[i][m] != -1 {
+                return memo[i][m];
             }
+
             let mut ret = 0;
             let total = suffix_sum[i];
+
             for x in 1..=2 * m {
                 if i + x > suffix_sum.len() {
                     break;
                 }
-                let oppnent = dfs(i + x, x.max(m), suffix_sum, dp);
+                let oppnent = dfs(i + x, x.max(m), piles, suffix_sum, memo);
                 ret = ret.max(total - oppnent);
             }
 
-            dp[i][m] = ret;
+            memo[i][m] = ret;
             ret
         }
 
-        dfs(0, 1, &suffix_sum, &mut dp)
+        dfs(0, 1, &piles, &suffix_sum, &mut memo)
     }
 }
 
