@@ -12,7 +12,7 @@ impl Solution {
             return true;
         }
         visited[start as usize] = true;
-        // jump backward
+        // jump forward
         let idx = (start + arr[start as usize]) as usize;
         if idx < arr.len() && !visited[idx] {
             if Self::dfs(arr, idx as i32, visited) {
@@ -20,7 +20,7 @@ impl Solution {
             }
         }
 
-        // jump forward
+        // jump backward
         let idx = start - arr[start as usize];
         if idx >= 0 && !visited[idx as usize] {
             if Self::dfs(arr, idx, visited) {
