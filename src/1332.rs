@@ -6,7 +6,7 @@ impl Solution {
     pub fn remove_palindrome_sub(s: String) -> i32 {
         // take it easy, this is a easy problem, you dont need to think too much,
         // just contain 'a' and 'b' means we only need at most 2 delete action
-        // one for 'a' and one for all 'b'
+        // one time for deleting all 'a' and one for all 'b'
         // so if s is already a parlindrom this is one time delete action
         let s = s.as_bytes();
         let sz = s.len();
