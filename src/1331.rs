@@ -1,12 +1,12 @@
 #![allow(dead_code)]
 
-
 struct Solution;
 
 use std::collections::BTreeMap;
 impl Solution {
     pub fn array_rank_transform(arr: Vec<i32>) -> Vec<i32> {
         let mut vals: BTreeMap<i32, Vec<usize>> = BTreeMap::new();
+        // value -> [index]
         for (i, &num) in arr.iter().enumerate() {
             vals.entry(num).or_default().push(i);
         }
