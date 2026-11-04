@@ -29,7 +29,7 @@ impl UnionFind {
             self.vals[p2] = p1;
             true
         } else {
-            // already in a group
+            // already in a group, bound before
             false
         }
     }
