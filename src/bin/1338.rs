@@ -12,10 +12,11 @@ impl Solution {
         }
         // println!("{:?}", freq);
         let val_to_freq: BTreeMap<i32, Vec<i32>> =
-            freq.into_iter().fold(BTreeMap::new(), |mut acc, cur| {
-                acc.entry(cur.1).or_default().push(cur.0);
-                acc
-            });
+            freq.into_iter()
+                .fold(BTreeMap::new(), |mut acc, (val, freq)| {
+                    acc.entry(freq).or_default().push(val);
+                    acc
+                });
 
         // println!("{:?}", val_to_freq);
 
@@ -23,6 +24,7 @@ impl Solution {
         let mut ret = 0;
         for (freq, vals) in val_to_freq.into_iter().rev() {
             let mut i = 0;
+            // each value is a set candidate
             while i < vals.len() && total_collect < sz as i32 / 2 {
                 total_collect += freq;
                 i += 1;
