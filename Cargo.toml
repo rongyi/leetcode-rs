@@ -3,7 +3,17 @@ name = "lc"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# Every file in src/bin/*.rs is picked up as its own binary target:
+# `cargo run --bin 0001`, `cargo check --bin 0001`, ...
+# Nothing needs to be registered in main.rs / lib.rs.
+autobins = true
+
+# `cargo run` with no arguments = the scratch pad in src/main.rs.
+default-run = "lc"
 
 [dependencies]
-rand = "*"
+rand = "0.8"
+
+# LeetCode style: a solution struct only exists so cargo can type-check it.
+[lints.rust]
+dead_code = "allow"
