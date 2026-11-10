@@ -15,12 +15,13 @@ impl Solution {
             cnt_t[idx] += 1;
         }
         let mut diff = 0;
+
         for i in 0..cnt_s.len() {
             diff += (cnt_s[i] - cnt_t[i]).abs();
         }
+
         diff / 2
     }
 }
-
 
 fn main() {}
