@@ -9,16 +9,16 @@ mod rongyi {
     impl Solution {
         pub fn is_possible(target: Vec<i32>) -> bool {
             let target: Vec<i64> = target.into_iter().map(|x| x as i64).collect();
-            let mut s: i64 = target.iter().sum();
+            let mut total: i64 = target.iter().sum();
 
             let mut q: BinaryHeap<i64> = target.iter().copied().collect();
 
-            while s > 1 && *q.peek().unwrap() > s / 2 {
+            while total > 1 && *q.peek().unwrap() > total / 2 {
                 let cur = q.pop().unwrap();
 
-                s -= cur;
-                if s <= 1 {
-                    if s == 1 {
+                total -= cur;
+                if total <= 1 {
+                    if total == 1 {
                         return true;
                     } else {
                         return false;
@@ -30,11 +30,11 @@ mod rongyi {
                 // s += cur - s;
                 // 遇到有个数特别大的情况，需要碾掉,因为余下的那些数被加到这个数上很多次
                 // 这是我见过 % 用的最巧妙的地方了
-                q.push(cur % s);
-                s += cur % s;
+                q.push(cur % total);
+                total += cur % total;
             }
 
-            s == target.len() as i64
+            total == target.len() as i64
         }
     }
     fn main() {}
