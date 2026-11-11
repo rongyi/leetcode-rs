@@ -1,0 +1,28 @@
+
+
+great problem: 691
+
+有个lisp expression题目
+785 也非常赞
+787 不错
+815
+834
+841
+842 backtrack
+849
+
+875 作为binary search也不错
+876 linklist
+879 dp也不过
+907
+943 挺难的，有空要过一下
+979
+987
+995 都挺好
+996
+1019
+1026
+1038
+1106 expr parser挺好
+1319 来看union find
+1361 跟树无关的树
