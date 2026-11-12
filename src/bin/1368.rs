@@ -43,7 +43,7 @@ impl Solution {
                 if new_cost < dist[nx][ny] {
                     dist[nx][ny] = new_cost;
                     if additional_cost == 0 {
-                        // this is the keypoint, mininum cost get insert to front
+                        // key point, mininum cost get insert to front
                         q.push_front((nx, ny));
                     } else {
                         q.push_back((nx, ny));

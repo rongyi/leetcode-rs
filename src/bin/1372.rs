@@ -30,23 +30,28 @@ impl Solution {
             node: Option<&Rc<RefCell<TreeNode>>>,
             cur_len: i32,
             max_len: &mut i32,
-            from_left: bool,
+            to_right: bool,
         ) {
             if let Some(node) = node {
                 let node = node.borrow();
 
                 *max_len = (*max_len).max(cur_len);
-                if from_left {
+                if to_right {
+                    // 顺着上面规则
                     dfs(node.right.as_ref(), cur_len + 1, max_len, false);
+                    // 或者单开
                     dfs(node.left.as_ref(), 1, max_len, true);
                 } else {
+                    // 顺着上面规则
                     dfs(node.left.as_ref(), cur_len + 1, max_len, true);
+                    // 或者单开
                     dfs(node.right.as_ref(), 1, max_len, false);
                 }
             }
         }
 
         let mut max_len = 0;
+        // from root, we can go either way
         dfs(root.as_ref(), 0, &mut max_len, true);
         dfs(root.as_ref(), 0, &mut max_len, false);
 
