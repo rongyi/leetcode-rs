@@ -41,24 +41,24 @@ impl Solution {
         if root.is_none() {
             return false;
         }
-        Self::check(head.clone(), root.clone())
+        Self::check(head.as_ref(), root.as_ref())
             || Self::is_sub_path(head.clone(), root.clone().unwrap().borrow().left.clone())
             || Self::is_sub_path(head, root.clone().unwrap().borrow().right.clone())
     }
-    fn check(head: Option<Box<ListNode>>, root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn check(head: Option<&Box<ListNode>>, root: Option<&Rc<RefCell<TreeNode>>>) -> bool {
         if head.is_none() {
             return true;
         }
         if root.is_none() {
             return false;
         }
-        head.clone().unwrap().val == root.clone().unwrap().borrow().val
+        head.as_ref().unwrap().val == root.as_ref().unwrap().borrow().val
             && (Self::check(
-                head.clone().unwrap().next.clone(),
-                root.clone().unwrap().borrow().left.clone(),
+                head.as_ref().unwrap().next.as_ref(),
+                root.as_ref().unwrap().borrow().left.as_ref(),
             ) || Self::check(
-                head.unwrap().clone().next.clone(),
-                root.unwrap().borrow().right.clone(),
+                head.as_ref().unwrap().next.as_ref(),
+                root.as_ref().unwrap().borrow().right.as_ref(),
             ))
     }
 }

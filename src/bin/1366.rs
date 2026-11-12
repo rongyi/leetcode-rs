@@ -7,6 +7,7 @@ impl Solution {
         let votes: Vec<Vec<char>> = votes.into_iter().map(|s| s.chars().collect()).collect();
         let mut ret: Vec<char> = votes[0].clone();
         let sz = votes[0].len();
+        // 用 vec 来进行对比，投票前的得票越多值越大，这样顺着下去
         let mut rank = vec![vec![0; sz]; 26];
 
         for v in votes.iter() {
